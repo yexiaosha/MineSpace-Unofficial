@@ -1,0 +1,113 @@
+# ===========================================================================
+# MineSpace Unofficial -- repository root ignore rules
+#
+# The repo holds two projects:
+#   Minespace-unofficial/       addon source (Gradle project)
+#   Minespace-unofficial-dev/   playable instance (test runtime)
+#
+# Everything below is either machine-specific, hundreds of megabytes, or
+# regenerable from the scripts in Minespace-unofficial/tools/. None of it
+# belongs in git.
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Local toolchain -- ~700 MB of JDK 8, Gradle and Git.
+# Recreated by: Minespace-unofficial/tools/bootstrap.ps1
+# ---------------------------------------------------------------------------
+Minespace-unofficial/tools/jdk8/
+Minespace-unofficial/tools/git/
+Minespace-unofficial/tools/gradle-4.10.3/
+Minespace-unofficial/tools/_downloads/
+Minespace-unofficial/tools/_stage_*/
+Minespace-unofficial/tools/_kubejs_probe/
+Minespace-unofficial/tools/_gtceu_probe/
+Minespace-unofficial/tools/_forgesrc/
+Minespace-unofficial/tools/_gt/
+Minespace-unofficial/tools/_api/
+Minespace-unofficial/tools/toolchain.json
+
+# ---------------------------------------------------------------------------
+# Gradle / build output
+# ---------------------------------------------------------------------------
+Minespace-unofficial/.gradle/
+# Trailing slash so this only matches the build *directory*: a bare "build" line
+# also matches the tracked build.gradle, and "build*" patterns would too.
+Minespace-unofficial/build/
+Minespace-unofficial/mcmodsrepo/
+Minespace-unofficial/reobf/
+Minespace-unofficial/run/
+
+# The Forge installer drops a log wherever it was launched from
+Minespace-unofficial/forge-*-installer.jar.log
+
+# ---------------------------------------------------------------------------
+# Instance: everything except the authored config
+#
+# These are all rebuilt by install-pack.ps1 + deployToInstance, or produced by
+# the game itself:
+#   runtime/    ~190 MB bundled JDK
+#   assets/     ~123 MB of textures and sounds
+#   libraries/  ~45 MB of Minecraft + Forge libraries
+#   versions/   the 1.12.2 client and the Forge version
+# ---------------------------------------------------------------------------
+Minespace-unofficial-dev/runtime/
+Minespace-unofficial-dev/assets/
+Minespace-unofficial-dev/libraries/
+Minespace-unofficial-dev/versions/
+
+# Game state and logs
+Minespace-unofficial-dev/logs/
+Minespace-unofficial-dev/crash-reports/
+Minespace-unofficial-dev/saves/
+Minespace-unofficial-dev/resourcepacks/
+Minespace-unofficial-dev/shaderpacks/
+Minespace-unofficial-dev/screenshots/
+Minespace-unofficial-dev/server.properties
+Minespace-unofficial-dev/banned-*.json
+Minespace-unofficial-dev/ops.json
+Minespace-unofficial-dev/usercache.json
+Minespace-unofficial-dev/usernamecache.json
+Minespace-unofficial-dev/options.txt
+Minespace-unofficial-dev/optionsof.txt
+Minespace-unofficial-dev/realms_persistence.json
+Minespace-unofficial-dev/servers.dat
+Minespace-unofficial-dev/launcher_profiles.json
+Minespace-unofficial-dev/launcher_accounts.json
+
+# Third-party mod jars: downloaded by tools/install-pack.ps1 / fetch-mods.ps1,
+# documented with exact CurseForge ids in MOD-MANIFEST.md.
+Minespace-unofficial-dev/mods/*.jar
+# Third-party jars are fetched, not authored:
+Minespace-unofficial/libs/*.jar
+# The addon's own jar is a build artefact, deployed by `gradlew deployToInstance`.
+Minespace-unofficial-dev/mods/minespace-*.jar
+Minespace-unofficial-dev/mods/1.12.2/
+
+# ---------------------------------------------------------------------------
+# IDE / editor
+# ---------------------------------------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+out/
+eclipse/
+
+# ---------------------------------------------------------------------------
+# OS noise
+# ---------------------------------------------------------------------------
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ---------------------------------------------------------------------------
+# JVM crash logs
+# ---------------------------------------------------------------------------
+*.class
+hs_err_pid*.log
+replay_pid*.log

@@ -1,0 +1,50 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+mcmodsrepo
+reobf
+
+# other
+eclipse
+run
+run-*/
+
+# Files from Forge MDK
+forge*changelog.txt
+
+# Forge installer writes a log next to wherever it is launched from
+forge-*-installer.jar.log
+
+# Local toolchain: hundreds of MB, machine specific, never committed
+tools/jdk8/
+tools/git/
+tools/gradle-4.10.3/
+tools/_downloads/
+tools/_stage_*/
+tools/_kubejs_probe/
+tools/_gtceu_probe/
+tools/toolchain.json
+
+# IDE / OS / JVM noise
+.vscode/
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.class
+hs_err_pid*.log
+replay_pid*.log

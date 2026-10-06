@@ -1,0 +1,35 @@
+# ===========================================================================
+# Line endings for MineSpace Unofficial
+#
+# Without this, git on Windows rewrites LF to CRLF in the working copy, which
+# produces a wall of "LF will be replaced by CRLF" warnings on every checkout and
+# can make a file look modified when it is not.
+# ===========================================================================
+
+# Default: normalise to LF in the repository.
+* text=auto eol=lf
+
+# Windows scripts and launchers must keep CRLF so they behave when double-clicked
+# and so cmd.exe does not mis-handle line continuations.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Gradle's Unix launcher must stay LF, otherwise the shell shebang breaks.
+gradlew text eol=lf
+
+# Binary: never touch these.
+*.jar binary
+*.zip binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ogg binary
+*.icns binary
+*.7z binary
+*.exe binary
+*.dll binary
+
+# Generated / third-party content that should not be normalised at all.
+Minespace-unofficial-dev/config/gregtech/terminal/** -text

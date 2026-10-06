@@ -1,0 +1,15 @@
+[{
+  "modid": "${modid}",
+  "name": "${name}",
+  "description": "${description}",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["${author}"],
+  "credits": "Built on the work of the GregTech CE: Unofficial and Galacticraft teams.",
+  "logoFile": "",
+  "screenshots": [],
+  "parent": "",
+  "dependencies": ["codechickenlib"]
+}]

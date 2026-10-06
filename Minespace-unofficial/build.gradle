@@ -1,0 +1,396 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+    }
+}
+        
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = mod_version
+group = mod_group // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = mod_id
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+// ---------------------------------------------------------------------------
+// Compile in UTF-8, always.
+//
+// The source files contain non-ASCII characters (em dashes and arrows in the
+// javadoc). Without this, javac uses the platform default encoding, which is GBK
+// on a Chinese Windows install, and fails with:
+//
+//     error: unmappable character for encoding GBK
+//
+// It only shows up on a *clean* compile: an incremental build skips unchanged
+// files, so the problem can stay hidden until someone clones the repo and builds
+// from scratch.
+// ---------------------------------------------------------------------------
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// Match it for the resources filter, so mcmod.info expansion behaves the same.
+tasks.withType(Copy) {
+    filteringCharset = 'UTF-8'
+}
+
+minecraft {
+    // The mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   Snapshot are built nightly.
+    // stable_#            Stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // Simply re-run your setup task after changing the mappings to update your workspace.
+    //mappings channel: 'snapshot', version: '20171003-1.12'
+    mappings channel: 'snapshot', version: '20171003-1.12'
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    // Working directory is run/, so game files never land in the project root.
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            // ------------------------------------------------------------------
+            // MCP mappings for GTCEu's ASM transformer.
+            //
+            // GTCEu is a coremod, and its GregTechTransformer reads these two system
+            // properties to build its obfuscation mapping table. Without them it dies
+            // with ExceptionInInitializerError (File.<init> NPE) before Minecraft even
+            // starts. They are the properties the old ForgeGradle 2.x GradleStart used
+            // to set; ForgeGradle 3 dropped GradleStart. `prepareMcpMappings` below
+            // materialises the files these paths point at.
+            //
+            // jvmArg, not property: `property` becomes a *game* argument, `jvmArg` is
+            // the -D system property the transformer actually reads.
+            // ------------------------------------------------------------------
+            jvmArg "-Dnet.minecraftforge.gradle.GradleStart.csvDir=${buildDir}/mcpMappings/csv"
+            jvmArg "-Dnet.minecraftforge.gradle.GradleStart.srg.notch-srg=${buildDir}/mcpMappings/notch-srg"
+
+            mods {
+                minespace {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                minespace {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    // CurseForge artifacts, addressed by project id : file id. Only needed once,
+    // to populate the Gradle cache; the same jars are kept in libs/ for offline builds.
+    maven { url = 'https://cursemaven.com/' }
+}
+
+// ---------------------------------------------------------------------------
+// The addon target mods (GTCEu, Galacticraft + its CodeChickenLib dependency).
+//
+// These are wired in through a dedicated `mods` configuration rather than
+// `implementation`, and `installMods` copies the deobfuscated jars into
+// run/mods. That indirection is required, not cosmetic:
+//
+//   * FML only registers a bundled coremod's own mod id (micdoodlecore, which
+//     Galacticraft hard-depends on) when the jar goes through normal mod
+//     discovery, i.e. from run/mods. A coremod found on the launch classpath
+//     gets its transformer injected but its mod container is never registered,
+//     so the game dies with `requires [micdoodlecore]`.
+//
+//   * The jar must be the DEOBFUSCATED one, otherwise the API names would not
+//     match the MCP namespace this mod compiles against. fg.deobf() produces
+//     exactly that, so the copy task resolves this configuration and takes the
+//     remapped artifact.
+//
+//   * Keeping them out of `implementation` also keeps them off the launch
+//     classpath, which avoids `DuplicateModsFoundException`.
+//
+// `compileOnly` gives the source the full API without putting anything on the
+// runtime classpath.
+//
+// Coordinates are CurseForge project id : file id (resolved by CurseMaven).
+//   gregtech-ce-unofficial 557242 : 2.8.10-beta  -> hard-depends on codechickenlib
+//   codechicken-lib-1-8    242818 : 3.2.3.358
+//   galacticraft-legacy    564236 : 4.0.7        -> bundles MicdoodleCore
+// ---------------------------------------------------------------------------
+configurations {
+    mods
+    // let the main source set see the mods without adding them to runtime
+    compileOnly.extendsFrom mods
+}
+
+dependencies {
+    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
+    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
+
+    mods fg.deobf('curse.maven:gregtech-ce-unofficial-557242:5519022')
+    mods fg.deobf('curse.maven:codechicken-lib-1-8-242818:2779848')
+    mods fg.deobf('curse.maven:galacticraft-legacy-564236:6364107')
+}
+
+// ---------------------------------------------------------------------------
+// Note on `downloadAssets`.
+//
+// ForgeGradle's downloadAssets fetches all 1290 client assets into
+// ~/.gradle/caches/forge_gradle/assets and verifies each one by SHA1. On a slow
+// or flaky link it can report "Failed to get asset: <name>" / "Hash failed" and
+// abort the build. That message is misleading: the file is usually fine and the
+// task simply read it before the write had landed.
+//
+// Just run the task again -- it resumes and skips everything already verified:
+//     gradlew downloadAssets
+// Do not delete the cache directory; it takes several minutes to refill.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Put the addon target mods into run/mods.
+//
+// runClient depends on this, so `gradlew runClient` always tests against exactly
+// the versions declared in the `mods` configuration above.
+//
+// The folder is wiped first, so a version bump in build.gradle cannot leave a
+// stale jar behind and produce a confusing duplicate-mod crash. Anything you
+// want to keep for one-off testing should go in run/mods-extra, which is not
+// touched.
+//
+// Equivalent manual step, if you ever need it: build the deobf jar elsewhere and
+// drop it into run/mods. It must be deobfuscated, because the dev client runs in
+// an MCP-named environment.
+// ---------------------------------------------------------------------------
+task installMods(type: Sync) {
+    description = 'Copy the deobfuscated addon target mods (GTCEu, Galacticraft, CCL) into run/mods.'
+    group = 'forgegradle runs'
+
+    // -PskipMods=gregtech,galacticraft  installs only the rest. Handy for bisecting a
+    // crash down to one of the target mods. -PskipMods=all installs none.
+    def skipRaw = (project.findProperty('skipMods') ?: '').toString().toLowerCase()
+    def skip = skipRaw.split(',')*.trim().findAll { it }
+    def skipAll = skip.contains('all')
+
+    from(configurations.mods) { spec ->
+        spec.eachFile { details ->
+            if (skipAll) { details.exclude(); return }
+            def n = details.name.toLowerCase()
+            if (skip.any { n.contains(it) }) {
+                details.exclude()
+            }
+        }
+    }
+    into 'run/mods'
+    // CurseMaven artifact names are long and versionless-looking; rename them to
+    // something readable so the run/mods listing is useful at a glance.
+    rename { String name ->
+        if (name.contains('gregtech-ce-unofficial')) return 'gregtech-1.12.2-2.8.10-beta-deobf.jar'
+        if (name.contains('galacticraft-legacy')) return 'Galacticraft-1.12.2-4.0.7-deobf.jar'
+        if (name.contains('codechicken-lib')) return 'CodeChickenLib-1.12.2-3.2.3.358-deobf.jar'
+        return name
+    }
+}
+
+task prepareRunDir {
+    description = 'Create run/mods for dev client testing.'
+    doLast {
+        file('run/mods').mkdirs()
+        file('run/mods-extra').mkdirs()
+    }
+}
+
+// ---------------------------------------------------------------------------
+// deployToInstance -- the reliable test loop on this machine.
+//
+// `runClient` launches a ForgeGradle userdev client, and GTCEu's coremod
+// transformer breaks Forge's NetworkRegistry in that environment (see DEV-NOTES.md).
+// Until that is solved, test the addon in the real runtime instead: this task
+// copies the freshly built jar into the playable instance, which already runs
+// GTCEu + Galacticraft + CodeChickenLib successfully.
+//
+//     gradlew deployToInstance
+//     ..\Minespace-unofficial-dev\Play-Minespace.bat
+//
+// The instance location comes from pack_dir in gradle.properties, relative to this
+// project (../Minespace-unofficial-dev).
+// ---------------------------------------------------------------------------
+task deployToInstance(type: Copy, dependsOn: 'reobfJar') {
+    description = 'Copy the built addon jar into the playable instance mods/ folder.'
+    group = 'addon'
+
+    from "${buildDir}/libs/${mod_id}-${mod_version}.jar"
+    into "${pack_dir}/mods"
+
+    doFirst {
+        def target = file("${pack_dir}/mods")
+        if (!target.isDirectory()) {
+            throw new GradleException("Instance not found at ${pack_dir}. Set pack_dir in gradle.properties or run tools\\install-pack.ps1 first.")
+        }
+        logger.lifecycle("deployToInstance: ${mod_id}-${mod_version}.jar -> ${target}")
+    }
+}
+
+// ---------------------------------------------------------------------------
+// MCP mappings for GTCEu's ASM transformer.
+//
+// GTCEu is a coremod: its GregTechTransformer rewrites Minecraft classes at
+// launch, and to do that in a dev environment it needs the obfuscation mapping
+// table. It obtains it from two system properties (see the runs block above):
+//
+//     net.minecraftforge.gradle.GradleStart.csvDir        -> MCP fields/methods/params csv
+//     net.minecraftforge.gradle.GradleStart.srg.notch-srg -> notch -> srg mapping
+//
+// These are the properties the old ForgeGradle 2.x GradleStart used to set, and
+// GTCEu was written against them. ForgeGradle 3 dropped GradleStart, so without
+// this the transformer throws ExceptionInInitializerError (File.<init> NPE) and
+// the game cannot start at all.
+//
+// The inputs are the MCP snapshot archive (which contains the csv files) and the
+// joined.tsrg that ForgeGradle already generated during setup. Both are copied
+// into build/mcpMappings with the names GTCEu expects.
+//
+// If GTCEu is ever updated to not need this, the two `property` lines in the runs
+// block and this task can go away together.
+// ---------------------------------------------------------------------------
+task prepareMcpMappings {
+    description = "Extract MCP csv mappings and expose them where GTCEu's coremod expects them."
+    group = 'forgegradle runs'
+
+    def mappingDir = file("${buildDir}/mcpMappings")
+    def csvOut = file("${mappingDir}/csv")
+    def srgOut = file("${mappingDir}/notch-srg")
+
+    outputs.dir(mappingDir)
+
+    doLast {
+        def mcpCache = new File(gradle.gradleUserHomeDir, 'caches/forge_gradle/maven_downloader/de/oceanlabs/mcp')
+        if (!mcpCache.isDirectory()) {
+            throw new GradleException("MCP cache not found at ${mcpCache}. Run a build first so ForgeGradle can populate it.")
+        }
+
+        csvOut.mkdirs()
+        srgOut.mkdirs()
+
+        // --- csv mappings (inside the MCP snapshot archive) ---
+        def csvSource = null
+        mcpCache.eachFileRecurse { f ->
+            if (csvSource == null && f.name.startsWith('mcp_snapshot-') && f.name.endsWith('.zip')) {
+                csvSource = f
+            }
+        }
+        if (csvSource == null) {
+            throw new GradleException("No MCP snapshot archive under ${mcpCache}")
+        }
+
+        def zip = new java.util.zip.ZipFile(csvSource)
+        try {
+            ['fields.csv', 'methods.csv', 'params.csv'].each { wanted ->
+                def entry = zip.getEntry(wanted)
+                if (entry == null) {
+                    zip.entries().findAll { it.name.endsWith('/' + wanted) }.each { entry = it }
+                }
+                if (entry == null) {
+                    throw new GradleException("${wanted} not found inside ${csvSource.name}")
+                }
+                // Java 8 target: InputStream.transferTo is Java 9+, so copy via the
+                // Groovy leftShift operator instead.
+                new File(csvOut, wanted).withOutputStream { out ->
+                    out << zip.getInputStream(entry)
+                }
+            }
+        } finally {
+            zip.close()
+        }
+
+        // --- notch -> srg mapping (generated by ForgeGradle during setup) ---
+        def tsrg = new File(gradle.gradleUserHomeDir,
+                'caches/forge_gradle/mcp_repo/de/oceanlabs/mcp/mcp_config/1.12.2/joined/rename/config/joined.tsrg')
+        if (!tsrg.isFile()) {
+            throw new GradleException("joined.tsrg not found at ${tsrg}. Run a build first so ForgeGradle can generate it.")
+        }
+        new File(srgOut, 'joined.tsrg').bytes = tsrg.bytes
+
+        logger.lifecycle("prepareMcpMappings: csv -> ${csvOut}")
+        logger.lifecycle("prepareMcpMappings: notch-srg -> ${srgOut}/joined.tsrg")
+    }
+}
+
+tasks.matching { it.name == 'runClient' || it.name == 'runServer' }.all {
+    dependsOn prepareRunDir, installMods, prepareMcpMappings
+}
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'modid', mod_id
+    inputs.property 'name', mod_name
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'modid': mod_id, 'name': mod_name,
+               'mcversion': mc_version, 'description': mod_description, 'author': mod_author
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": mod_id,
+            "Specification-Vendor": mod_author,
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :mod_author,
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar') 
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
