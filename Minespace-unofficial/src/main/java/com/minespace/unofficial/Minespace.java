@@ -1,6 +1,7 @@
 package com.minespace.unofficial;
 
 import com.minespace.unofficial.gtceu.MinespaceMaterials;
+import com.minespace.unofficial.gtceu.MinespaceModelCheck;
 import com.minespace.unofficial.proxy.CommonProxy;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
@@ -73,13 +74,19 @@ public class Minespace {
         //
         // Registration is event driven instead, see MinespaceMaterials: one handler
         // creates the registry from MaterialRegistryEvent, another adds materials
-        // from MaterialEvent.
+        // from MaterialEvent. MinespaceStoneTypes adds GTCEu stone types from the block
+        // registry event, which is the only point late enough for Galacticraft's blocks
+        // to exist and early enough for GTCEu's ore blocks not to be built yet.
 
         proxy.preInit(event);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        // Deferred to the first client tick: model queries during init return unbaked
+        // stand-ins, so a check here would be meaningless. See MinespaceModelCheck.
+        MinespaceModelCheck.register();
+
         proxy.init(event);
     }
 

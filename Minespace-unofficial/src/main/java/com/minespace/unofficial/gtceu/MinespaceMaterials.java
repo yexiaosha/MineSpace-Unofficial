@@ -148,8 +148,22 @@ public final class MinespaceMaterials {
                 .iconSet(MaterialIconSet.ROUGH)
                 .build();
 
-        LOG.info("Registered 2 GregTech materials in registry '{}': {}, {}",
-                NAMESPACE, DESH_STEEL, METEORIC_IRON);
+        // The rock type behind MinespaceStoneTypes' Lunar stone type. It MUST be added
+        // from here, not from preInit: GTCEu froze the registries at the end of this
+        // event, so registering later logs
+        //   "Materials cannot be registered in the PostMaterialEvent (or after)!"
+        // and silently drops the material. Note this is only the Material — the
+        // StoneType itself cannot be built yet, because Galacticraft's block is not in
+        // the block registry until after every mod's preInit. See MinespaceStoneTypes.
+        new Material.Builder(
+                MinespaceStoneTypes.MOON_STONE_ID,
+                new ResourceLocation(NAMESPACE, MinespaceStoneTypes.MOON_STONE))
+                .dust()
+                .color(0x636362)
+                .build();
+
+        LOG.info("Registered 3 GregTech materials in registry '{}': {}, {}, {}",
+                NAMESPACE, DESH_STEEL, METEORIC_IRON, MinespaceStoneTypes.MOON_STONE);
     }
 
     /**
