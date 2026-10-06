@@ -10,13 +10,21 @@
 
 为 **Minecraft 1.12.2** 开发的 **GregTech CE: Unofficial + Galacticraft 附属模组**。
 
+单一 git 仓库（`github.com/yexiaosha/MineSpace-Unofficial`），两个工程：
+
 ```
-E:\workflow\
-├─ Minespace-unofficial\       附属模组开发工作区（Gradle 工程）
+MineSpace-Unofficial\            <- git 仓库根（本目录的上一级）
+├─ .gitignore  .gitattributes  README.md
+├─ Minespace-unofficial\       附属模组开发工作区（Gradle 工程）= 本目录
 └─ Minespace-unofficial-dev\   可启动实例 = 附属模组的测试运行环境
 ```
 
-两个文件夹各自有一份 README；实例侧还有 `MOD-MANIFEST.md` 记录模组来源。
+> 工具链（`tools\jdk8`、`git`、`gradle-4.10.3`，约 700 MB）、实例的
+> `runtime` / `assets` / `libraries` / `versions`（约 360 MB）、第三方 mod jar 与构建
+> 产物**都不在 git 里**。克隆后先跑 `tools\bootstrap.ps1` 与 `tools\install-pack.ps1`
+> 重建，详见仓库根 README。
+
+两个工程各自有一份 README；实例侧还有 `MOD-MANIFEST.md` 记录模组来源。
 
 ## 2. 当前状态：可用
 

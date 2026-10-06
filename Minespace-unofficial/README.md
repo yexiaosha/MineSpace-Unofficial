@@ -14,9 +14,14 @@ prints `minespace.material.desh_steel Ingot`.
 
 ## 目录结构
 
+单一 git 仓库（`github.com/yexiaosha/MineSpace-Unofficial`），两个工程同级：
+
 ```
-E:\workflow\
-├─ Minespace-unofficial\              <- 本目录：附属模组开发工作区
+MineSpace-Unofficial\                  <- git 仓库根
+├─ .gitignore  .gitattributes         行尾与忽略规则
+├─ README.md                          仓库总览、两步初始化
+│
+├─ Minespace-unofficial\              <- 本目录：附属模组工程
 │  ├─ HANDOFF.md                      ★ 新会话入口
 │  ├─ DEV-NOTES.md                    ★ 踩坑与 API 契约，动手前必读
 │  ├─ src\main\java\com\minespace\unofficial\
@@ -26,7 +31,7 @@ E:\workflow\
 │  │  ├─ ModPresence.java             目标模组检测
 │  │  └─ proxy\                       客户端/服务端代理
 │  ├─ build.gradle                    附属模组依赖与测试任务
-│  ├─ gradle.properties               版本与目标平台
+│  ├─ gradle.properties               版本与目标平台、pack_dir
 │  └─ tools\                          本地工具链与脚本
 │
 └─ Minespace-unofficial-dev\          <- 可启动实例（附属模组的测试运行环境）
@@ -35,6 +40,17 @@ E:\workflow\
    ├─ README.md                       实例说明 + KubeJS 1.12.2 用法
    └─ MOD-MANIFEST.md                 模组来源与版本清单
 ```
+
+### 克隆后重建（工具链与大文件不在 git 里）
+
+```powershell
+cd Minespace-unofficial
+.\tools\bootstrap.ps1          # 装 JDK 8 + Gradle + Git（约 700 MB）
+.\tools\install-pack.ps1       # 装 Minecraft / Forge / 材质 / 库（约 360 MB）
+.\tools\gradle.ps1 deployToInstance
+```
+
+两步都可重复运行，已完成的部分会自动跳过。
 
 ## 工具链
 
