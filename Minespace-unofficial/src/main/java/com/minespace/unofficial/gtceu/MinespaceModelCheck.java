@@ -43,5 +43,6 @@ public final class MinespaceModelCheck {
         }
         done = true;
         MinespaceStoneTypes.probeOreModels();
+        MinespacePlanetStoneTypes.probeOreModels();
     }
 }

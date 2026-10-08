@@ -2,6 +2,9 @@ package com.minespace.unofficial.galacticraft;
 
 import gregtech.api.unification.ore.StoneType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockBasicAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -77,6 +80,53 @@ public final class MinespaceGalacticraftStones {
             BlockBasicMoon.EnumBlockBasicMoon variant = state.getValue(BlockBasicMoon.BASIC_TYPE_MOON);
             return variant == BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE
                     || variant == BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT;
+        };
+    }
+
+    /**
+     * The Mars rock variants a vein is allowed to overwrite. Galacticraft's own
+     * generation targets the three rock layers plus the cobblestone variant; the ores and
+     * the dungeon brick are left out so they do not each need their own stone type.
+     */
+    public static Predicate<IBlockState> marsStonePredicate() {
+        return state -> {
+            if (!(state.getBlock() instanceof BlockBasicMars)) {
+                return false;
+            }
+            BlockBasicMars.EnumBlockBasic variant = state.getValue(BlockBasicMars.BASIC_TYPE);
+            return variant == BlockBasicMars.EnumBlockBasic.MARS_STONE
+                    || variant == BlockBasicMars.EnumBlockBasic.SURFACE
+                    || variant == BlockBasicMars.EnumBlockBasic.MIDDLE
+                    || variant == BlockBasicMars.EnumBlockBasic.COBBLESTONE;
+        };
+    }
+
+    /** The four Venus rock variants. */
+    public static Predicate<IBlockState> venusStonePredicate() {
+        return state -> {
+            if (!(state.getBlock() instanceof BlockBasicVenus)) {
+                return false;
+            }
+            BlockBasicVenus.EnumBlockBasicVenus variant =
+                    state.getValue(BlockBasicVenus.BASIC_TYPE_VENUS);
+            return variant == BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT
+                    || variant == BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD
+                    || variant == BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA
+                    || variant == BlockBasicVenus.EnumBlockBasicVenus.ROCK_VOLCANIC_DEPOSIT;
+        };
+    }
+
+    /** The three asteroid rock variants. */
+    public static Predicate<IBlockState> asteroidStonePredicate() {
+        return state -> {
+            if (!(state.getBlock() instanceof BlockBasicAsteroids)) {
+                return false;
+            }
+            BlockBasicAsteroids.EnumBlockBasic variant =
+                    state.getValue(BlockBasicAsteroids.BASIC_TYPE);
+            return variant == BlockBasicAsteroids.EnumBlockBasic.ASTEROID_0
+                    || variant == BlockBasicAsteroids.EnumBlockBasic.ASTEROID_1
+                    || variant == BlockBasicAsteroids.EnumBlockBasic.ASTEROID_2;
         };
     }
 }

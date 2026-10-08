@@ -1,0 +1,33 @@
+{
+    "name":  "minespace.veins.ore.gem",
+    "description":  "Gem vein (Venus, Galaxy Space Venus) - the scarce vein of the hot worlds: ruby, green sapphire, olivine, amethyst",
+    "weight":  8,
+    "density":  0.15,
+    "min_height":  5,
+    "max_height":  35,
+    "dimension_filter":  ["dimension_id:-31","dimension_id:-1006"],
+    "generator":  {
+                      "type":  "layered",
+                      "radius":  [
+                                     8,
+                                     12
+                                 ]
+                  },
+    "filler":  {
+                   "type":  "layered",
+                   "values":  [
+                                  {
+                                      "primary":  "ore:ruby"
+                                  },
+                                  {
+                                      "secondary":  "ore:green_sapphire"
+                                  },
+                                  {
+                                      "between":  "ore:olivine"
+                                  },
+                                  {
+                                      "sporadic":  "ore:amethyst"
+                                  }
+                              ]
+               }
+}

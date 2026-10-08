@@ -1,0 +1,6 @@
+{
+    "parent":  "block/cube_all",
+    "textures":  {
+                     "all":  "minespace:blocks/enceladus_rock"
+                 }
+}

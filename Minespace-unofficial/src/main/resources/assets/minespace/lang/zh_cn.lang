@@ -1,3 +1,9 @@
-{
-  "tile.minespace.moon_rock.name": "月球岩石"
-}
+# 每行一条 key=value，这是 Forge 1.12.2 读取 .lang 的格式（原文件是 JSON，加载器不认，
+# 所以这四个石头名字其实一直没生效）。
+tile.minespace.moon_rock.name=月球岩石
+tile.minespace.mars_rock.name=火星岩石
+tile.minespace.venus_rock.name=金星岩石
+tile.minespace.asteroid_rock.name=小行星岩石
+
+minespace.machine.oxygen_compressor.name=氧气压缩机
+minespace.machine.rocket_fuel_loader.name=火箭燃料装载机

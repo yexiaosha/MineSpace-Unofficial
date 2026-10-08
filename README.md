@@ -1,5 +1,7 @@
 # MineSpace Unofficial
 
+![Minespace Unofficial](Minespace-unofficial/docs/logo.png)
+
 A Minecraft **1.12.2** addon for **GregTech CE: Unofficial** and **Galacticraft**, plus
 the playable instance used to test it.
 
@@ -68,10 +70,16 @@ every download by checksum. It is safe to re-run and skips whatever already exis
 
 ## The addon in one minute
 
-It registers GregTech materials and bridges GregTech's EU to Galacticraft's gJ:
+It registers GregTech materials and machines, puts GT ores on Galacticraft's planets, and
+bridges GregTech's EU to Galacticraft's gJ:
 
 - `gtceu/MinespaceMaterials.java` -- creates the GTCEu material registry and defines
   `desh_steel` and `meteoric_iron`. GTCEu then generates their items and recipes.
+- `gtceu/machines/` -- Oxygen Compressor and Rocket Fuel Loader, registered into GTCEu's
+  machine registry as `gregtech:machine:32000+`.
+- `gtceu/MinespacePlanetRocks.java`, `MinespaceStoneTypes.java`, `MinespacePlanetOreGen.java`
+  -- Moon / Mars / Venus / asteroid rock blocks, the GT stone types bound to them, and the
+  missing `GameRegistry.generateWorld` call that lets GT ore veins generate on planets.
 - `galacticraft/MinespaceGalacticraft.java` -- Galacticraft registry helpers plus
   `GcEnergyBridge`, an `IEnergyStorageGC` adapter that lets Galacticraft machines draw
   power from a GregTech EU buffer.

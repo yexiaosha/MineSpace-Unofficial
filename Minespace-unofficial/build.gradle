@@ -347,9 +347,15 @@ tasks.matching { it.name == 'runClient' || it.name == 'runServer' }.all {
 }
 
 processResources {
+    // Every property that `expand` substitutes into mcmod.info has to be declared as an
+    // input. Without this Gradle has no reason to re-run the task when, say, only
+    // mod_description changes, and the jar keeps shipping the previous description.
     inputs.property 'version', project.version
     inputs.property 'modid', mod_id
     inputs.property 'name', mod_name
+    inputs.property 'mcversion', mc_version
+    inputs.property 'description', mod_description
+    inputs.property 'author', mod_author
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'

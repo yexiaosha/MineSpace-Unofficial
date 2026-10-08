@@ -1,0 +1,33 @@
+{
+    "name":  "minespace.veins.ore.naquadah",
+    "description":  "Naquadah vein (Asteroids, Kuiper Belt, Haumea) - the rarest vein of the belt: naquadah, pitchblende, thorium, graphite",
+    "weight":  4,
+    "density":  0.15,
+    "min_height":  5,
+    "max_height":  25,
+    "dimension_filter":  ["dimension_id:-30","dimension_id:-1009","dimension_id:-1023"],
+    "generator":  {
+                      "type":  "layered",
+                      "radius":  [
+                                     6,
+                                     9
+                                 ]
+                  },
+    "filler":  {
+                   "type":  "layered",
+                   "values":  [
+                                  {
+                                      "primary":  "ore:naquadah"
+                                  },
+                                  {
+                                      "secondary":  "ore:pitchblende"
+                                  },
+                                  {
+                                      "between":  "ore:thorium"
+                                  },
+                                  {
+                                      "sporadic":  "ore:graphite"
+                                  }
+                              ]
+               }
+}

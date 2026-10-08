@@ -1,0 +1,33 @@
+{
+    "name":  "minespace.veins.ore.onyx",
+    "description":  "Onyx vein (Galaxy Space: Barnarda C1) - onyx with calcite and sulfur",
+    "weight":  15,
+    "density":  0.2,
+    "min_height":  5,
+    "max_height":  40,
+    "dimension_filter":  ["dimension_id:-1031"],
+    "generator":  {
+                      "type":  "layered",
+                      "radius":  [
+                                     8,
+                                     12
+                                 ]
+                  },
+    "filler":  {
+                   "type":  "layered",
+                   "values":  [
+                                  {
+                                      "primary":  "ore:minespace:onyx"
+                                  },
+                                  {
+                                      "secondary":  "ore:minespace:onyx"
+                                  },
+                                  {
+                                      "between":  "ore:calcite"
+                                  },
+                                  {
+                                      "sporadic":  "ore:sulfur"
+                                  }
+                              ]
+               }
+}

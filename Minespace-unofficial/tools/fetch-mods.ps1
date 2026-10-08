@@ -44,7 +44,12 @@ $files = @(
     @{ id = '5519022'; name = 'gregtech-1.12.2-2.8.10-beta.jar' },
     @{ id = '2779848'; name = 'CodeChickenLib-1.12.2-3.2.3.358-universal.jar' },
     @{ id = '6364107'; name = 'Galacticraft-1.12.2-4.0.7.jar' },
-    @{ id = '3052392'; name = 'KubeJS-forge-1.12.2-1.1.0.65.jar' }
+    @{ id = '3052392'; name = 'KubeJS-forge-1.12.2-1.1.0.65.jar' },
+    # Galactic planet addons. Galaxy Space, AsmodeusCore, MixinBooter and Interstellar:
+    # Exoplanets are Modrinth-only (the CDN URLs are in MOD-MANIFEST.md, "Download sources"),
+    # so they are not listed here; these two are the CurseForge ones.
+    @{ id = '4000252'; name = 'PlanetProgression-1.12.2-0.4.8.jar' },
+    @{ id = '3344068'; name = 'MJRLegendsLib-1.12.2-1.2.1.jar' }
 )
 
 foreach ($f in $files) {
@@ -61,15 +66,18 @@ foreach ($f in $files) {
 }
 
 if ($InstanceMods) {
-    $instanceMods = Join-Path (Split-Path -Parent $projectRoot) 'Minespace-unofficial-dev\mods'
-    if (-not (Test-Path $instanceMods)) {
-        throw "Instance mods folder not found at $instanceMods"
+    # Note: this local name must NOT be $instanceMods -- PowerShell is case-insensitive,
+    # so it would collide with the typed [switch]$InstanceMods parameter and throw
+    # "Cannot convert ... to type SwitchParameter" when the path string is assigned.
+    $instanceModsDir = Join-Path (Split-Path -Parent $projectRoot) 'Minespace-unofficial-dev\mods'
+    if (-not (Test-Path $instanceModsDir)) {
+        throw "Instance mods folder not found at $instanceModsDir"
     }
     foreach ($f in $files) {
         $src = Join-Path $Dest $f.name
-        if (Test-Path $src) { Copy-Item $src (Join-Path $instanceMods $f.name) -Force }
+        if (Test-Path $src) { Copy-Item $src (Join-Path $instanceModsDir $f.name) -Force }
     }
-    Write-Host "copied into $instanceMods"
+    Write-Host "copied into $instanceModsDir"
 }
 
 Write-Host ''

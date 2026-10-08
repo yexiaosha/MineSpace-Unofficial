@@ -4,12 +4,17 @@
   "description": "${description}",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/yexiaosha/MineSpace-Unofficial",
   "updateUrl": "",
   "authorList": ["${author}"],
   "credits": "Built on the work of the GregTech CE: Unofficial and Galacticraft teams.",
-  "logoFile": "",
+  "logoFile": "logo.png",
   "screenshots": [],
   "parent": "",
-  "dependencies": ["codechickenlib"]
+  "dependencies": [
+    "required-after:forge@[14.23.5.2859,)",
+    "required-after:codechickenlib",
+    "required-after:gregtech",
+    "after:galacticraftcore"
+  ]
 }]

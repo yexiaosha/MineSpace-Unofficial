@@ -1,11 +1,36 @@
 # Minespace Unofficial — GTCEu + Galacticraft addon workspace
 
+![Minespace Unofficial](docs/logo.png)
+
 Minecraft **1.12.2** / Forge **14.23.5.2859** development workspace for a **GregTech CE:
 Unofficial** and **Galacticraft** addon mod.
 
 **Status: working.** The addon compiles against both APIs and runs in the game:
 it registers GregTech materials, GTCEu generates their items, and the read-back check
 prints `minespace.material.desh_steel Ingot`.
+
+## What the addon adds
+
+An unofficial bridge between GregTech CE: Unofficial and Galacticraft, so industry and
+space travel share one tech tree instead of ignoring each other:
+
+- **GregTech materials.** `desh_steel` and `meteoric_iron` are registered with GTCEu,
+  which then generates their ingots, dusts, plates, gears and fluids - plus the ore
+  dictionary entries and processing recipes - without this mod shipping a single item.
+- **GregTech machines.** The Oxygen Compressor, plus the Rocket Fuel Loader when
+  Galacticraft is installed. Both go into GTCEu's machine registry (item form
+  `gregtech:machine:32000+`), so they sit in GT's creative tab and JEI on their own.
+- **Planet rocks and ores.** Moon, Mars, Venus and asteroid rock blocks, GT stone types
+  bound to them for correct ore rendering, and the `GameRegistry.generateWorld` hook
+  Galacticraft's planet chunk providers never call - without it no GT vein generates on
+  any planet.
+- **EU <-> gJ energy bridge.** `MinespaceGalacticraft.GcEnergyBridge` implements
+  Galacticraft's `IEnergyStorageGC`, so GC machines can draw from a GregTech EU buffer.
+
+The logo at the top of this file is the same image the mod list shows, and it is generated
+rather than hand-drawn: `python tools/make-logo.py` re-renders `src/main/resources/logo.png`
+and the 4x copy in `docs/`. It is authored at 400x130 on purpose - Forge fits mod-list logos
+into a 200x65 box, so a 2:1 source downscales cleanly. Needs Pillow.
 
 > **新会话 / 接手请先读 [HANDOFF.md](HANDOFF.md)** —— 里面有当前状态、环境事实、下一步
 > 可做的事，以及"别做的事"。动手改代码前另读 [DEV-NOTES.md](DEV-NOTES.md)。

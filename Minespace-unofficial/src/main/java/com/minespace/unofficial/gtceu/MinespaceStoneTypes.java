@@ -189,30 +189,10 @@ public final class MinespaceStoneTypes {
 
             // The vanilla-stone probe is a positive control: if it also reports no geometry,
             // the registry is simply not readable yet and this check proves nothing.
-            probe(dispatcher, "vanilla stone", net.minecraft.init.Blocks.STONE.getDefaultState());
-            probe(dispatcher, "minespace:moon_rock", MinespaceMoonRock.defaultState());
+            MinespaceOreModelProbe.probeVanillaStone(dispatcher);
+            MinespaceOreModelProbe.probe(dispatcher, "minespace:moon_rock", MinespaceMoonRock.defaultState());
         } catch (Throwable t) {
             LOG.warn("Could not probe the Lunar ore models: {}", t.toString());
         }
-    }
-
-    /** Resolves one state's model and reports what the renderer would get. */
-    private static boolean probe(net.minecraft.client.renderer.BlockRendererDispatcher dispatcher,
-                                 String label, IBlockState state) {
-        if (state == null) {
-            LOG.info("probe {}: state is null", label);
-            return false;
-        }
-        net.minecraft.client.renderer.block.model.IBakedModel model = dispatcher.getModelForState(state);
-        if (model == null) {
-            LOG.info("probe {}: no model", label);
-            return false;
-        }
-        int quads = model.getQuads(state, null, 0L).size();
-        for (net.minecraft.util.EnumFacing facing : net.minecraft.util.EnumFacing.values()) {
-            quads += model.getQuads(state, facing, 0L).size();
-        }
-        LOG.info("probe {}: {} quads, model {}", label, quads, model.getClass().getName());
-        return quads > 0;
     }
 }

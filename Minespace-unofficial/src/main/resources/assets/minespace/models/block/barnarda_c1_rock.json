@@ -1,0 +1,6 @@
+{
+    "parent":  "block/cube_all",
+    "textures":  {
+                     "all":  "minespace:blocks/barnarda_c1_rock"
+                 }
+}

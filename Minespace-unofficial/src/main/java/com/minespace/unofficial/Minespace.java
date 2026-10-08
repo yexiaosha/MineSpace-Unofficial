@@ -2,6 +2,7 @@ package com.minespace.unofficial;
 
 import com.minespace.unofficial.gtceu.MinespaceMaterials;
 import com.minespace.unofficial.gtceu.MinespaceModelCheck;
+import com.minespace.unofficial.gtceu.MinespacePlanetOreGen;
 import com.minespace.unofficial.proxy.CommonProxy;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
@@ -78,6 +79,13 @@ public class Minespace {
         // registry event, which is the only point late enough for Galacticraft's blocks
         // to exist and early enough for GTCEu's ore blocks not to be built yet.
 
+        // This mod's own GregTech machines. Unlike materials these are NOT registered from
+        // an event: GTCEu leaves the machine registry open for the whole preInit phase and
+        // freezes it at init, so registering here (after GTCEu's preInit because of
+        // required-after:gregtech, before its init) is the supported window. See
+        // MinespaceGregMachines for the details.
+        com.minespace.unofficial.gtceu.machines.MinespaceGregMachines.register();
+
         proxy.preInit(event);
     }
 
@@ -87,12 +95,23 @@ public class Minespace {
         // stand-ins, so a check here would be meaningless. See MinespaceModelCheck.
         MinespaceModelCheck.register();
 
+        // Galacticraft's planet chunk providers never call GameRegistry.generateWorld, so
+        // GTCEu's veins get no chance to run there. See MinespacePlanetOreGen.
+        MinespacePlanetOreGen.register();
+
         proxy.init(event);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        // Galacticraft's machine recipes are Java lists, not crafting-table recipes, so the
+        // scripts cannot remove them - without this the compressor still compresses plates and
+        // JEI still lists it. Runs here because Galacticraft registered its recipes during its
+        // own postInit (this mod is after:galacticraftcore) and JEI reads the lists later.
+        com.minespace.unofficial.galacticraft.MinespaceGalacticraftMachineRecipes
+                .clearRemovedMachineRecipes();
 
         // Everything is registered by now, so this is the first point where reading
         // back an addon material proves the whole chain worked: GTCEu ran its

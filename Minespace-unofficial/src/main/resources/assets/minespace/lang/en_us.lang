@@ -1,3 +1,12 @@
-{
-  "tile.minespace.moon_rock.name": "Lunar Rock"
-}
+# One "key=value" per line - the format Forge 1.12.2 reads .lang files in. The file used to
+# hold JSON, which that loader does not parse at all, so the four rock names never appeared
+# and neither would the machine names.
+tile.minespace.moon_rock.name=Lunar Rock
+tile.minespace.mars_rock.name=Martian Rock
+tile.minespace.venus_rock.name=Venusian Rock
+tile.minespace.asteroid_rock.name=Asteroid Rock
+
+# GregTech machines registered by MinespaceGregMachines. The key GTCEu looks up is
+# "<namespace>.machine.<path>.name" (MetaTileEntity#getMetaFullName).
+minespace.machine.oxygen_compressor.name=Oxygen Compressor
+minespace.machine.rocket_fuel_loader.name=Rocket Fuel Loader

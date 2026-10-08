@@ -84,6 +84,24 @@ Minespace-unofficial-dev/mods/minespace-*.jar
 Minespace-unofficial-dev/mods/1.12.2/
 
 # ---------------------------------------------------------------------------
+# Client-side mod state
+#
+# Maps, waypoint backups, ID dumps and the GT terminal's scratch data are all
+# written by the game while playing, not authored here.
+# ---------------------------------------------------------------------------
+Minespace-unofficial-dev/xaero/
+Minespace-unofficial-dev/config/xaero/
+Minespace-unofficial-dev/config/xaerohud.txt
+Minespace-unofficial-dev/config/xaeropatreon.txt
+Minespace-unofficial-dev/XaeroWaypoints_BACKUP*/
+Minespace-unofficial-dev/crafttweaker.log
+# Interstellar: Exoplanets dumps its planet list here on startup.
+Minespace-unofficial-dev/planets.txt
+# GT terminal scratch: the guide pages and theme.json next to these stay tracked.
+Minespace-unofficial-dev/config/gregtech/terminal/ore_prospector/
+Minespace-unofficial-dev/config/gregtech/terminal/config/ORE_PROSPECTOR.nbt
+
+# ---------------------------------------------------------------------------
 # IDE / editor
 # ---------------------------------------------------------------------------
 .idea/

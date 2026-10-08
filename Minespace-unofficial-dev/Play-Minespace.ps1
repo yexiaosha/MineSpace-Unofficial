@@ -53,9 +53,24 @@ $argsList = New-Object System.Collections.Generic.List[string]
 [void]$argsList.Add('-Dfml.ignoreInvalidMinecraftCertificates=true')
 [void]$argsList.Add('-Dfml.ignorePatchDiscrepancies=true')
 if ($Server) {
+    # A dedicated server needs the vanilla server jar on the classpath: the client jar has
+    # no net.minecraft.server.dedicated.DedicatedServer, and Forge's class patcher aborts
+    # with "your vanilla jar may be corrupt" when it cannot read that class. It has to
+    # REPLACE the client jar rather than be appended, otherwise the client jar's copies of
+    # the shared classes shadow the server ones and the launch dies on
+    # NoSuchMethodException: net.minecraft.server.MinecraftServer.main.
+    $serverJar = Join-Path $Pack "versions\$($forge.inheritsFrom)\minecraft_server.$($forge.inheritsFrom).jar"
+    if (Test-Path $serverJar) {
+        [void]$classpath.Remove($clientJar)
+        [void]$classpath.Add($serverJar)
+    }
     [void]$argsList.Add('-cp'); [void]$argsList.Add(($classpath -join ';'))
     [void]$argsList.Add($mainClass)
     [void]$argsList.Add('nogui')
+    # Same reason as the client branch below: Forge 1.12.2 is applied through
+    # launchwrapper via FML's tweaker. The server needs FMLServerTweaker; without it
+    # the launch falls back to VanillaTweaker and dies on the missing client class.
+    [void]$argsList.Add('--tweakClass'); [void]$argsList.Add('net.minecraftforge.fml.common.launcher.FMLServerTweaker')
 } else {
     [void]$argsList.Add('-cp'); [void]$argsList.Add(($classpath -join ';'))
     [void]$argsList.Add($mainClass)

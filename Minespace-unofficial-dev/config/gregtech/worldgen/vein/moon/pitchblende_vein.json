@@ -9,9 +9,7 @@
     "type": "surface_rock",
     "material": "uraninite"
   },
-  "dimension_filter": [
-    "dimension_id:-28"
-  ],
+  "dimension_filter": ["dimension_id:-28","dimension_id:-1005","dimension_id:-1012","dimension_id:-1013","dimension_id:-1014","dimension_id:-1015","dimension_id:-1016","dimension_id:-1017","dimension_id:-1018","dimension_id:-1021","dimension_id:-1022","dimension_id:-1024","dimension_id:-1031","dimension_id:-1032"],
   "generator": {
     "type": "layered",
     "radius": [

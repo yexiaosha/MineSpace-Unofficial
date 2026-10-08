@@ -1,0 +1,36 @@
+{
+    "name":  "gregtech.veins.ore.scheelite",
+    "weight":  16,
+    "density":  0.2,
+    "min_height":  20,
+    "max_height":  60,
+    "vein_populator":  {
+                           "type":  "surface_rock",
+                           "material":  "lithium"
+                       },
+    "generator":  {
+                      "type":  "layered",
+                      "radius":  [
+                                     17,
+                                     24
+                                 ]
+                  },
+    "filler":  {
+                   "type":  "layered",
+                   "values":  [
+                                  {
+                                      "primary":  "ore:scheelite"
+                                  },
+                                  {
+                                      "secondary":  "ore:scheelite"
+                                  },
+                                  {
+                                      "between":  "ore:tungstate"
+                                  },
+                                  {
+                                      "sporadic":  "ore:lithium"
+                                  }
+                              ]
+               },
+    "dimension_filter":  ["dimension_id:-30","dimension_id:-1007","dimension_id:-1008","dimension_id:-1009","dimension_id:-1023"]
+}

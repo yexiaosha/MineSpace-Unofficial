@@ -1,0 +1,33 @@
+{
+    "name":  "minespace.veins.ore.tungstate",
+    "description":  "Tungstate vein (Mars, Phobos, Deimos) - the scarce vein of the red bodies: scheelite, molybdenite, molybdenum, lithium",
+    "weight":  8,
+    "density":  0.2,
+    "min_height":  5,
+    "max_height":  40,
+    "dimension_filter":  ["dimension_id:-29","dimension_id:-1012","dimension_id:-1013"],
+    "generator":  {
+                      "type":  "layered",
+                      "radius":  [
+                                     10,
+                                     14
+                                 ]
+                  },
+    "filler":  {
+                   "type":  "layered",
+                   "values":  [
+                                  {
+                                      "primary":  "ore:scheelite"
+                                  },
+                                  {
+                                      "secondary":  "ore:molybdenite"
+                                  },
+                                  {
+                                      "between":  "ore:molybdenum"
+                                  },
+                                  {
+                                      "sporadic":  "ore:lithium"
+                                  }
+                              ]
+               }
+}
