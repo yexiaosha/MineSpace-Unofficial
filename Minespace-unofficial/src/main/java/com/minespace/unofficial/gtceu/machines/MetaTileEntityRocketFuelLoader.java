@@ -4,11 +4,12 @@ import com.minespace.unofficial.Minespace;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
-import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,7 +73,7 @@ public class MetaTileEntityRocketFuelLoader extends TieredMetaTileEntity {
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
+    public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder tileEntity) {
         return new MetaTileEntityRocketFuelLoader(metaTileEntityId, getTier());
     }
 
@@ -105,7 +106,12 @@ public class MetaTileEntityRocketFuelLoader extends TieredMetaTileEntity {
                         .setBackgroundTexture(GuiTextures.SLOT))
                 .widget(new TankWidget(fuelTank, 45, 20, 18, 60)
                         .setBackgroundTexture(GuiTextures.FLUID_SLOT))
-                .bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 84)
+                // GregTech's own single-block machines show an "out of power" plate at (79, 42);
+                // this machine's canister slot is at (79, 34), so the plate moves down to 60. This
+                // fork ships no proportional energy bar - the icon is its energy feedback.
+                .widget(new ImageWidget(79, 60, 18, 18, GuiTextures.INDICATOR_NO_ENERGY)
+                        .setPredicate(() -> energyContainer.getEnergyStored() == 0))
+                .bindPlayerInventory(entityPlayer.inventory, 84)
                 .build(getHolder(), entityPlayer);
     }
 

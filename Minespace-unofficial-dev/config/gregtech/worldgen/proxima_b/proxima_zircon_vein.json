@@ -1,0 +1,30 @@
+{
+    "name": "Proxima_Zircon_Vein",
+    "description": "The oldest, most repeatedly re-melted crust in the pack: zircon and its niobium-rare-earth companions survive melting and cooling where everything else does not.",
+    "weight": 20,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 35,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 45, "value": "ore:zircon"},
+                {"weight": 30, "value": "ore:pyrochlore"},
+                {"weight": 25, "value": "ore:monazite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "zircon"
+    },
+    "dimension_filter": [
+        "dimension_id:-1025"
+    ]
+}

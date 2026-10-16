@@ -1,0 +1,19 @@
+{
+  "name": "gregtech.veins.ore.garnet_tin",
+  "weight": 80,
+  "density": 0.2,
+  "max_height": 60,
+  "min_height": 50,
+  "generator": { "type": "ellipsoid", "radius": [14,19] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:cassiterite_sand" },
+      { "weight": 25, "value": "ore:garnet_sand" },
+      { "weight": 15, "value": "ore:asbestos" },
+      { "weight": 5, "value": "ore:diatomite" },
+      { "weight": 5, "value": "ore:tin" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "cassiterite_sand" },
+  "dimension_filter": [
+    "dimension_id:-1015"
+  ]
+}

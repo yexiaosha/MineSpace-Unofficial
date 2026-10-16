@@ -1,0 +1,19 @@
+{
+  "name": "gregtech.veins.ore.mineral_sand",
+  "weight": 80,
+  "density": 0.2,
+  "max_height": 60,
+  "min_height": 50,
+  "generator": { "type": "ellipsoid", "radius": [14,19] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:basaltic_mineral_sand" },
+      { "weight": 25, "value": "ore:granitic_mineral_sand" },
+      { "weight": 15, "value": "ore:fullers_earth" },
+      { "weight": 5, "value": "ore:gypsum" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "basaltic_mineral_sand" },
+  "dimension_filter": [
+    "dimension_id:-1030",
+    "dimension_id:-1015"
+  ]
+}

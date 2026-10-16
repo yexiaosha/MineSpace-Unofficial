@@ -1,0 +1,40 @@
+{
+    "name": "Asteroid_Carbonaceous_Vein",
+    "description": "C-type planetesimals: the most primitive material in the system - carbon, sulphur and organics that were never cooked.",
+    "weight": 120,
+    "density": 0.2,
+    "min_height": 5,
+    "max_height": 60,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [12, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 35, "value": "ore:graphite"},
+                {"weight": 25, "value": "ore:coal"},
+                {"weight": 25, "value": "ore:sulfur"},
+                {"weight": 15, "value": "ore:diamond"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "graphite"
+    },
+    "dimension_filter": [
+        "dimension_id:-1024",
+        "dimension_id:-1023",
+        "dimension_id:-1022",
+        "dimension_id:-1021",
+        "dimension_id:-1013",
+        "dimension_id:-1012",
+        "dimension_id:-1009",
+        "dimension_id:-1008",
+        "dimension_id:-1007",
+        "dimension_id:-30"
+    ]
+}

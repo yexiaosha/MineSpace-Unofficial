@@ -1,0 +1,41 @@
+{
+    "name": "Ice_Shell_Crystal_Vein",
+    "description": "The crystalline part of the shell - clathrates and ice crystals, which this pack represents with its crystal minerals.",
+    "weight": 150,
+    "density": 0.2,
+    "min_height": 40,
+    "max_height": 90,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [12, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 45, "value": "ore:certus_quartz"},
+                {"weight": 30, "value": "ore:quartzite"},
+                {"weight": 15, "value": "ore:amethyst"},
+                {"weight": 10, "value": "ore:blue_topaz"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "certus_quartz"
+    },
+    "dimension_filter": [
+        "dimension_id:-1024",
+        "dimension_id:-1023",
+        "dimension_id:-1022",
+        "dimension_id:-1021",
+        "dimension_id:-1018",
+        "dimension_id:-1017",
+        "dimension_id:-1016",
+        "dimension_id:-1015",
+        "dimension_id:-1009",
+        "dimension_id:-1008",
+        "dimension_id:-1007"
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "name": "Titan_Nitrogen_Vein",
+    "description": "The nitrogen haze itself, forty to ninety blocks up - niter stands in for it, because this pack has no nitrogen ore.",
+    "weight": 150,
+    "density": 0.2,
+    "min_height": 40,
+    "max_height": 90,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [12, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 45, "value": "ore:niter"},
+                {"weight": 30, "value": "ore:rock_salt"},
+                {"weight": 25, "value": "ore:trona"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "niter"
+    },
+    "dimension_filter": [
+        "dimension_id:-1018"
+    ]
+}

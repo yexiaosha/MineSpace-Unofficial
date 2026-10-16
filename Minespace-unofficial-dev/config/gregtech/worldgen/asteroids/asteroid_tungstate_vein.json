@@ -1,0 +1,32 @@
+{
+    "name": "Asteroid_Tungstate_Vein",
+    "description": "Tungsten in the same primitive material - the second place it can be had without leaving the solar system.",
+    "weight": 16,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 40,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 45, "value": "ore:scheelite"},
+                {"weight": 35, "value": "ore:tungstate"},
+                {"weight": 20, "value": "ore:powellite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "scheelite"
+    },
+    "dimension_filter": [
+        "dimension_id:-1013",
+        "dimension_id:-1012",
+        "dimension_id:-30"
+    ]
+}

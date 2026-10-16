@@ -1,0 +1,18 @@
+{
+  "name": "gregtech.veins.ore.europa",
+  "weight": 110,
+  "density": 0.25,
+  "max_height": 65,
+  "min_height": 55,
+  "generator": { "type": "ellipsoid", "radius": [14,19] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:magnesite" },
+      { "weight": 25, "value": "ore:banded_iron" },
+      { "weight": 15, "value": "ore:sulfur" },
+      { "weight": 5, "value": "ore:opal" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "magnesite" },
+  "dimension_filter": [
+    "dimension_id:-1015"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+    "name": "Impact_Platinum_Vein",
+    "description": "Platinum-group metal from the same impactors, concentrated in the melt sheets at the floors of the great basins.",
+    "weight": 25,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 30,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:platinum"},
+                {"weight": 25, "value": "ore:palladium"},
+                {"weight": 20, "value": "ore:cooperite"},
+                {"weight": 15, "value": "ore:gold"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "platinum"
+    },
+    "dimension_filter": [
+        "dimension_id:-28"
+    ]
+}

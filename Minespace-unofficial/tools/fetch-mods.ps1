@@ -45,9 +45,12 @@ $files = @(
     @{ id = '2779848'; name = 'CodeChickenLib-1.12.2-3.2.3.358-universal.jar' },
     @{ id = '6364107'; name = 'Galacticraft-1.12.2-4.0.7.jar' },
     @{ id = '3052392'; name = 'KubeJS-forge-1.12.2-1.1.0.65.jar' },
-    # Galactic planet addons. Galaxy Space, AsmodeusCore, MixinBooter and Interstellar:
-    # Exoplanets are Modrinth-only (the CDN URLs are in MOD-MANIFEST.md, "Download sources"),
-    # so they are not listed here; these two are the CurseForge ones.
+    # Galactic planet and GregTech addons. Galaxy Space, AsmodeusCore, MixinBooter,
+    # Gregicality Multiblocks, GregTech Food Option, SussyPatches and ConfigAnytime are
+    # Modrinth-only (the CDN URLs are in MOD-MANIFEST.md, "Download sources"), so they are not
+    # listed here; these two are the CurseForge ones. (Epimorphism Core is also Modrinth-only but
+    # is NOT installed - it needs the 2.7-era GTCEu material API; see the note under the mod table
+    # in MOD-MANIFEST.md.)
     @{ id = '4000252'; name = 'PlanetProgression-1.12.2-0.4.8.jar' },
     @{ id = '3344068'; name = 'MJRLegendsLib-1.12.2-1.2.1.jar' }
 )

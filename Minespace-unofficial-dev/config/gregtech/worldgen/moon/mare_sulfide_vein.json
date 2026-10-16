@@ -1,0 +1,31 @@
+{
+    "name": "Mare_Sulfide_Vein",
+    "description": "Sulphide melt that separated from the mare magma before it erupted, taking the volatile metals with it.",
+    "weight": 90,
+    "density": 0.2,
+    "min_height": 20,
+    "max_height": 60,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [12, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 50, "value": "ore:sulfur"},
+                {"weight": 25, "value": "ore:galena"},
+                {"weight": 15, "value": "ore:lead"},
+                {"weight": 10, "value": "ore:redstone"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "sulfur"
+    },
+    "dimension_filter": [
+        "dimension_id:-28"
+    ]
+}

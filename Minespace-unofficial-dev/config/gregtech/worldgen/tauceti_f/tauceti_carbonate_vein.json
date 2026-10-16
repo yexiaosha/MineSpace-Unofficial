@@ -1,0 +1,30 @@
+{
+    "name": "TauCeti_Carbonate_Vein",
+    "description": "An old, metal-poor star and a planet wet enough to have made carbonates and sulphates over billions of years: witherite, celestine and rhodocrosite are what that crust accumulates.",
+    "weight": 25,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 45,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 35, "value": "ore:witherite"},
+                {"weight": 35, "value": "ore:celestine"},
+                {"weight": 30, "value": "ore:rhodocrosite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "witherite"
+    },
+    "dimension_filter": [
+        "dimension_id:-1338"
+    ]
+}

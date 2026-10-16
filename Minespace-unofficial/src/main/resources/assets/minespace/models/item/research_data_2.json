@@ -1,0 +1,6 @@
+{
+    "textures":  {
+                     "layer0":  "minespace:items/research_data_2"
+                 },
+    "parent":  "item/generated"
+}

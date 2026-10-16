@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- Ender IO's nine alloys are now made in GregTech (see scripts/zzz_minespace_integration.zs).
+     Disabling the built-in recipes here is what actually deletes the old route: CraftTweaker
+     cannot touch these, because Ender IO registers them from XML after CraftTweaker has run, so a
+     recipes.remove(...) in a script finds nothing to remove and the old recipe simply stays next
+     to the GregTech one. The names must match assets/enderio/config/recipes/alloying.xml exactly.
+     The machine recipes (conduits, chassis, tanks, ...) are deliberately left enabled. -->
+
+<recipe name="Alloy: Electrical Steel" disabled="true"/>
+<recipe name="Alloy: Electrical Steel, Variant" disabled="true"/>
+<recipe name="Alloy: Energetic Alloy" disabled="true"/>
+<recipe name="Alloy: Vibrant Alloy" disabled="true"/>
+<recipe name="Alloy: Redstone Alloy" disabled="true"/>
+<recipe name="Alloy: Conductive Iron" disabled="true"/>
+<recipe name="Alloy: Pulsating Iron" disabled="true"/>
+<recipe name="Alloy: Dark Steel" disabled="true"/>
+<recipe name="Alloy: Dark Steel, Variant" disabled="true"/>
+<recipe name="Alloy: End Steel" disabled="true"/>
+<recipe name="Alloy: Soularium" disabled="true"/>
+<recipe name="Alloy: Construction Alloy" disabled="true"/>
+
+<!-- Fourteen more of the same machine, from alloying_modded.xml. Ender IO's alloy smelter also
+     ships recipes that produce GregTech's own metals - steel, electrum, invar, bronze, constantan
+     and the Thermal-Foundation trio signalum / lumium / enderium, plus their "blend" (dust + sand)
+     forms - because it resolves the plain `ingotX` ore names, and those now hold GregTech's ingot.
+     Left on, any of them is a second, cheaper route to a metal GregTech's own mixer / alloy smelter
+     makes, which is exactly the "another mod's machine produces this pack's material" case the
+     owner wants gone; they are switched off for the same reason as the mod's own alloys above.
+     Alloy: Manyullyn comes from the same file (cobalt + ardite, both GregTech); steel has two
+     spellings because the file ships coal and coke variants. The names are exactly the `name`
+     attributes in assets/enderio/config/recipes/alloying_modded.xml. The file's other entries need
+     NuclearCraft, which is not installed, so Ender IO already skips them (their outputs
+     `ingotFerroboron`, `ingotTough` and friends are empty ore names here).
+     Enderium Base is the exception in that list: it was not a GregTech metal when this pass ran, so
+     this entry was only switched off as one step of Enderium's chain. `MinespaceMaterials
+     .ENDER_IO_OTHER_INGOTS` now registers the metal itself and scripts/integration.zs ports this very
+     entry (3 lead + platinum + 4 ender pearls -> 4 ingots) to GregTech's mixer - see section 6ba. -->
+<recipe name="Alloy: Steel" disabled="true"/>
+<recipe name="Alloy: Steel (Oredict)" disabled="true"/>
+<recipe name="Alloy: Electrum Ingot (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Invar Ingot (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Bronze (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Constantan (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Signalum (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Lumium (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Lumium from dust (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Enderium Base (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Enderium (Thermal Expansion)" disabled="true"/>
+<recipe name="Alloy: Invar Blend" disabled="true"/>
+<recipe name="Alloy: Signalum Blend" disabled="true"/>
+<recipe name="Alloy: Lumium Blend" disabled="true"/>
+<recipe name="Alloy: Enderium Blend" disabled="true"/>
+<recipe name="Alloy: Manyullyn" disabled="true"/>
+
+<!-- Two more from the same machine, and the audit's other catch: `optional_tweaks.xml` carries two
+     extra Dark Steel entries that the mod's own `alloying.xml` does not - steel + obsidian **dust**
+     instead of an obsidian block, and the dust-only variant - and both output `ingotDarkSteel`, which
+     is GregTech's ingot. The sixteenth-pass list above was taken from `alloying_modded.xml` and missed
+     these because they live in a third file; `tools/audit-eio-bypass.ps1` found them by walking every
+     XML in the folder. Ender IO's own alloy smelter entry for Dark Steel is already off above, so this
+     is the last way the mod's alloy smelter can make one of this pack's metals. -->
+<recipe name="Alloy: Dark Steel, Variant: Obsidian Dust" disabled="true"/>
+<recipe name="Alloy: Dark Steel, Variant: Steel, Obsidian Dust" disabled="true"/>
+
+<!-- And the one the same audit put in the "cheap route to something GregTech also makes" bucket:
+     `Alloy: Red Dye` is beetroot + clay + egg -> `dyeRed`, and that name is one of the three GregTech
+     fills with its own dye dust (`dyeRed`, `dyeYellow`, `dyeWhite` - the pack has GTCEu's
+     `hardDyeRecipes` enabled). Its sibling `Sagmill: Yellow Flower` is switched off in the fifth SAG
+     pass below. The other EIO dye recipes produce the mod's own organic dyes and stay. -->
+<recipe name="Alloy: Red Dye" disabled="true"/>
+
+<!-- The rest of that family. `Alloy: Black Dye`, the four Brown Dye spellings and the four Green Dye
+     spellings all output the mod's own organic dye items, and those sit in `dyeBlack` / `dyeBrown` /
+     `dyeGreen` next to GregTech's dye dusts - the same "mod copy in a shared name" case the pack
+     handles everywhere else, and the same cheap route around GregTech's dye line (this pack has GTCEu's
+     `hardDyeRecipes` on). Switching the recipes off leaves the items produced by nothing, which is what
+     lets `jei_dupes.zs` hide them; the names now answer with GregTech's dust. Vanilla's own
+     flower-into-dye crafting and GregTech's chemical dyes are untouched, so nothing is stranded. -->
+<recipe name="Alloy: Black Dye" disabled="true"/>
+<recipe name="Alloy: Black Dye, Variant" disabled="true"/>
+<recipe name="Alloy: Brown Dye" disabled="true"/>
+<recipe name="Alloy: Brown Dye, Variant" disabled="true"/>
+<recipe name="Alloy: Brown Dye, Oredict" disabled="true"/>
+<recipe name="Alloy: Brown Dye, Oredict Variant" disabled="true"/>
+<recipe name="Alloy: Green Dye" disabled="true"/>
+<recipe name="Alloy: Green Dye, Variant" disabled="true"/>
+<recipe name="Alloy: Green Dye, Oredict" disabled="true"/>
+<recipe name="Alloy: Green Dye, Oredict Variant" disabled="true"/>
+
+<!-- The SAG mill's dedicated silicon recipe: sand in, `itemSilicon` out at 50%. The three mods'
+     silicon items are discarded and `itemSilicon` now resolves to GregTech's silicon ingot
+     (scripts/aa_minespace_oredict.zs), so left enabled this recipe would be a non-GregTech source of
+     GregTech silicon - a sand-to-silicon shortcut past GregTech's own chain. Disabled for that
+     reason; the name is straight out of assets/enderio/config/recipes/sagmill.xml.
+
+     The three *byproduct* silicon outputs are deliberately left enabled, because disabling those
+     recipes would take their main outputs with them: "Sagmill: ClayBlock" (clay -> clay balls),
+     "Sagmill: oreRedstone Ore" (redstone ore -> 8 redstone dust) and "Sagmill: Nether Redstone Ore"
+     (nether redstone ore -> 21 redstone dust). They now yield GregTech's silicon as a byproduct; if
+     that should go too, add those three names here. -->
+<recipe name="Sagmill: Silicon" disabled="true"/>
+
+<!-- Ender IO keeps four interchangeable recipes that turn five plain sticks into a wooden gear, and
+     its `GEAR_WOOD` alias points at Applied Energistics' wooden gear (appliedenergistics2:material:40).
+     That is the *same* item as AE2's own hand-grindstone gear, which scripts/zzz_minespace_ae2.zs has
+     just rebuilt around GregTech's saw and file. Left enabled, these four would be the cheap way round
+     that - and they cannot be removed from a CraftTweaker script, because Ender IO registers its XML
+     recipes after CraftTweaker has run. The names are the `name` attributes in
+     assets/enderio/config/recipes/materials.xml. -->
+<recipe name="Gear, Wood" disabled="true"/>
+<recipe name="Gear, ae2 messes things up" disabled="true"/>
+<recipe name="Gear, just to be sure" disabled="true"/>
+<recipe name="Gear, better save than sorry" disabled="true"/>
+
+
+<!-- The SAG Mill's ore grinding, switched off below.
+     Ender IO's SAG Mill grinds any ore dictionary ore straight into **finished powder** - two
+     `POWDER_IRON` plus tin and nickel dust by chance - and GregTech's chain for that same ore is
+     macerator -> crushed ore -> ore washer -> thermal centrifuge -> smelting: an ore-processing
+     line, not one machine. The SAG Mill was therefore not a parallel route to GregTech, it was a
+     route *around* it, and the owner's rule is that another mod's machine does not get to produce
+     this pack's materials. Every live ore recipe the mod ships - all 203 in
+     assets/enderio/config/recipes/sagmill_ores.xml - is switched off by name below. Ender IO
+     registers its XML recipes after CraftTweaker has run, so no script can reach them.
+
+     Nothing becomes unobtainable: every one of these ores still smelts, and GregTech's macerator
+     still turns the ingot back into dust. The SAG Mill keeps everything else it can do - its
+     non-ore recipes, its grinding balls and its own machine blocks.
+
+     The 40 ore recipes in sagmill_silentgems.xml are not listed: Silent Gems is not installed and
+     Ender IO already skips every one of them. -->
+<recipe name="Sagmill: oreIron Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Iron Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Iron Ore" disabled="true"/>
+<recipe name="Sagmill: oreGold Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Gold Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Gold Ore" disabled="true"/>
+<recipe name="Sagmill: oreCopper Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Copper Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Copper Ore" disabled="true"/>
+<recipe name="Sagmill: oreTin Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Tin Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Tin Ore" disabled="true"/>
+<recipe name="Sagmill: oreLead Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Lead Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Lead Ore" disabled="true"/>
+<recipe name="Sagmill: oreSilver Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Silver Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Silver Ore" disabled="true"/>
+<recipe name="Sagmill: oreNickel Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Nickel Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Nickel Ore" disabled="true"/>
+<recipe name="Sagmill: oreAluminium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Aluminium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Aluminium Ore" disabled="true"/>
+<recipe name="Sagmill: oreAluminum Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Aluminum Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Aluminum Ore" disabled="true"/>
+<recipe name="Sagmill: oreNaturalAluminum Ore" disabled="true"/>
+<recipe name="Sagmill: Nether NaturalAluminum Ore" disabled="true"/>
+<recipe name="Sagmill: Dense NaturalAluminum Ore" disabled="true"/>
+<recipe name="Sagmill: oreCoal Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Coal Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Coal Ore" disabled="true"/>
+<recipe name="Sagmill: oreRedstone Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Redstone Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Redstone Ore" disabled="true"/>
+<recipe name="Sagmill: oreDiamond Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Diamond Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Diamond Ore" disabled="true"/>
+<recipe name="Sagmill: oreEmerald Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Emerald Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Emerald Ore" disabled="true"/>
+<recipe name="Sagmill: oreLapis Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Lapis Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Lapis Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Quartz Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Apatite Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Apatite Ore" disabled="true"/>
+<recipe name="Sagmill: oreApatite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether CertusQuartz Ore" disabled="true"/>
+<recipe name="Sagmill: Dense CertusQuartz Ore" disabled="true"/>
+<recipe name="Sagmill: oreChargedCertusQuartz Ore" disabled="true"/>
+<recipe name="Sagmill: Nether ChargedCertusQuartz Ore" disabled="true"/>
+<recipe name="Sagmill: Dense ChargedCertusQuartz Ore" disabled="true"/>
+<recipe name="Sagmill: oreSulfur Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Sulfur Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Sulfur Ore" disabled="true"/>
+<recipe name="Sagmill: oreSaltpeter Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Saltpeter Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Saltpeter Ore" disabled="true"/>
+<recipe name="Sagmill: oreRuby Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Ruby Ore" disabled="true"/>
+<recipe name="Sagmill: orePeridot Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Peridot Ore" disabled="true"/>
+<recipe name="Sagmill: oreTopaz Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Topaz Ore" disabled="true"/>
+<recipe name="Sagmill: oreTanzanite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Tanzanite Ore" disabled="true"/>
+<recipe name="Sagmill: oreMalachite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Malachite Ore" disabled="true"/>
+<recipe name="Sagmill: oreSapphire Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Sapphire Ore" disabled="true"/>
+<recipe name="Sagmill: oreAmber Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Amber Ore" disabled="true"/>
+<recipe name="Sagmill: oreAmethyst Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Amethyst Ore" disabled="true"/>
+<recipe name="Sagmill: oreManganese Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Manganese Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Manganese Ore" disabled="true"/>
+<recipe name="Sagmill: oreZinc Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Zinc Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Zinc Ore" disabled="true"/>
+<recipe name="Sagmill: orePlatinum Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Platinum Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Platinum Ore" disabled="true"/>
+<recipe name="Sagmill: oreIgnatius Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Ignatius Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Ignatius Ore" disabled="true"/>
+<recipe name="Sagmill: oreShadowIron Ore" disabled="true"/>
+<recipe name="Sagmill: Nether ShadowIron Ore" disabled="true"/>
+<recipe name="Sagmill: Dense ShadowIron Ore" disabled="true"/>
+<recipe name="Sagmill: oreLemurite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Lemurite Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Lemurite Ore" disabled="true"/>
+<recipe name="Sagmill: oreMidasium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Midasium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Midasium Ore" disabled="true"/>
+<recipe name="Sagmill: oreVyroxeres Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Vyroxeres Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Vyroxeres Ore" disabled="true"/>
+<recipe name="Sagmill: oreCeruclase Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Ceruclase Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Ceruclase Ore" disabled="true"/>
+<recipe name="Sagmill: oreKalendrite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Kalendrite Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Kalendrite Ore" disabled="true"/>
+<recipe name="Sagmill: oreVulcanite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Vulcanite Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Vulcanite Ore" disabled="true"/>
+<recipe name="Sagmill: oreSanguinite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Sanguinite Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Sanguinite Ore" disabled="true"/>
+<recipe name="Sagmill: orePrometheum Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Prometheum Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Prometheum Ore" disabled="true"/>
+<recipe name="Sagmill: oreDeepIron Ore" disabled="true"/>
+<recipe name="Sagmill: Nether DeepIron Ore" disabled="true"/>
+<recipe name="Sagmill: Dense DeepIron Ore" disabled="true"/>
+<recipe name="Sagmill: oreInfuscolium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Infuscolium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Infuscolium Ore" disabled="true"/>
+<recipe name="Sagmill: oreOureclase Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Oureclase Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Oureclase Ore" disabled="true"/>
+<recipe name="Sagmill: oreAstralSilver Ore" disabled="true"/>
+<recipe name="Sagmill: Nether AstralSilver Ore" disabled="true"/>
+<recipe name="Sagmill: Dense AstralSilver Ore" disabled="true"/>
+<recipe name="Sagmill: oreCarmot Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Carmot Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Carmot Ore" disabled="true"/>
+<recipe name="Sagmill: oreMithril Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Mithril Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Mithril Ore" disabled="true"/>
+<recipe name="Sagmill: oreRubracium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Rubracium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Rubracium Ore" disabled="true"/>
+<recipe name="Sagmill: oreOrichalcum Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Orichalcum Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Orichalcum Ore" disabled="true"/>
+<recipe name="Sagmill: oreAdamantine Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Adamantine Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Adamantine Ore" disabled="true"/>
+<recipe name="Sagmill: oreAtlarus Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Atlarus Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Atlarus Ore" disabled="true"/>
+<recipe name="Sagmill: oreOsmium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Osmium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Osmium Ore" disabled="true"/>
+<recipe name="Sagmill: oreYellorite Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Yellorite Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Yellorite Ore" disabled="true"/>
+<recipe name="Sagmill: oreArdite Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Ardite Ore" disabled="true"/>
+<recipe name="Sagmill: oreCobalt Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Cobalt Ore" disabled="true"/>
+<recipe name="Sagmill: oreQuartzBlack Ore" disabled="true"/>
+<recipe name="Sagmill: Nether QuartzBlack Ore" disabled="true"/>
+<recipe name="Sagmill: Dense QuartzBlack Ore" disabled="true"/>
+<recipe name="Sagmill: oreUranium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Uranium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Uranium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Steel Ore" disabled="true"/>
+<recipe name="Sagmill: oreTitanium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Titanium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Titanium Ore" disabled="true"/>
+<recipe name="Sagmill: oreMagnesium Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Magnesium Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Magnesium Ore" disabled="true"/>
+<recipe name="Sagmill: oreTungsten Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Tungsten Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Tungsten Ore" disabled="true"/>
+<recipe name="Sagmill: oreRutile Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Rutile Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Rutile Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Salt Ore" disabled="true"/>
+<recipe name="Sagmill: Nether Draconic Ore" disabled="true"/>
+<recipe name="Sagmill: Dense Draconium Ore" disabled="true"/>
+<recipe name="Sagmill: oreProsperity Ore" disabled="true"/>
+<recipe name="Sagmill: oreNetherProsperity Ore" disabled="true"/>
+<recipe name="Sagmill: oreEndProsperity Ore" disabled="true"/>
+<recipe name="Sagmill: oreInferium Ore" disabled="true"/>
+<recipe name="Sagmill: oreNetherInferium Ore" disabled="true"/>
+<recipe name="Sagmill: oreEndInferium Ore" disabled="true"/>
+<recipe name="Sagmill: oreDimensionalShard Ore" disabled="true"/>
+<recipe name="Sagmill: Resonate End Stone" disabled="true"/>
+<recipe name="Sagmill: Oil Shale" disabled="true"/>
+<recipe name="Sagmill: Destabilized Redstone Ore" disabled="true"/>
+<recipe name="Sagmill: Energized Glowstone Ore" disabled="true"/>
+<recipe name="Sagmill: Iridium Ore" disabled="true"/>
+<recipe name="Sagmill: Thorium Ore" disabled="true"/>
+<recipe name="Sagmill: Boron Ore" disabled="true"/>
+<recipe name="Sagmill: Lithium Ore" disabled="true"/>
+<recipe name="Sagmill: Bauxite Ore" disabled="true"/>
+<recipe name="Sagmill: Galena Ore" disabled="true"/>
+<recipe name="Sagmill: Pyrite Ore" disabled="true"/>
+<recipe name="Sagmill: Cinnibar Ore" disabled="true"/>
+<recipe name="Sagmill: Sphalerite Ore" disabled="true"/>
+<recipe name="Sagmill: Sheldonite Ore" disabled="true"/>
+<recipe name="Sagmill: Sodalite Ore" disabled="true"/>
+<recipe name="Sagmill: Astral Starmetal Ore" disabled="true"/>
+<recipe name="Sagmill: Dilithium Ore" disabled="true"/>
+<recipe name="Sagmill: Tritanium Ore" disabled="true"/>
+<recipe name="Sagmill: oreEnder Ore" disabled="true"/>
+
+
+<!-- The SAG Mill, second pass: what GregTech already covers.
+     The 203 ore recipes above were the balance problem. These 87 are the rest of the mill's
+     material recipes - ingots, blocks and gems of GregTech's own metals, the quartz ores the
+     first pass could not see (AE2's block, vanilla's nether quartz ore, the gem ores and the
+     eight Railcraft-style "poor" ores from integration_railcraft_recipes.xml), stone, wood and
+     plant conversions.
+
+     Every one of them was checked against GregTech's own recipe maps first: a probe dumped the
+     macerator, forge hammer, ore washer, thermal centrifuge, centrifuge, extractor, compressor,
+     mixer, alloy smelter, chemical bath and lathe into gtmap_probe.txt, and each input below is
+     an ore dictionary name or item that already appears as an input in that dump. Nothing here
+     is a recipe GregTech cannot do.
+
+     Deliberately kept: Ender IO's own materials (its alloys, and its Precient / Pulsating /
+     Vibrant / Ender crystals, for which GregTech has no material), Forestry's apatite, and the
+     handfull of vanilla items GregTech's maps turned out not to accept. -->
+<recipe name="Sagmill: Aluminium Ingot" disabled="true"/>
+<recipe name="Sagmill: Aluminum Block" disabled="true"/>
+<recipe name="Sagmill: Aluminum Ingot" disabled="true"/>
+<recipe name="Sagmill: appliedenergistics2:quartz_ore Ore" disabled="true"/>
+<recipe name="Sagmill: BlackSteel Block" disabled="true"/>
+<recipe name="Sagmill: BlackSteel Ingot" disabled="true"/>
+<recipe name="Sagmill: Brass Block" disabled="true"/>
+<recipe name="Sagmill: Brass Ingot" disabled="true"/>
+<recipe name="Sagmill: Bronze Block" disabled="true"/>
+<recipe name="Sagmill: Bronze Ingot" disabled="true"/>
+<recipe name="Sagmill: Cactus" disabled="true"/>
+<recipe name="Sagmill: Certus Quartz Crystal" disabled="true"/>
+<recipe name="Sagmill: Charcoal Block" disabled="true"/>
+<recipe name="Sagmill: Coal Block" disabled="true"/>
+<recipe name="Sagmill: Cobalt Block" disabled="true"/>
+<recipe name="Sagmill: Cobalt Ingot" disabled="true"/>
+<recipe name="Sagmill: Cobblestone" disabled="true"/>
+<recipe name="Sagmill: Copper Block" disabled="true"/>
+<recipe name="Sagmill: Copper Ingot" disabled="true"/>
+<recipe name="Sagmill: DamascusSteel Block" disabled="true"/>
+<recipe name="Sagmill: DamascusSteel Ingot" disabled="true"/>
+<recipe name="Sagmill: Diamond Dust" disabled="true"/>
+<recipe name="Sagmill: Electrum Block" disabled="true"/>
+<recipe name="Sagmill: Electrum Ingot" disabled="true"/>
+<recipe name="Sagmill: Emerald Dust" disabled="true"/>
+<recipe name="Sagmill: Ender Pearl" disabled="true"/>
+<recipe name="Sagmill: Enderium Block" disabled="true"/>
+<recipe name="Sagmill: Enderium Ingot" disabled="true"/>
+<recipe name="Sagmill: Fluix Crystal" disabled="true"/>
+<recipe name="Sagmill: Glass" disabled="true"/>
+<recipe name="Sagmill: Gold Block" disabled="true"/>
+<recipe name="Sagmill: Gold Ingot" disabled="true"/>
+<recipe name="Sagmill: Graphite Block" disabled="true"/>
+<recipe name="Sagmill: Graphite Ingot" disabled="true"/>
+<recipe name="Sagmill: Gravel" disabled="true"/>
+<recipe name="Sagmill: Invar Block" disabled="true"/>
+<recipe name="Sagmill: Invar Ingot" disabled="true"/>
+<recipe name="Sagmill: Iron Block" disabled="true"/>
+<recipe name="Sagmill: Iron Ingot" disabled="true"/>
+<recipe name="Sagmill: Lead Block" disabled="true"/>
+<recipe name="Sagmill: Lead Ingot" disabled="true"/>
+<recipe name="Sagmill: Log" disabled="true"/>
+<recipe name="Sagmill: Magnesium Block" disabled="true"/>
+<recipe name="Sagmill: Magnesium Ingot" disabled="true"/>
+<recipe name="Sagmill: Manganese Block" disabled="true"/>
+<recipe name="Sagmill: Manganese Ingot" disabled="true"/>
+<recipe name="Sagmill: Nickel Block" disabled="true"/>
+<recipe name="Sagmill: Nickel Ingot" disabled="true"/>
+<recipe name="Sagmill: oreBlueTopaz Ore" disabled="true"/>
+<recipe name="Sagmill: oreJasper Ore" disabled="true"/>
+<recipe name="Sagmill: oreOnix Ore" disabled="true"/>
+<recipe name="Sagmill: oreOpal Ore" disabled="true"/>
+<recipe name="Sagmill: oreZircon Ore" disabled="true"/>
+<recipe name="Sagmill: Osmium Block" disabled="true"/>
+<recipe name="Sagmill: Osmium Ingot" disabled="true"/>
+<recipe name="Sagmill: Plank" disabled="true"/>
+<recipe name="Sagmill: Platinum Block" disabled="true"/>
+<recipe name="Sagmill: Platinum Ingot" disabled="true"/>
+<recipe name="Sagmill: Poor Copper Ore" disabled="true"/>
+<recipe name="Sagmill: Poor Gold Ore" disabled="true"/>
+<recipe name="Sagmill: Poor Iron Ore" disabled="true"/>
+<recipe name="Sagmill: Poor Lead Ore" disabled="true"/>
+<recipe name="Sagmill: Poor Nickel Ore" disabled="true"/>
+<recipe name="Sagmill: Poor Silver Ore" disabled="true"/>
+<recipe name="Sagmill: Poor Tin Ore" disabled="true"/>
+<recipe name="Sagmill: Poor Zinc Ore" disabled="true"/>
+<recipe name="Sagmill: Prismarine" disabled="true"/>
+<recipe name="Sagmill: quartz_ore Ore" disabled="true"/>
+<recipe name="Sagmill: Reeds" disabled="true"/>
+<recipe name="Sagmill: Rutile Block" disabled="true"/>
+<recipe name="Sagmill: Silver Block" disabled="true"/>
+<recipe name="Sagmill: Silver Ingot" disabled="true"/>
+<recipe name="Sagmill: Slab" disabled="true"/>
+<recipe name="Sagmill: Stair" disabled="true"/>
+<recipe name="Sagmill: Steel Block" disabled="true"/>
+<recipe name="Sagmill: Steel Ingot" disabled="true"/>
+<recipe name="Sagmill: Stick" disabled="true"/>
+<recipe name="Sagmill: Tin Block" disabled="true"/>
+<recipe name="Sagmill: Tin Ingot" disabled="true"/>
+<recipe name="Sagmill: Titanium Block" disabled="true"/>
+<recipe name="Sagmill: Titanium Ingot" disabled="true"/>
+<recipe name="Sagmill: Tungsten Block" disabled="true"/>
+<recipe name="Sagmill: Tungsten Ingot" disabled="true"/>
+<recipe name="Sagmill: Uranium Block" disabled="true"/>
+<recipe name="Sagmill: Uranium Ingot" disabled="true"/>
+<recipe name="Sagmill: Zinc Block" disabled="true"/>
+<recipe name="Sagmill: Zinc Ingot" disabled="true"/>
+
+
+<!-- The SAG Mill, third pass: eighteen more, this time proved by item id.
+     The second pass tested ore dictionary names. GT registers many of its recipes under a
+     material name (coal is `gemCoal`, not `minecraft:coal:0`), so a name test misses them.
+     This pass resolved each remaining input to its concrete item and looked for *that* in the
+     probe dump, which found coal, charcoal, stone, the flowers and grass, quartz slabs and
+     Forestry's apatite ore (GT's `oreApatite` already covers it).
+     Thirty-seven recipes are still kept: GT's maps genuinely do not accept them (bone, wool,
+     logs, sand, netherrack and friends come back with no match), so switching them off would
+     lose the only route to their powders. -->
+<recipe name="Sagmill: Blue Flower" disabled="true"/>
+<recipe name="Sagmill: Charcoal" disabled="true"/>
+<recipe name="Sagmill: Coal" disabled="true"/>
+<recipe name="Sagmill: Daisy" disabled="true"/>
+<recipe name="Sagmill: Double Plant Magenta" disabled="true"/>
+<recipe name="Sagmill: Double Plant Pink" disabled="true"/>
+<recipe name="Sagmill: Double Plant Red" disabled="true"/>
+<recipe name="Sagmill: Double Plant Yellow" disabled="true"/>
+<recipe name="Sagmill: Forestry Apatite Ore" disabled="true"/>
+<recipe name="Sagmill: Light Gray Flower" disabled="true"/>
+<recipe name="Sagmill: Light Gray Tulip" disabled="true"/>
+<recipe name="Sagmill: Magenta Flower" disabled="true"/>
+<recipe name="Sagmill: Orange Tulip" disabled="true"/>
+<recipe name="Sagmill: Pink Flower" disabled="true"/>
+<recipe name="Sagmill: Quartz Slab" disabled="true"/>
+<recipe name="Sagmill: Red Flower" disabled="true"/>
+<recipe name="Sagmill: Red Tulip" disabled="true"/>
+<recipe name="Sagmill: Stone" disabled="true"/>
+
+<!-- The SAG Mill, fourth pass: the ingot -> dust step GregTech does not do *yet*.
+     Section 6e made Ender IO's ten alloys GregTech materials, so `dustDarkSteel`, `dustEnergeticAlloy`
+     and the rest resolve to GregTech's dust (`gregtech:meta_item_1:2179` and so on) - which means
+     the SAG Mill's `Sagmill: <alloy> Ingot / Block` recipes had quietly become a non-GregTech source
+     of the pack's dusts. GregTech's own macerator makes that dust for nine of the ten - Gregicality
+     generates the ingot -> dust recipe itself, which the run's de-duplication log confirms with
+     merges such as `duplicate recipe merge: macerator 1xgregtech:meta_item_1:10179 ->
+     1xgregtech:meta_item_1:2179` - and the one it does not (soularium) is added to the macerator by
+     scripts/eio_materials.zs, so switching the mill's copies off strands nothing. The names are in
+     sagmill_metals.xml.
+     The same pass takes the two remaining GregTech metals whose SAG entries sit in
+     sagmill_modded.xml - signalum and lumium (enderium and invar were already switched off by the
+     second pass above; signalum and lumium are listing-only here because their ore names are empty
+     in this pack, so Ender IO skips them anyway, and they are named for completeness) - plus the two
+     lapis recipes in sagmill.xml, whose names carry no "Sagmill: " prefix, which is why the second
+     and third passes could not see them. `Lapis Dust` (gemLapis -> dustLapis) and
+     `Lapis Block Dust` (blockLapis -> dustLapis) are the same macerator step GregTech already
+     performs on the gem and the block.
+     Deliberately kept: `Sagmill: GlowStone` - and that one is not a bypass at all, because
+     `dustGlowstone` holds vanilla's glowstone dust, not a GregTech material. `Quartz Dust` was kept
+     by the same reasoning and that reasoning was wrong; it is switched off in the fifth pass below. -->
+<recipe name="Sagmill: ElectricalSteel Ingot" disabled="true"/>
+<recipe name="Sagmill: ElectricalSteel Block" disabled="true"/>
+<recipe name="Sagmill: EnergeticAlloy Ingot" disabled="true"/>
+<recipe name="Sagmill: EnergeticAlloy Block" disabled="true"/>
+<recipe name="Sagmill: VibrantAlloy Ingot" disabled="true"/>
+<recipe name="Sagmill: VibrantAlloy Block" disabled="true"/>
+<recipe name="Sagmill: RedstoneAlloy Ingot" disabled="true"/>
+<recipe name="Sagmill: RedstoneAlloy Block" disabled="true"/>
+<recipe name="Sagmill: ConductiveIron Ingot" disabled="true"/>
+<recipe name="Sagmill: ConductiveIron Block" disabled="true"/>
+<recipe name="Sagmill: PulsatingIron Ingot" disabled="true"/>
+<recipe name="Sagmill: PulsatingIron Block" disabled="true"/>
+<recipe name="Sagmill: DarkSteel Ingot" disabled="true"/>
+<recipe name="Sagmill: DarkSteel Block" disabled="true"/>
+<recipe name="Sagmill: Soularium Ingot" disabled="true"/>
+<recipe name="Sagmill: Soularium Block" disabled="true"/>
+<recipe name="Sagmill: Signalum Ingot" disabled="true"/>
+<recipe name="Sagmill: Signalum Block" disabled="true"/>
+<recipe name="Sagmill: Lumium Ingot" disabled="true"/>
+<recipe name="Sagmill: Lumium Block" disabled="true"/>
+<recipe name="Lapis Dust" disabled="true"/>
+<recipe name="Lapis Block Dust" disabled="true"/>
+
+<!-- The SAG Mill, fifth pass: the ones the earlier passes vouched for and should not have.
+     The owner asked for another sweep - *"check which Ender IO recipes bypass the GregTech line"* -
+     so the audit was made mechanical: `tools/audit-eio-bypass.ps1` walks every recipe in Ender IO's
+     XML, resolves each output through the mod's own alias table, and reports the ones whose output is
+     (or resolves to) a **GregTech item**, cross-checked against the instance's user file and Ender IO's
+     own "Skipping XML recipe" log so that only recipes which actually run are listed.
+
+     These nine were the mill's remaining GregTech-material outputs. The second and third passes kept
+     them because the *input* was something GregTech's maps did not appear to accept, but what matters
+     is the output: every one of these materials has GregTech producers of its own, checked against the
+     full recipe-map dump - aluminium dust 61, coal dust 16, certus quartz dust 16, sulfur dust 21,
+     nether quartz dust 17, wheat dust 4, obsidian dust 4, silicon 14 - so switching the mill's copies
+     off moves the step to GregTech instead of stranding anything. In particular GregTech's macerator
+     *does* take a nether quartz gem, wheat and vanilla obsidian, which is what the third pass's
+     reasoning had missed (`macerator IN minecraft:quartz:0`, `IN minecraft:wheat:0`,
+     `IN {blockObsidian, obsidian}`). -->
+<recipe name="Quartz Dust" disabled="true"/>
+<recipe name="Sagmill: Aluminium Block" disabled="true"/>
+<recipe name="Sagmill: BlazeRod" disabled="true"/>
+<recipe name="Sagmill: Charged Certus Quartz Crystal" disabled="true"/>
+<recipe name="Sagmill: ClayBlock" disabled="true"/>
+<recipe name="Sagmill: Flower Pot" disabled="true"/>
+<recipe name="Sagmill: Netherrack" disabled="true"/>
+<recipe name="Sagmill: Obsidian" disabled="true"/>
+<recipe name="Sagmill: Wheat" disabled="true"/>
+
+<!-- The SAG Mill, sixth pass - the last two the audit left as decisions. `Sagmill: Yellow Flower`
+     grinds a dandelion into `dyeYellow`, a name GregTech fills with its own dye dust, so it is the mill's
+     half of the same "cheap route to a GregTech-shared item" case as `Alloy: Red Dye` above.
+     Deliberately *not* here: `Sagmill: Bone` and `Sagmill: Bone Block`. They land on `dyeWhite` because
+     bone meal is a member of that name, but bone into bone meal is a vanilla crafting recipe - the mill
+     would be automating vanilla, not replacing a GregTech step. Likewise the other flower recipes,
+     which produce the dye colours GregTech has no dust for and therefore no route to. -->
+<recipe name="Sagmill: Yellow Flower" disabled="true"/>
+
+
+<!-- The blank dark steel upgrade. Ender IO makes it in its own alloy smelter (an `<alloying>` recipe in
+     assets/enderio/config/recipes/darksteel_upgrades.xml, name "Dark Steel Upgrade": dark iron bars +
+     clay + four string). That is another mod's machine making a machine component, so the recipe is
+     rebuilt in the GregTech assembler by scripts/zzzzzzz_minespace_eio_upgrades.zs and the Ender IO one
+     is switched off here. -->
+<recipe name="Dark Steel Upgrade" disabled="true"/></enderio:recipes>

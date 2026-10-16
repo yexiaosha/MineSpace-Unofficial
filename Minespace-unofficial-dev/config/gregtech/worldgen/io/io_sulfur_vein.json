@@ -1,0 +1,31 @@
+{
+    "name": "Io_Sulfur_Vein",
+    "description": "Io is painted in sulphur because that is what its volcanoes put out, tonnes of it a second.",
+    "weight": 220,
+    "density": 0.25,
+    "min_height": 5,
+    "max_height": 50,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [14, 16]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 50, "value": "ore:sulfur"},
+                {"weight": 25, "value": "ore:pyrite"},
+                {"weight": 15, "value": "ore:galena"},
+                {"weight": 10, "value": "ore:lead"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "sulfur"
+    },
+    "dimension_filter": [
+        "dimension_id:-1014"
+    ]
+}

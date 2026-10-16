@@ -31,7 +31,9 @@ var PACK = {
     name: 'Minespace Unofficial',
     minecraft: '1.12.2',
     mods: {
-        gregtech: '2.8.10-beta',
+        gregtech: '1.18.3 (GTCE-TJ)',
+        gtadditions: '0.26.3 (Gregicality TJ Fork)',
+        appliedenergistics2: '0.55.6',
         galacticraft: '4.0.7',
         kubejs: '1.1.0.65',
         codechickenlib: '3.2.3.358'

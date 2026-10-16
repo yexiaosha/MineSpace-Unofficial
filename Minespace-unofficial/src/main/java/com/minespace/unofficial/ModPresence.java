@@ -11,7 +11,8 @@ public final class ModPresence {
 
     /** modid -> human readable name, for the mods this addon builds against. */
     private static final String[][] TRACKED = {
-            {"gregtech", "GregTech CE: Unofficial"},
+            {"gregtech", "GregTech CE: TJ Edition"},
+            {"gtadditions", "Gregicality TJ Fork"},
             {"codechickenlib", "CodeChicken Lib"},
             {"galacticraftcore", "Galacticraft"},
             {"galacticraftplanets", "Galacticraft Planets"},

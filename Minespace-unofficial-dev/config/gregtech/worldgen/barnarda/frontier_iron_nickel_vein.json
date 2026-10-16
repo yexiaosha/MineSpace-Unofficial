@@ -1,0 +1,37 @@
+{
+    "name": "Frontier_Iron_Nickel_Vein",
+    "description": "Provisional: metallic iron-nickel, the one ore every differentiated rocky body carries.",
+    "weight": 200,
+    "density": 0.25,
+    "min_height": 5,
+    "max_height": 60,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [16, 20]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 50, "value": "ore:iron"},
+                {"weight": 25, "value": "ore:nickel"},
+                {"weight": 15, "value": "ore:cobaltite"},
+                {"weight": 10, "value": "ore:pentlandite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "iron"
+    },
+    "dimension_filter": [
+        "dimension_id:-2103",
+        "dimension_id:-1338",
+        "dimension_id:-1032",
+        "dimension_id:-1031",
+        "dimension_id:-1030",
+        "dimension_id:-1025",
+        "dimension_id:-1018"
+    ]
+}

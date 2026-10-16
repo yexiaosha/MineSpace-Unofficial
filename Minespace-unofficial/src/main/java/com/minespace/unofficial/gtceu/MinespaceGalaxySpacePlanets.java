@@ -35,8 +35,6 @@ public final class MinespaceGalaxySpacePlanets {
     private static final int FIRST_STONE_TYPE_ID = 20;
 
     /** Material ids continue this mod's 32000 range; 32000..32007 are taken. */
-    private static final int FIRST_MATERIAL_ID = 32100;
-
     public static final class Planet {
 
         /** Our short name, e.g. {@code callisto}. */
@@ -45,8 +43,6 @@ public final class MinespaceGalaxySpacePlanets {
         public final String gsBlock;
         /** Stone type id handed to GregTech. */
         public final int stoneTypeId;
-        /** Material id handed to GregTech. */
-        public final int materialId;
         /** Colour of the stone type's dust, chosen per body. */
         public final int color;
 
@@ -65,7 +61,6 @@ public final class MinespaceGalaxySpacePlanets {
             this.key = key;
             this.gsBlock = gsBlock;
             this.stoneTypeId = FIRST_STONE_TYPE_ID + index;
-            this.materialId = FIRST_MATERIAL_ID + index;
             this.color = color;
             this.stoneName = key.replaceAll("([a-z])([0-9])", "$1_$2") + "_stone";
         }

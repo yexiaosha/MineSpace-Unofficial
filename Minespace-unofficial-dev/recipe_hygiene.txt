@@ -1,0 +1,7 @@
+GregTech machine recipes whose item inputs are not folded:
+
+  MERGE assembler -> gtadditions:ga_armor:7  lists [gregtech:meta_item_2:32213] x1 twice (2 together)
+  MERGE assembler -> gtadditions:ga_armor:5  lists [gregtech:meta_item_2:32213] x1 twice (2 together)
+  MERGE assembler -> gtadditions:ga_armor:4  lists [gregtech:meta_item_2:32213] x1 twice (2 together)
+  MERGE assembler -> gtadditions:ga_armor:6  lists [gregtech:meta_item_2:32213] x1 twice (2 together)
+  MERGE forming_press -> gtadditions:ga_multiblock_casing:13 x4  lists [gregtech:meta_item_1:13035] x9 twice (18 together)

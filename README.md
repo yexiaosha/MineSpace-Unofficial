@@ -5,6 +5,10 @@
 A Minecraft **1.12.2** addon for **GregTech CE: Unofficial** and **Galacticraft**, plus
 the playable instance used to test it.
 
+> **Current state / hand-off:** [PROGRESS.md](PROGRESS.md) - where the project stands on
+> 2026-10-15, the pack's rules, the commands, the environment gotchas, and what is next. The
+> dated, per-round records live in `Minespace-unofficial/TJ-MIGRATION-PLAN.md` (sections 6a .. 6ct).
+
 ## Repository layout
 
 One repository, two projects:

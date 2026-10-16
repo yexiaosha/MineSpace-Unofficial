@@ -1,0 +1,31 @@
+{
+    "name": "Venusian_Solar_Vein",
+    "description": "Solar: this pack's own material for the body closest to the sun, with the silver and tellurium that like a hot, reduced melt.",
+    "weight": 40,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 40,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 55, "value": "ore:solar"},
+                {"weight": 25, "value": "ore:silver"},
+                {"weight": 20, "value": "ore:tellurium"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "solar"
+    },
+    "dimension_filter": [
+        "dimension_id:-1006",
+        "dimension_id:-31"
+    ]
+}

@@ -59,6 +59,15 @@ Minespace-unofficial-dev/versions/
 Minespace-unofficial-dev/logs/
 Minespace-unofficial-dev/crash-reports/
 Minespace-unofficial-dev/saves/
+# The development instance doubles as the test server, so a world/ tree appears the first time it is started.
+# That is play data - terrain, chunk data, a level.dat with a seed - and it does not belong in the repository:
+# nothing in this project is built from it, and the pack can generate its own.
+Minespace-unofficial-dev/world/
+# ... and a copy of the world as it was before the GregTech migration, kept next to it for one comparison.
+Minespace-unofficial-dev/world-gtceu-backup/
+# EnderCore's cache of mod metadata, written by the game, not authored here.
+Minespace-unofficial-dev/mods/memory_repo/
+Minespace-unofficial-dev/saves/
 Minespace-unofficial-dev/resourcepacks/
 Minespace-unofficial-dev/shaderpacks/
 Minespace-unofficial-dev/screenshots/
@@ -95,8 +104,6 @@ Minespace-unofficial-dev/config/xaerohud.txt
 Minespace-unofficial-dev/config/xaeropatreon.txt
 Minespace-unofficial-dev/XaeroWaypoints_BACKUP*/
 Minespace-unofficial-dev/crafttweaker.log
-# Interstellar: Exoplanets dumps its planet list here on startup.
-Minespace-unofficial-dev/planets.txt
 # GT terminal scratch: the guide pages and theme.json next to these stay tracked.
 Minespace-unofficial-dev/config/gregtech/terminal/ore_prospector/
 Minespace-unofficial-dev/config/gregtech/terminal/config/ORE_PROSPECTOR.nbt

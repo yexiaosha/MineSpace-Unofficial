@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
  * machines - the machine registry is simply left open for the whole preInit phase. This mod
  * declares {@code required-after:gregtech}, so its preInit runs after GTCEu's preInit and
  * before GTCEu's init, which is exactly the window: machines are registered from there, by
- * calling {@code MTE_REGISTRY.register(id, name, machine)} directly.
+ * calling {@code GregTechAPI.registerMetaTileEntity(id, machine)} directly.
  *
  * <p>Registering from init or later fails, because the registry is frozen by then.
  *
@@ -61,8 +61,8 @@ public final class MinespaceGregMachines {
         // One try/catch per machine instead of around the whole method: a single bad machine
         // should not take the rest of them (or the game) down.
         try {
-            GregTechAPI.MTE_REGISTRY.register(
-                    OXYGEN_COMPRESSOR_ID, OXYGEN_COMPRESSOR,
+            GregTechAPI.registerMetaTileEntity(
+                    OXYGEN_COMPRESSOR_ID,
                     new MetaTileEntityOxygenCompressor(OXYGEN_COMPRESSOR, 1));
             LOG.info("Registered GregTech machine {} as gregtech:machine:{}",
                     OXYGEN_COMPRESSOR, OXYGEN_COMPRESSOR_ID);
@@ -74,8 +74,8 @@ public final class MinespaceGregMachines {
         // itself references Galacticraft types, which is why it is never loaded without it.
         if (Minespace.hasGalacticraft()) {
             try {
-                GregTechAPI.MTE_REGISTRY.register(
-                        ROCKET_FUEL_LOADER_ID, ROCKET_FUEL_LOADER,
+                GregTechAPI.registerMetaTileEntity(
+                        ROCKET_FUEL_LOADER_ID,
                         new MetaTileEntityRocketFuelLoader(ROCKET_FUEL_LOADER, 1));
                 LOG.info("Registered GregTech machine {} as gregtech:machine:{}",
                         ROCKET_FUEL_LOADER, ROCKET_FUEL_LOADER_ID);

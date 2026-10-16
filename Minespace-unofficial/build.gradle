@@ -114,7 +114,8 @@ repositories {
 }
 
 // ---------------------------------------------------------------------------
-// The addon target mods (GTCEu, Galacticraft + its CodeChickenLib dependency).
+// The addon target mods (GregTech CE: TJ Edition + its Gregicality fork, Galacticraft and
+// its CodeChickenLib dependency).
 //
 // These are wired in through a dedicated `mods` configuration rather than
 // `implementation`, and `installMods` copies the deobfuscated jars into
@@ -138,7 +139,8 @@ repositories {
 // runtime classpath.
 //
 // Coordinates are CurseForge project id : file id (resolved by CurseMaven).
-//   gregtech-ce-unofficial 557242 : 2.8.10-beta  -> hard-depends on codechickenlib
+//   gtce-tj-edition        597032 : 1.18.3       -> hard-depends on codechickenlib
+//   gregicality-tjfork     607023 : 0.26.3       -> hard-depends on gtce-tj-edition
 //   codechicken-lib-1-8    242818 : 3.2.3.358
 //   galacticraft-legacy    564236 : 4.0.7        -> bundles MicdoodleCore
 // ---------------------------------------------------------------------------
@@ -154,9 +156,91 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
 
-    mods fg.deobf('curse.maven:gregtech-ce-unofficial-557242:5519022')
+    mods fg.deobf('curse.maven:gtce-tj-edition-597032:8942273')
+    // Gregicality TJ is deliberately NOT a compile dependency: the addon only imports
+    // `gregtech.*`, Galacticraft and Forge APIs. It is a runtime content mod for the instance
+    // (see TJ-MIGRATION-PLAN.md), so it is not needed here - and leaving it out also avoids
+    // ForgeGradle having to deobfuscate a second 5 MB jar on every fresh cache.
     mods fg.deobf('curse.maven:codechicken-lib-1-8-242818:2779848')
     mods fg.deobf('curse.maven:galacticraft-legacy-564236:6364107')
+
+    // ------------------------------------------------------------------
+    // Mixin annotations (src/main/java/.../mixin + mixins.minespace.json).
+    //
+    // For 1.12.2 the Mixin implementation lives in MixinBooter, which the instance already
+    // ships for Galaxy Space - so the addon is compiled against exactly the Mixin that will
+    // run it (0.8.7), instead of whatever version a remote maven would hand back. compileOnly
+    // on purpose: the runtime copy is already on the classpath and bundling a second Mixin is
+    // how you get "Mixin already loaded" startup failures.
+    // ------------------------------------------------------------------
+    def mixinBooter = file("${pack_dir}/mods/!mixinbooter-11.17.jar")
+    if (!mixinBooter.isFile()) {
+        throw new GradleException(
+                "MixinBooter not found at ${mixinBooter}. The mixin sources need its Mixin API; " +
+                "install the pack (tools\\install-pack.ps1) or point pack_dir at it.")
+    }
+    compileOnly files(mixinBooter)
+
+    // ------------------------------------------------------------------
+    // CraftTweaker (compile only).
+    //
+    // A few GregTech classes carry CraftTweaker types in their signatures - `FluidMaterial` and
+    // `MetaFluids` both declare `crafttweaker.api.liquid.ILiquidDefinition` methods, and
+    // `MetaFluids` itself is `@ZenRegister`ed - so as soon as the addon registers or reads a
+    // `FluidMaterial`, javac has to read those classes and fails without CraftTweaker on the
+    // classpath:
+    //
+    //   error: cannot find symbol / cannot access crafttweaker.annotations.ZenRegister
+    //   error: unknown enum constant OperatorType.MUL
+    //
+    // Compiled against the exact jar the instance ships (like MixinBooter above), and compileOnly
+    // on purpose: CraftTweaker is already on the runtime classpath and is not ours to bundle.
+    // ------------------------------------------------------------------
+    def craftTweaker = file("${pack_dir}/mods/CraftTweaker2-1.12-4.1.20.698.jar")
+    if (!craftTweaker.isFile()) {
+        throw new GradleException(
+                "CraftTweaker not found at ${craftTweaker}. Reading GregTech's fluid API needs it; " +
+                "install the pack (tools\\install-pack.ps1) or point pack_dir at it.")
+    }
+    compileOnly files(craftTweaker)
+
+    // ------------------------------------------------------------------
+    // PlanetProgression (compile only).
+    //
+    // The star map has to ask one question of the pack's own planet research - "has this body been surveyed?" - so
+    // that a body Galacticraft knows is gated by PlanetProgression rather than by a second, parallel unlock (see
+    // MinespacePlanetResearch). Its API takes Galacticraft's CelestialBody, which is why this goes through the
+    // dimension id: `GalaxyRegistry.getCelestialBodyFromDimensionID`.
+    //
+    // Compiled against the exact jar the instance ships, and compileOnly on purpose: the mod is a runtime content mod
+    // for the instance, not ours to bundle, and the addon stays loadable without it (every call is behind a
+    // mod-presence check).
+    // ------------------------------------------------------------------
+    def planetProgression = file("${pack_dir}/mods/PlanetProgression-1.12.2-0.4.8.jar")
+    if (!planetProgression.isFile()) {
+        throw new GradleException(
+                "PlanetProgression not found at ${planetProgression}. The star map's gate reads its research API; " +
+                "install the pack (tools\\install-pack.ps1) or point pack_dir at it.")
+    }
+    compileOnly files(planetProgression)
+
+    // ------------------------------------------------------------------
+    // AsmodeusCore (compile only).
+    //
+    // Galaxy Space builds its systems through AsmodeusCore's `BodiesRegistry` (a SolarSystem plus its main star,
+    // `registerExPlanet` / `registerExMoon`, orbit data, planet data), and this pack registers its own 87 bodies the
+    // same way so that PlanetProgression's telescope and `unlockAllCelestialBodies` cover them too. Using the helper
+    // Galaxy Space itself uses is the difference between "a body Galacticraft's map can draw" and "a body Galacticraft's
+    // map crashes on" (6dq/6dr). compileOnly for the same reason as the two above: it is a runtime mod for the
+    // instance, and every call is behind a mod-presence check.
+    // ------------------------------------------------------------------
+    def asmodeusCore = file("${pack_dir}/mods/AsmodeusCore-1.12.2-1.0.5.jar")
+    if (!asmodeusCore.isFile()) {
+        throw new GradleException(
+                "AsmodeusCore not found at ${asmodeusCore}. Registering this pack's bodies into Galacticraft " +
+                "goes through its BodiesRegistry; install the pack (tools\\install-pack.ps1) or point pack_dir at it.")
+    }
+    compileOnly files(asmodeusCore)
 }
 
 // ---------------------------------------------------------------------------
@@ -211,7 +295,8 @@ task installMods(type: Sync) {
     // CurseMaven artifact names are long and versionless-looking; rename them to
     // something readable so the run/mods listing is useful at a glance.
     rename { String name ->
-        if (name.contains('gregtech-ce-unofficial')) return 'gregtech-1.12.2-2.8.10-beta-deobf.jar'
+        if (name.contains('gtce-tj-edition')) return 'gregtech_tj_fork-1.18.3-deobf.jar'
+        if (name.contains('gregicality-tjfork')) return 'gregicality_tj_fork-0.26.3-deobf.jar'
         if (name.contains('galacticraft-legacy')) return 'Galacticraft-1.12.2-4.0.7-deobf.jar'
         if (name.contains('codechicken-lib')) return 'CodeChickenLib-1.12.2-3.2.3.358-deobf.jar'
         return name
@@ -377,7 +462,10 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :mod_author,
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            // MixinBooter discovers mixin configs from this attribute (the same way
+            // AsmodeusCore and Galaxy Space do). See mixins.minespace.json.
+            "MixinConfigs": "mixins.minespace.json"
         ])
     }
 }

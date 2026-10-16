@@ -1,17 +1,16 @@
 package com.minespace.unofficial.gtceu;
 
 import com.minespace.unofficial.Minespace;
-import gregtech.api.unification.material.Material;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,35 +42,31 @@ import java.util.function.Supplier;
  *
  * <h2>Timing, which is the whole difficulty here</h2>
  *
- * The stone type has to exist <em>before</em> GTCEu builds its ore blocks, and GTCEu
- * builds all of them inside {@code CommonProxy.registerBlocks}, i.e. during
- * {@code RegistryEvent.Register<Block>}:
+ * The stone type has to exist <em>before</em> GTCE builds its ore blocks. In GTCE (and therefore
+ * in GTCE-TJ) that happens much earlier than it did in GTCEu 2.8 - inside GT's own preInit:
  *
  * <pre>
- *   preInit (all mods, in load order)   &lt;-- GT's own stone types are registered here
- *   RegistryEvent.Register&lt;Block&gt;       &lt;-- GT builds the ore blocks here
- *   init (all mods)
+ *   GregTechMod.preInit
+ *     Materials.register()
+ *     Material.runMaterialHandlers()    &lt;-- MinespaceMaterials.onMaterialsInit() runs here
+ *     Material.freezeRegistry()
+ *     MetaBlocks.init()                 &lt;-- StoneType.init() and the ore blocks are built here
  * </pre>
  *
- * That rules out both obvious hooks:
+ * The ore blocks are built by iterating {@code StoneType.STONE_TYPE_REGISTRY} 16 ids at a time and
+ * baking the current ids into each block's {@code stone_type} property. A stone type that is not
+ * in the registry at that instant is <b>not</b> in the ore block, and then
+ * {@code FillerConfigUtils$OreFilterEntry.apply} - which does a plain
+ * {@code blockStateMap.get(computeStoneType(...))} with no null guard - hands a null state to
+ * {@code World.setBlockState} and the vein dies with a NullPointerException. Registering late is
+ * therefore not "the ore looks wrong", it is "every vein that meets that rock throws".
  *
- * <ul>
- *   <li><b>preInit is too early.</b> Forge does not fire
- *       {@code RegistryEvent.Register<Block>} until every mod has finished preInit, so
- *       during this mod's preInit Galacticraft has not registered
- *       {@code galacticraftcore:basic_block_moon} yet and the lookup returns null.
- *       (Observed exactly that: "Galacticraft is loaded but 'basic_block_moon' is not in
- *       the block registry".)</li>
- *   <li><b>init is too late.</b> The ore blocks were already constructed by then, and a
- *       block's allowed property values cannot be changed afterwards.</li>
- * </ul>
- *
- * So the registration hangs off the block registry event itself, at
- * {@link EventPriority#HIGH}: Forge runs same-priority-cycle listeners in priority
- * order, GTCEu's {@code registerBlocks} is at the default
- * {@link EventPriority#NORMAL}, and this therefore runs first. (GTCEu's other handler,
- * {@code registerBlocksLast}, is explicitly {@code LOWEST} and only does fluids, pipes
- * and stone blocks.)
+ * The only window in GTCE-TJ is between {@code runMaterialHandlers()} and
+ * {@code MetaBlocks.init()}, i.e. inside this mod's material handler - see
+ * {@link MinespaceMaterials#onMaterialsInit()}. Every block-based piece of a stone type (the
+ * base state and the ore-gen predicate) is therefore resolved <em>lazily</em>: no other mod has
+ * registered a block yet at that point, but worldgen and model baking only happen after all of
+ * them have.
  *
  * <h2>Why the Galacticraft half lives in another class</h2>
  *
@@ -82,13 +77,13 @@ import java.util.function.Supplier;
  * {@link com.minespace.unofficial.galacticraft.MinespaceGalacticraftStones}, which is
  * only touched when {@link Minespace#hasGalacticraft()} says GC is there.
  */
-@Mod.EventBusSubscriber(modid = Minespace.MOD_ID)
 public final class MinespaceStoneTypes {
 
     private static final Logger LOG = LogManager.getLogger("minespace");
 
     /** Kept in the pack's 32000+ addon range, after the two existing materials. */
-    public static final int MOON_STONE_ID = 32002;
+    // The material id for the Lunar rock is allocated at runtime in MinespaceMaterials: GTCE's
+    // material registry has only 1000 slots and Gregicality already occupies much of the range.
 
     public static final String MOON_STONE = "moon_stone";
 
@@ -100,8 +95,12 @@ public final class MinespaceStoneTypes {
     private MinespaceStoneTypes() {
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
+    /**
+     * Called from {@link MinespaceMaterials#onMaterialsInit()}, i.e. inside GT's preInit between
+     * its own material registration and {@code MetaBlocks.init()}. That is the only moment early
+     * enough for GT to bake this stone type into its ore blocks - see the class javadoc.
+     */
+    public static void register() {
         if (registered) {
             return;
         }
@@ -113,14 +112,12 @@ public final class MinespaceStoneTypes {
     }
 
     private static void registerMoonStoneType() {
-        // The material itself is registered from MaterialEvent (see MinespaceMaterials);
-        // by now it is frozen but perfectly readable.
-        Material moonStone = MinespaceMaterials.lookup(MOON_STONE);
-        if (moonStone == null) {
-            LOG.error("Material '{}' is missing, so the Lunar stone type cannot be built. "
-                    + "It must be registered from MaterialEvent.", MOON_STONE);
-            return;
-        }
+        // GTCE's StoneType wants a stoneMaterial to name and build its ore block variant with.
+        // GT's own Materials.Stone is exactly that, so this mod deliberately does not register a
+        // material of its own for the rock: it keeps the addon's footprint in GT's shared
+        // 1000-slot material registry as small as possible. The stone type's name and texture
+        // below are still ours.
+        DustMaterial stoneMaterial = Materials.Stone;
 
         // The base is this mod's own rock block rather than Galacticraft's
         // basic_block_moon: see MinespaceMoonRock for why pointing GT at the Galacticraft
@@ -132,18 +129,22 @@ public final class MinespaceStoneTypes {
         // The processing prefix is deliberately OrePrefix.ore rather than a new prefix:
         // GTCEu 1.12.2 has no OrePrefix.registerOrePrefix, and an extra prefix would also
         // give the same ore block a second ore dictionary name.
+        // GTCE's StoneType takes the ore's background texture explicitly (GTCEu derived it from
+        // the block state model), plus a harvest tool and the stone type's flags.
         new StoneType(
                 MOON_STONE_TYPE_ID,
                 MOON_STONE,
+                new ResourceLocation(Minespace.MOD_ID, "blocks/moon_rock"),
                 net.minecraft.block.SoundType.STONE,
                 OrePrefix.ore,
-                moonStone,
+                stoneMaterial,
+                "pickaxe",
+                0,
                 base,
-                predicate,
-                false);
+                predicate);
 
         registered = true;
-        LOG.info("Registered GTCEu stone type '{}' (id {}) — ores on the Moon now use the Lunar rock base",
+        LOG.info("Registered GregTech stone type '{}' (id {}) — ores on the Moon now use the Lunar rock base",
                 MOON_STONE, MOON_STONE_TYPE_ID);
     }
 

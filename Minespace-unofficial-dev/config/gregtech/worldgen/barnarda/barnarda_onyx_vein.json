@@ -1,0 +1,30 @@
+{
+    "name": "Barnarda_Onyx_Vein",
+    "description": "The pack's own material, and Barnarda's signature: onyx with the calcite and sulphur that surround it.",
+    "weight": 120,
+    "density": 0.2,
+    "min_height": 5,
+    "max_height": 40,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [10, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 60, "value": "ore:onyx"},
+                {"weight": 25, "value": "ore:calcite"},
+                {"weight": 15, "value": "ore:sulfur"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "onyx"
+    },
+    "dimension_filter": [
+        "dimension_id:-1030"
+    ]
+}

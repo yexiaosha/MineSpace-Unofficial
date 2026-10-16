@@ -1,0 +1,30 @@
+{
+    "name": "TauCeti_Pressure_Diamond_Vein",
+    "description": "A super-Earth is deep enough that diamond is a rock-forming mineral rather than a gem, and the carbon comes up with the same magmas as the magnesite.",
+    "weight": 90,
+    "density": 0.2,
+    "min_height": 5,
+    "max_height": 60,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [12, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:diamond"},
+                {"weight": 30, "value": "ore:graphite"},
+                {"weight": 30, "value": "ore:magnesite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "diamond"
+    },
+    "dimension_filter": [
+        "dimension_id:-1338"
+    ]
+}

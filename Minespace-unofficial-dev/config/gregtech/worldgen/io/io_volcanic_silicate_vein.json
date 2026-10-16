@@ -1,0 +1,30 @@
+{
+    "name": "Io_Volcanic_Silicate_Vein",
+    "description": "The ultramafic lava the sulphur comes out of: iron and titanium rich, and hot enough that nothing survives on the surface.",
+    "weight": 180,
+    "density": 0.25,
+    "min_height": 5,
+    "max_height": 60,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [14, 16]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:olivine"},
+                {"weight": 30, "value": "ore:iron"},
+                {"weight": 30, "value": "ore:ilmenite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "iron"
+    },
+    "dimension_filter": [
+        "dimension_id:-1014"
+    ]
+}

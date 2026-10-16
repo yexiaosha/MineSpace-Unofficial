@@ -88,5 +88,10 @@ if ($Server) {
 }
 
 Write-Host "Launching $ForgeId (${MaxMemoryMB}M max heap)"
+# OpenAL Soft (the OpenAL64.dll in the natives folder, 1.15.1 from LWJGL 2.9.3) crashed on this machine
+# while opening the audio device, before the main menu. Alsoft.ini next to this script asks it for the
+# plain Windows waveOut backend instead; see TJ-MIGRATION-PLAN.md 6ap.
+$AlsoftConf = Join-Path $Pack 'alsoft.ini'
+if (Test-Path $AlsoftConf) { $env:ALSOFT_CONF = $AlsoftConf }
 Push-Location $Pack
 try { & $Java @argsList } finally { Pop-Location }

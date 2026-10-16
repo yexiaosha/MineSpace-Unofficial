@@ -1,0 +1,19 @@
+{
+  "name": "gregtech.veins.ore.olivine",
+  "weight": 60,
+  "density": 0.15,
+  "max_height": 25,
+  "min_height": 10,
+  "generator": { "type": "ellipsoid", "radius": [10,13] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:bentonite" },
+      { "weight": 25, "value": "ore:magnesite" },
+      { "weight": 15, "value": "ore:olivine" },
+      { "weight": 5, "value": "ore:glauconite" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "bentonite" },
+  "dimension_filter": [
+    "dimension_id:-1023",
+    "dimension_id:-1007"
+  ]
+}

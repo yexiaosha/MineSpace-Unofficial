@@ -1,0 +1,31 @@
+{
+    "name": "Mercurian_Core_Metal_Vein",
+    "description": "The core is most of the planet, and the crust is impact debris off it - unoxidised metal, which nothing else this close to the sun can be.",
+    "weight": 220,
+    "density": 0.25,
+    "min_height": 5,
+    "max_height": 60,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [16, 20]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 45, "value": "ore:iron"},
+                {"weight": 30, "value": "ore:nickel"},
+                {"weight": 15, "value": "ore:cobaltite"},
+                {"weight": 10, "value": "ore:pentlandite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "iron"
+    },
+    "dimension_filter": [
+        "dimension_id:-1005"
+    ]
+}

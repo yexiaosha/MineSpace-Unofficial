@@ -51,16 +51,26 @@ distributor crafting recipes - both machines are craftable again.
 
 Ordered by how badly each one blocks play; every entry says what it needs.
 
-| Galacticraft machine (exact registry item) | Plan | Needs |
+| Galacticraft machine (measured registry item) | Decision, 2026-10-14 | Why, and what it has now |
 | --- | --- | --- |
-| Oxygen Detector (`galacticraftcore:oxygen_detector`) | New GT machine (or a GregTech detector cover plus our machine's state) | new machine code |
-| Oxygen Storage Module (`galacticraftcore:machine2:6`) | Delete: the buffer tank of the new oxygen machine plus GT fluid tanks cover it | removal only (decide) |
-| Launch Controller (`galacticraftplanets:mars_machine:2`) | New GT machine (automated launch) or keep as Galacticraft's launch logic under GT materials | decide |
-| Terraformer (`mars_machine:0`), Cryogenic Chamber (`mars_machine:1`, `block_multi:5`) | Environmental devices, no GregTech equivalent; either delete or write GT machines | decide |
-| Chromatic Applicator (`machine3:9`) | Cosmetic; delete | decide |
-| Astro Miner (`galacticraftplanets:miner_base`, `miner_base_full`) | GregTech's ore/fluid drilling plants replace the job | removal + doc |
-| Short Range Telepad (`telepad_short`), Beam Reflector/Receiver, Laser Turret | No GregTech equivalent; delete or write later | decide |
-| Landing Pad, Parachest, View Screen, Telemetry, Spin Thruster, Space Station Base | Infrastructure/decoration rather than industry; keep, or replace the screen/telemetry pair later | decide |
+| Oxygen Detector (`galacticraftcore:oxygen_detector:0`) | **keep** | already in the pack's life-support keep-list (`gc_removals.zs`); gregfied into the assembler (`hightech.zs`), and Galacticraft's own Oxygen Sealer eats it - a build aid, not industry |
+| Oxygen Storage Module (a `machine2` meta; this table's `:6` was a guess) | **keep, nothing left to do** | no `machine2` meta has a recipe in this stack - the pack took them all out - and `gc_removals.zs` already records that several `machine2` metas are not in JEI at all, so there is nothing to delete or hide. The pack's own Oxygen Compressor carries a 16000 mB buffer and GregTech's fluid tanks cover the storage job |
+| Launch Controller (`galacticraftplanets:mars_machine:8` - the table's `:2` was the lang-file index) | **keep** | rocket logistics, the pack's "moves a player and a rocket" rule; it has a live MV assembler recipe |
+| Terraformer (`mars_machine:0`), Cryogenic Chamber (`mars_machine:4` - the table's `:1` was the lang index again) | **keep** | the owner already had one attempt at removing Galacticraft's environmental machines reverted (the sealer and bubble distributor), and terraforming a planet and sleeping off-world are the space gameplay, not industry. Both have live recipes (table grid / assembler with a bed) |
+| ~~Chromatic Applicator (`machine3:0`)~~ | **deleted 2026-10-14** (6ch) | cosmetic; the table's `:9` was the lang index, not the metadata |
+| ~~Astro Miner Base (`galacticraftplanets:miner_base`)~~ | **deleted 2026-10-14** (6ch) | GregTech's ore/fluid drilling plants do the job; `miner_base_full` was never a second item |
+| ~~Energy Beam Reflector (`galacticraftplanets:beam_reflector:0`)~~ | **deleted 2026-10-14** (6ci) | an orphan: a reflector only redirects the solar array's energy beams, and the array's controller, module and receiver were all removed earlier |
+| ~~Laser Turret (`galacticraftplanets:laser_turret`)~~ | **deleted 2026-10-14** (6ci) | "can target meteors, players, and mobs" - a combat toy with no place in the chain. It was already uncraftable; the change only stops it showing as an obtainable item |
+| Short Range Telepad (`galacticraftplanets:telepad_short:0`) | **keep** | it moves players, which is the pack's keep rule; live assembler recipe |
+| Landing Pad (`galacticraftcore:landing_pad:0` Rocket Launch Pad, `:1` Buggy Fueling Pad), Parachest (`galacticraftcore:parachest`) | **keep** | rocket logistics. The pad keeps its own grid; the parachest has no recipe by design - it falls from the sky with the rocket |
+| View Screen (`view_screen:0`), Telemetry (`telemetry:0`), Spin Thruster (`spin_thruster:0`) | **keep** | rocket electronics, already gregfied into the assembler. "Replace the screen/telemetry pair later" remains a nice-to-have, not a blocker |
+| Space Station Base (`galacticraftcore:dummyblock`) | **keep** | a multi-block part with no recipe by design, like every dummy block on this list |
+
+The ids were measured on 2026-10-14 with a probe over the finished registries (deleted again), which is
+how the three lang-index mistakes in the old table were caught: `machine3:9` for the Chromatic
+Applicator, `mars_machine:2` for the Launch Controller, `mars_machine:1` for the Cryogenic Chamber.
+A second lesson from the same probe: Galacticraft encodes `mars_machine` as *type x 4 + tier*, so the
+lang file's sequential names (`tile.mars_machine.0` ... ) never line up with the metadata.
 
 ## Notes that cost a debugging round each
 
@@ -79,10 +89,10 @@ Ordered by how badly each one blocks play; every entry says what it needs.
   in its own lists and keep working (and keep showing in JEI) until the mod's API is used -
   Galacticraft exposes `CompressorRecipes` / `CircuitFabricatorRecipes` for exactly that.
 
-## Galaxy Space and Interstellar: Exoplanets (added later)
+## Galaxy Space (added later)
 
-Both addons were installed after the Galacticraft work; see `MOD-MANIFEST.md` for the jars and
-their sources. The same policy applies to them.
+Galaxy Space was installed after the Galacticraft work; see `MOD-MANIFEST.md` for the jar and
+its source. The same policy applies to it.
 
 Done (in `gs_gregify_removals.zs`):
 
@@ -97,9 +107,6 @@ Done (in `gs_gregify_removals.zs`):
   for now; higher tiers become GregTech multiblocks), the NASA workbench categories, the
   utility machinery (modification table, gravity module, magnetic field generator, planetary
   shield, hydroponic base, oxygen storage cluster, oxygen tanks 4-6) and the batteries.
-* Exoplanets needs nothing: its only machine-like block is a satellite antenna, and its ores
-  smelting into GregTech ingots is GregTech's own registration being skipped as a duplicate
-  (same input, same output).
 
 Still to do - the stone types, which is what actually makes GregTech ore generation work on the
 new planets. Two facts read out of GTCEu's `OreDepositDefinition` bytecode decide the design:
@@ -160,7 +167,130 @@ palladium, bastnasite, monazite, neodymium, beryllium, lithium, thorium, pitchbl
 (The weight is deliberately far below the 20-50 of the copied veins: these are the veins a
 player goes looking for, not the ones they trip over.)
 
-One more trap from that work: `ore:tungsten` exists as an ore dictionary name, but it is
-**Exoplanets'** ore, not a GregTech material - a vein filler naming it fails with
-`Material with name tungsten not found!` and GT silently drops that vein. The tungstate vein
-therefore uses scheelite / molybdenite / molybdenum / lithium, which are GregTech's own.
+One more trap from that work: `ore:tungsten` is **not** a GregTech material. It only ever
+existed because of Interstellar: Exoplanets, which has since been removed from the pack, and a
+vein filler naming it fails with `Material with name tungsten not found!` - GT then drops that
+whole vein silently. The tungstate vein therefore uses scheelite / molybdenite / molybdenum /
+lithium, all of which are GregTech's own, so it stays valid with Exoplanets gone.
+
+## The planet catalog: the 106 bodies the seven layers are made of - 2026-10-15
+
+The master plan (the owner's `GTCEu星系整合包详细实施方案`, text at `tools\gtceu-galaxy-plan.txt`)
+asks for seven layers of space, twelve solar-system bodies and "nearly 110" deep-space targets, all
+under real names, with 5..8 veins each (5.4) and a design sheet per body (5.5). The vein table
+already existed (`tools\planet-veins.psd1`); what did not exist was the **list** - the names and the
+data that turn "about 110 bodies" into something a generator can be pointed at.
+
+That list is now `tools\planet-catalog.psd1`, and it is rendered into
+`Minespace-unofficial-dev\PLANET-CATALOG.md` (plus `tools\planet-catalog.csv` for the tools) by
+`tools\build-planet-catalog.ps1`, whose numbers come from `tools\fetch-planet-data.ps1`.
+
+**What it holds, measured by the generator's own report:** 106 bodies in the plan's seven layers -
+20 solar system, then 16 in the nearby layer, 14 mid, 14 far, 14 deep, 13 ultra-deep and 15
+"unknown" (observation only). Every one resolves to a NASA source; **24 carry veins today**.
+
+**Reduced to 10-20 bodies per layer** (owner's decision, 2026-10-15) by one rule: *one or two
+representative bodies per star system*, keeping - in this order - what the plan names, what the
+instance already has a dimension for, and what is notable for habitability or for being a "first"
+ever measured. 50 bodies were cut, and they were not thrown away: they sit verbatim in
+`planet-catalog.psd1`'s `BodiesCut` block with their NASA data and notes intact, so restoring one is
+moving a block back into `Bodies`. The 24 vein-carrying bodies all survive (three of them are
+Galaxy Space's own planets), and so do all twelve of the plan's counted landing bodies.
+
+**The layers are bands of _distance from Earth_, one order of magnitude each** (owner's instruction,
+2026-10-15), and every body sits in the band its measured distance puts it in:
+
+| layer | distance from Earth | bodies | what it is |
+| --- | --- | --- | --- |
+| 1 太阳系 | inside 40 AU (0.0000026-0.00042 ly) | 20 | the instance's own bodies: 19 landable plus Earth. The four gas giants are not bodies here - they are Galaxy Space's existing map objects, and stage five's atmospheric harvesting hangs off them |
+| 2 近邻星系区 | 4-16 ly | 16 | Proxima b/d, Barnard b/c/d (Galaxy Space's three planets), Tau Ceti f, Teegarden b, Ross 128 b, GJ 887 d, Wolf 1061 c, GJ 1061 c, GJ 1002 b, Luyten's b, eps Eri b, Alpha Cen A, Sirius B |
+| 3 中距星系区 | 16-100 ly | 14 | all seven TRAPPIST-1 planets, plus one representative each from Gliese 581 / 667 C / 876, HD 219134, HD 40307, 55 Cnc e and 51 Peg b |
+| 4 远距星系区 | 100-2,000 ly | 14 | Kepler-452 b and one representative per other Kepler system, plus the bodies this close that are extreme rather than planetary (Betelgeuse, the Vela pulsar, PSR B1257+12 b) |
+| 5 深空星系区 | 2,000 ly-100 kly | 14 | still inside the Milky Way: the disk, the centre, microquasars, molecular clouds |
+| 6 超深空星系区 | 100 kly-100 Mly | 13 | the Magellanic Clouds through the Virgo Cluster |
+| 7 未知星系 | 100 Mly-46.5 Gly | 15 | 10 of them beyond 10 billion ly (GN-z11, JADES-GS-z14-0, MoM-z14, UHZ1, GRB 090423, the two early quasars, Earendel, Ton 618, the Great Wall) plus the CMB shell at 46.5 Gly |
+
+Two things this round corrected in the previous draft of the same day: bodies that violated their own
+band (Betelgeuse, the Vela pulsar and PSR B1257+12 were sitting in "deep space", which starts at
+2,000 ly - they are 548, 960 and 1,957 ly, so they now sit in the far layer), and a gap in the scale
+itself (ultra-deep ended at 100 Mly while "unknown" was written as starting at 2 Gyr of light travel,
+leaving 100 Mly-2 Gly unclaimed; the unknown layer now starts at 100 Mly). Eleven bodies beyond
+10 billion ly were added, because that part of the scale had only five.
+
+**The plan document contains no distances at all.** Searching its full text (including the tables)
+for 光年/亿光年/万光年/AU/距离/尺度 returns zero hits: it names the seven layers and maps stages onto
+"spatial ranges", but the numbers are this catalog's assignment, not the document's. Worth knowing
+before treating any band boundary as a requirement.
+
+**Scale, in the owner's own terms.** Each layer in `planet-catalog.psd1` also carries the owner's
+`Real` / `InGame` / `Ratio` triple - how much the real universe holds in that shell, how many bodies
+the pack actually places there, and the ratio (1:1 in the solar system and next door, ≈1:100 in the
+mid layer, ≈1:10^6 far, ≈1:10^9 in the deep layer, ≈1:10^11 in the ultra-deep, ≈1:10^23 for the
+observation-only shell). The generator prints all three, so the ratio cannot quietly drift away from
+the body count.
+
+**The solar system is closed: no new solar-system bodies** (owner's decision, 2026-10-15). The 24 are
+the ones this instance already has - Earth, the Moon, Mercury, Venus, Mars, Phobos, Deimos, the
+asteroid belt, Ceres, Io, Europa, Ganymede, Callisto, Enceladus, Titan, Miranda, Triton, Pluto,
+Haumea, the Kuiper belt, and the four gas giants as Galaxy Space's existing map objects. Fourteen
+candidates that would each have needed a new dimension were dropped on the way and are named in the
+catalog's own header comment (the Sun, Vesta, Mimas, Tethys, Dione, Iapetus, Ariel, Umbriel,
+Titania, Oberon, Proteus, Charon, Makemake, Eris), so a later round that wants one of them can see
+exactly what it is re-opening. The other five entries with no vein card are Earth (GregTech's own
+overworld tables, not this table) and the four gas giants (harvesting targets, not surfaces).
+Worth noting for stage one: all twelve of the plan's counted landing bodies are inside that 24, so
+the 90-day target needs no dimension of its own.
+
+**Where the numbers come from, and why the fetch step exists.** The catalog file states design
+decisions only - name, layer, stage, voltage, vein region or signature, ruin class, environment,
+dimension id. Every measured quantity is fetched: planets, the Moon and Pluto from the NSSDC
+planetary fact sheets (which also carry the atmosphere composition), moons from the NSSDC satellite
+fact sheets, exoplanets from the NASA Exoplanet Archive `pscomppars` table over TAP, and the 40-odd
+objects that have no archive entry (black holes, pulsars, galaxies, quasars, the CMB) as values in
+the catalog with the NASA page they came from, whose stating sentences are kept in the cache as
+`Evidence`. `fetch-planet-data.ps1` caches to `tools\nasa-planet-data.json`; a tag in the catalog says
+which source formula a body uses (`sheet:`, `sat:`, `mooncol:`, `exo:`, `fixed`).
+
+Four findings from building it, in the order they cost time:
+
+* **JPL's SSD host does not complete a TLS handshake from this machine** (`ssd.jpl.nasa.gov`,
+  measured 2026-10-15), which is why the moon parameters come from NSSDC rather than JPL. NED
+  (NASA/IPAC) answers, but `ObjectLookup` returns position and redshift only - no distance - so it is
+  not usable as a distance source either.
+* **The NSSDC sheets come in three layouts, not one**: horizontal (a row per metric - Mars, Venus),
+  vertical (a *cell* per row - the Sun, the Moon, the satellite sheets, and the comparative sheet
+  itself), and inline (label and value in one cell - Earth's sheet, Charon's table inside Pluto's).
+  Reading one with another's parser yields a plausible-looking table of empty columns rather than an
+  error, so `Parse-BodyFactSheet` runs all three and keeps the richest result.
+* **A `.ps1` or `.psd1` containing Chinese must be saved as UTF-8 *with* BOM.** Windows PowerShell
+  5.1 decodes both by the ANSI code page otherwise, and a 3-byte UTF-8 sequence can swallow the
+  closing quote of the string it lives in; the file then fails to parse with errors a hundred lines
+  away from the real cause. `Import-PowerShellDataFile` refuses the whole catalog with no line
+  number. Both new scripts and the catalog are BOM'd, and re-BOM after editing with a tool that
+  strips it.
+* **`$cells[0..($cells.Count - 2)]` is an infinite loop when the array holds one element** -
+  PowerShell reads `0..-1` as "index 0 and index -1", so the array never shrinks. It cost a
+  fifteen-minute hang in the HTML reader before it was found.
+
+**Two design decisions this round had to make, both flagged rather than assumed:**
+
+* **The plan never names its twelve solar-system bodies.** It gives a work order instead (week 2 the
+  Moon as the gold standard, week 3 "the inner three" Mercury/Venus/Mars, week 4 the asteroid belt
+  and six moons). Read literally that is eleven, so the twelve are taken as Earth + the Moon + the
+  inner three + the belt + six moons (Phobos, Deimos, Io, Europa, Ganymede, Titan). They carry
+  `Priority = 1` in the catalog; changing the set is one field per body.
+* **Galaxy Space's `Barnarda C`, `C1` and `C2` are fictional names**, and the plan requires real
+  ones, while its `Proxima C`/`Proxima D` happen to be real. The catalog therefore maps dimension
+  `-1030/-1031/-1032` onto the real **Barnard b/c/d** (discovered 2024-2025, all four now in the
+  archive) and keeps each dimension's signature vein. That is a rename decision the owner should
+  confirm, because it changes what a saved world's map calls those planets - the dimension ids
+  themselves do not move.
+* **"Tau Ceti e/f/g/h" are not in the archive at all** (they are 2017 candidates that later work
+  questioned), so they are in the catalog as `fixed` entries with the paper's numbers and an explicit
+  "candidate, not in the archive" note rather than being presented as confirmed bodies.
+
+**Dimension ids.** The plan's table 5-2 allocates -100/-110/-120, which is ten ids per band; Galaxy
+Space already occupies -1005..-1032, -1126..-1129, -1234 and -1338, and the solar system now adds
+nothing at all, so the new bands are all outside it: nearby -2000..-2099, mid -2100..-2199, far
+-2200..-2299, deep -2300..-2349, ultra-deep -2350..-2399, and observation-only -2400..-2449. The
+generator fails the build on a collision.

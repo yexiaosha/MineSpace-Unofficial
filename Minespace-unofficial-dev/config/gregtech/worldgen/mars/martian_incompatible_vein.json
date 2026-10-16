@@ -1,0 +1,31 @@
+{
+    "name": "Martian_Incompatible_Vein",
+    "description": "The incompatible elements the crust could not fit into its own minerals - uranium, thorium and the rare earths that travel with them.",
+    "weight": 20,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 35,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:pitchblende"},
+                {"weight": 25, "value": "ore:uraninite"},
+                {"weight": 20, "value": "ore:thorium"},
+                {"weight": 15, "value": "ore:neodymium"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "pitchblende"
+    },
+    "dimension_filter": [
+        "dimension_id:-29"
+    ]
+}

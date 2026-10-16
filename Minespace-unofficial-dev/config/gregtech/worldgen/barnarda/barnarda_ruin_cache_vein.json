@@ -1,0 +1,30 @@
+{
+    "name": "Barnarda_Ruin_Cache_Vein",
+    "description": "Not geology: vinteum, opal and jasper in a cache on a world that could not have made them, which is the honest way to place an ore whose origin is artificial.",
+    "weight": 30,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 40,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:vinteum"},
+                {"weight": 30, "value": "ore:opal"},
+                {"weight": 30, "value": "ore:jasper"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "opal"
+    },
+    "dimension_filter": [
+        "dimension_id:-1032"
+    ]
+}

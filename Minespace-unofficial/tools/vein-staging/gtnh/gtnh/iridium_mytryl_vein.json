@@ -1,0 +1,24 @@
+{
+  "name": "gregtech.veins.ore.iridium_mytryl",
+  "weight": 10,
+  "density": 0.15,
+  "max_height": 40,
+  "min_height": 15,
+  "generator": { "type": "ellipsoid", "radius": [10,13] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:nickel" },
+      { "weight": 25, "value": "ore:iridium" },
+      { "weight": 15, "value": "ore:palladium" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "nickel" },
+  "dimension_filter": [
+    "dimension_id:-1024",
+    "dimension_id:-1021",
+    "dimension_id:-1018",
+    "dimension_id:-1017",
+    "dimension_id:-1014",
+    "dimension_id:-1009",
+    "dimension_id:-1005",
+    "dimension_id:-31"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+    "name": "Mare_Ilmenite_Vein",
+    "description": "Mare basalt: up to 15 percent TiO2 as ilmenite, with the aluminium the same magma carried.",
+    "weight": 200,
+    "density": 0.25,
+    "min_height": 5,
+    "max_height": 40,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [14, 16]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 55, "value": "ore:ilmenite"},
+                {"weight": 25, "value": "ore:aluminium"},
+                {"weight": 15, "value": "ore:bauxite"},
+                {"weight": 5, "value": "ore:iron"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "ilmenite"
+    },
+    "dimension_filter": [
+        "dimension_id:-28"
+    ]
+}

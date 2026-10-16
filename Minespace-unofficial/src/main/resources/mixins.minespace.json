@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.7.11",
+  "package": "com.minespace.unofficial.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinBlockBasicMoon",
+    "MixinBlockBasicMars",
+    "MixinBlockBasicVenus",
+    "MixinMetaTileEntityOnRemoval",
+    "MixinEntityTieredRocket"
+  ],
+  "client": [],
+  "server": []
+}

@@ -1,0 +1,18 @@
+{
+  "name": "gregtech.veins.ore.black_plutonium",
+  "weight": 40,
+  "density": 0.15,
+  "max_height": 25,
+  "min_height": 5,
+  "generator": { "type": "ellipsoid", "radius": [14,19] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:garnet_red" },
+      { "weight": 25, "value": "ore:garnet_yellow" },
+      { "weight": 15, "value": "ore:borax" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "garnet_red" },
+  "dimension_filter": [
+    "dimension_id:-1030",
+    "dimension_id:-1008"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "gregtech.veins.ore.mytryl",
+  "weight": 40,
+  "density": 0.15,
+  "max_height": 30,
+  "min_height": 10,
+  "generator": { "type": "ellipsoid", "radius": [10,13] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:jasper" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "jasper" },
+  "dimension_filter": [
+    "dimension_id:-1014"
+  ]
+}

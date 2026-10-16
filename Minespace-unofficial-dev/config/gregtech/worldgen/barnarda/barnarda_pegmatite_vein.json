@@ -1,0 +1,30 @@
+{
+    "name": "Barnarda_Pegmatite_Vein",
+    "description": "The last, water-rich liquid of a small body's magma: niobium, tantalum and gallium concentrate there and nowhere else - a pegmatite is what a planet's leftovers make.",
+    "weight": 25,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 40,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:columbite"},
+                {"weight": 30, "value": "ore:gallite"},
+                {"weight": 30, "value": "ore:cassiterite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "columbite"
+    },
+    "dimension_filter": [
+        "dimension_id:-1031"
+    ]
+}

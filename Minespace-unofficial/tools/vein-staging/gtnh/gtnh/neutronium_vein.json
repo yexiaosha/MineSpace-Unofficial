@@ -1,0 +1,21 @@
+{
+  "name": "gregtech.veins.ore.neutronium",
+  "weight": 10,
+  "density": 0.15,
+  "max_height": 30,
+  "min_height": 5,
+  "generator": { "type": "ellipsoid", "radius": [10,13] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:neutronium" },
+      { "weight": 25, "value": "ore:adamantium" },
+      { "weight": 15, "value": "ore:naquadah" },
+      { "weight": 5, "value": "ore:titanium" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "neutronium" },
+  "dimension_filter": [
+    "dimension_id:-1023",
+    "dimension_id:-1021",
+    "dimension_id:-1009",
+    "dimension_id:-1008"
+  ]
+}

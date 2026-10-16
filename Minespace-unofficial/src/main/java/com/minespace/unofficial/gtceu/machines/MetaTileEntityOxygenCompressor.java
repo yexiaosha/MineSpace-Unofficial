@@ -3,11 +3,12 @@ package com.minespace.unofficial.gtceu.machines;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
-import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -70,7 +71,7 @@ public class MetaTileEntityOxygenCompressor extends TieredMetaTileEntity {
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
+    public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder tileEntity) {
         return new MetaTileEntityOxygenCompressor(metaTileEntityId, getTier());
     }
 
@@ -103,9 +104,15 @@ public class MetaTileEntityOxygenCompressor extends TieredMetaTileEntity {
                         .setBackgroundTexture(GuiTextures.SLOT))
                 .widget(new TankWidget(oxygenTank, 45, 20, 18, 60)
                         .setBackgroundTexture(GuiTextures.FLUID_SLOT))
+                // The same "no energy" plate GregTech's own single-block machines carry, at the
+                // coordinates theirs uses (79, 42) - moved down to 60 because this machine's tank
+                // slot sits where theirs has its charger. This fork's texture set has no proportional
+                // energy bar; the icon is the whole of its energy feedback.
+                .widget(new ImageWidget(79, 60, 18, 18, GuiTextures.INDICATOR_NO_ENERGY)
+                        .setPredicate(() -> energyContainer.getEnergyStored() == 0))
                 // 84 is GregTech's usual player-inventory row in a 166-high machine GUI; the
                 // overload without it is bindPlayerInventory(InventoryPlayer, int).
-                .bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 84)
+                .bindPlayerInventory(entityPlayer.inventory, 84)
                 // The UI holder is the tile entity holder, not the machine itself
                 // (MetaTileEntity does not implement IUIHolder; its holder does).
                 .build(getHolder(), entityPlayer);

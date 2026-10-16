@@ -1,0 +1,33 @@
+{
+    "name": "Asteroid_PGM_Vein",
+    "description": "The platinum group concentrated in metallic planetesimals - the belt's headline resource and the reason to go out there.",
+    "weight": 40,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 40,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 35, "value": "ore:platinum"},
+                {"weight": 30, "value": "ore:palladium"},
+                {"weight": 20, "value": "ore:cooperite"},
+                {"weight": 15, "value": "ore:gold"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "platinum"
+    },
+    "dimension_filter": [
+        "dimension_id:-1013",
+        "dimension_id:-1012",
+        "dimension_id:-30"
+    ]
+}

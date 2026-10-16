@@ -12,6 +12,8 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
         // Register blocks, items, config here.
+        // The one packet this mod sends: "aim my rocket at that body" (see MinespaceNetwork).
+        com.minespace.unofficial.galacticraft.MinespaceNetwork.register();
     }
 
     public void init(FMLInitializationEvent event) {

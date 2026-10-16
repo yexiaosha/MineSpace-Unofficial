@@ -1,0 +1,32 @@
+{
+    "name": "Metallic_Core_Vein",
+    "description": "The iron core at the bottom of the stack - the same metal every differentiated body has.",
+    "weight": 180,
+    "density": 0.25,
+    "min_height": 5,
+    "max_height": 60,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [16, 20]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 50, "value": "ore:iron"},
+                {"weight": 30, "value": "ore:nickel"},
+                {"weight": 15, "value": "ore:cobaltite"},
+                {"weight": 5, "value": "ore:pentlandite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "iron"
+    },
+    "dimension_filter": [
+        "dimension_id:-1016",
+        "dimension_id:-1015"
+    ]
+}

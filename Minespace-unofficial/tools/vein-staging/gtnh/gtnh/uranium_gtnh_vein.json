@@ -1,0 +1,20 @@
+{
+  "name": "gregtech.veins.ore.uranium_gtnh",
+  "weight": 60,
+  "density": 0.15,
+  "max_height": 30,
+  "min_height": 10,
+  "generator": { "type": "ellipsoid", "radius": [14,19] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:thorium" },
+      { "weight": 25, "value": "ore:uranium" },
+      { "weight": 15, "value": "ore:plutonium241" },
+      { "weight": 5, "value": "ore:uranium235" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "thorium" },
+  "dimension_filter": [
+    "dimension_id:-1023",
+    "dimension_id:-1021",
+    "dimension_id:-1008"
+  ]
+}

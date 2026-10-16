@@ -1,0 +1,18 @@
+{
+  "name": "gregtech.veins.ore.nether_star",
+  "weight": 60,
+  "density": 0.15,
+  "max_height": 60,
+  "min_height": 20,
+  "generator": { "type": "ellipsoid", "radius": [14,19] },
+  "filler": { "type": "simple", "value": { "type": "weight_random", "values": [
+      { "weight": 55, "value": "ore:garnet_sand" },
+      { "weight": 25, "value": "ore:nether_star" },
+      { "weight": 15, "value": "ore:garnet_red" },
+      { "weight": 5, "value": "ore:garnet_yellow" }
+  ] } },
+  "vein_populator": { "type": "surface_rock", "material": "garnet_sand" },
+  "dimension_filter": [
+    "dimension_id:-1023"
+  ]
+}

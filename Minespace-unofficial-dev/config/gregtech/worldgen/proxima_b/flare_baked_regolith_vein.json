@@ -1,0 +1,31 @@
+{
+    "name": "Flare_Baked_Regolith_Vein",
+    "description": "Proxima is a flare star: the day side is baked by X-rays every few hours, so the surface is sulphur- and nitrate-rich rather than weathered.",
+    "weight": 150,
+    "density": 0.2,
+    "min_height": 5,
+    "max_height": 45,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [10, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:sulfur"},
+                {"weight": 25, "value": "ore:niter"},
+                {"weight": 25, "value": "ore:redstone"},
+                {"weight": 10, "value": "ore:tellurium"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "sulfur"
+    },
+    "dimension_filter": [
+        "dimension_id:-1025"
+    ]
+}

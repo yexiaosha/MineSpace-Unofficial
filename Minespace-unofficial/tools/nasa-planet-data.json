@@ -1,0 +1,2188 @@
+﻿{
+    "Fetched":  "2026-10-15",
+    "Sources":  {
+                    "planets":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/ (NASA NSSDC Planetary Fact Sheet, metric, updated 2025-03-18)",
+                    "moons":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/ satellite fact sheets (jovian, saturnian, uranian, neptunian) plus the satellite tables of the Mars and Pluto sheets",
+                    "exoplanets":  "NASA Exoplanet Archive TAP, table pscomppars (https://exoplanetarchive.ipac.caltech.edu/)",
+                    "curated":  "the per-body Source url recorded on each entry"
+                },
+    "Bodies":  {
+                   "barnarda_c":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:Barnard\u0027s star:Barnard b",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Barnard\u0027s%20star",
+                                      "Values":  {
+                                                     "Host star":  "Barnard\u0027s star",
+                                                     "Spectral type":  "M3.5-4 V",
+                                                     "Distance (pc)":  "1.82655000",
+                                                     "Orbital period (d)":  "3.15420000000",
+                                                     "Radius (Earth)":  "0.72000000",
+                                                     "Mass (Earth)":  "0.29900000",
+                                                     "Eq. temperature (K)":  "438.00",
+                                                     "Insolation (Earth)":  "6.7600",
+                                                     "Semimajor axis (AU)":  "0.0229000000",
+                                                     "Eccentricity":  "0.030000",
+                                                     "Discovered":  "2024",
+                                                     "Method":  "Radial Velocity",
+                                                     "Facility":  "Paranal Observatory"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "crab_pulsar":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "fixed",
+                                       "Source":  "https://science.nasa.gov/universe/neutron-stars/",
+                                       "Values":  {
+                                                      "Supernova":  "SN 1054",
+                                                      "Spin period":  "33 milliseconds",
+                                                      "Nebula":  "Crab Nebula (M1)",
+                                                      "Distance":  "~6,500 ly"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ],
+                                       "EvidenceError":  "GET failed after 1 attempts: https://science.nasa.gov/universe/neutron-stars/ :: 请求被中止: 连接被意外关闭。"
+                                   },
+                   "proxima_b":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "exo:Proxima Cen:Proxima Cen b",
+                                     "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Proxima%20Cen",
+                                     "Values":  {
+                                                    "Host star":  "Proxima Cen",
+                                                    "Spectral type":  "M5.5 V",
+                                                    "Distance (pc)":  "1.30119000",
+                                                    "Orbital period (d)":  "11.18465000000",
+                                                    "Radius (Earth)":  "1.02000000",
+                                                    "Mass (Earth)":  "1.05500000",
+                                                    "Eq. temperature (K)":  "218.00",
+                                                    "Insolation (Earth)":  "0.6410",
+                                                    "Semimajor axis (AU)":  "0.0484800000",
+                                                    "Eccentricity":  "0.000000",
+                                                    "Discovered":  "2016",
+                                                    "Method":  "Radial Velocity",
+                                                    "Facility":  "European Southern Observatory"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "trappist1_e":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:TRAPPIST-1:TRAPPIST-1 e",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/TRAPPIST-1",
+                                       "Values":  {
+                                                      "Host star":  "TRAPPIST-1",
+                                                      "Spectral type":  "M8.0 V",
+                                                      "Distance (pc)":  "12.42988881",
+                                                      "Orbital period (d)":  "6.10101300000",
+                                                      "Radius (Earth)":  "0.92000000",
+                                                      "Mass (Earth)":  "0.69200000",
+                                                      "Eq. temperature (K)":  "249.70",
+                                                      "Insolation (Earth)":  "0.6460",
+                                                      "Semimajor axis (AU)":  "0.0292500000",
+                                                      "Eccentricity":  "0.005100",
+                                                      "Discovered":  "2017",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Multiple Observatories"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "asteroids":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "fixed",
+                                     "Source":  "https://science.nasa.gov/solar-system/asteroids/",
+                                     "Values":  {
+                                                    "Population":  "\u003e1.3 million known",
+                                                    "Region":  "2.2-3.2 AU",
+                                                    "Composition":  "C-type carbonaceous / S-type silicate / M-type metallic",
+                                                    "Total mass":  "~4% of the Moon"
+                                                },
+                                     "Evidence":  "6 billion years ago."
+                                 },
+                   "ton618":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "fixed",
+                                  "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                  "Values":  {
+                                                 "Redshift":  "z = 2.219",
+                                                 "Black hole mass":  "~40-66 billion Suns",
+                                                 "Notable":  "one of the most massive black holes known",
+                                                 "Distance":  "~10.4 billion ly"
+                                             },
+                                  "Evidence":  [
+                                                   "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                   "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                               ]
+                              },
+                   "gn_z11":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "fixed",
+                                  "Source":  "https://science.nasa.gov/mission/hubble/",
+                                  "Values":  {
+                                                 "Redshift":  "z = 11.09",
+                                                 "Found by":  "Hubble",
+                                                 "Light travel distance":  "~13.4 billion ly",
+                                                 "Age of the light":  "~400 million years after the Big Bang"
+                                             },
+                                  "Evidence":  null
+                              },
+                   "io":  {
+                              "Status":  "ok",
+                              "Lookup":  "sat:jovian:Io",
+                              "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+                              "Values":  {
+                                             "Mass(1020 kg)":  "893.2",
+                                             "Radius(km)":  "1821.5",
+                                             "Mean density(kg/m3)":  "3530",
+                                             "Visual geometric albedo":  "0.62"
+                                         },
+                              "Evidence":  [
+
+                                           ]
+                          },
+                   "jades_gs_z14_0":  {
+                                          "Status":  "ok",
+                                          "Lookup":  "fixed",
+                                          "Source":  "https://science.nasa.gov/mission/webb/",
+                                          "Values":  {
+                                                         "Redshift":  "z = 14.32",
+                                                         "Found by":  "JWST (2024)",
+                                                         "Light travel distance":  "~13.5 billion ly",
+                                                         "Notable":  "most distant galaxy then known"
+                                                     },
+                                          "Evidence":  "5 billion years to see the first galaxies born after the Big Bang."
+                                      },
+                   "kepler62_f":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:Kepler-62:Kepler-62 f",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-62",
+                                      "Values":  {
+                                                     "Host star":  "Kepler-62",
+                                                     "Spectral type":  "K2 V",
+                                                     "Distance (pc)":  "300.87400000",
+                                                     "Orbital period (d)":  "267.29100000000",
+                                                     "Radius (Earth)":  "1.41000000",
+                                                     "Mass (Earth)":  "35.00000000",
+                                                     "Eq. temperature (K)":  "208.00",
+                                                     "Insolation (Earth)":  "0.5000",
+                                                     "Semimajor axis (AU)":  "0.7180000000",
+                                                     "Eccentricity":  "0.000000",
+                                                     "Discovered":  "2013",
+                                                     "Method":  "Transit",
+                                                     "Facility":  "Kepler"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "lmc":  {
+                               "Status":  "ok",
+                               "Lookup":  "fixed",
+                               "Source":  "https://science.nasa.gov/universe/galaxies/",
+                               "Values":  {
+                                              "Satellite of":  "Milky Way",
+                                              "Diameter":  "~32,000 ly",
+                                              "Type":  "Magellanic spiral (SB(s)m)",
+                                              "Distance":  "~163,000 ly"
+                                          },
+                               "Evidence":  [
+                                                "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                "6 billion years old.",
+                                                "8 billion years ago."
+                                            ]
+                           },
+                   "gj273_b":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "exo:GJ 273:GJ 273 b",
+                                   "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/GJ%20273",
+                                   "Values":  {
+                                                  "Host star":  "GJ 273",
+                                                  "Spectral type":  "M3.5",
+                                                  "Distance (pc)":  "5.92153500",
+                                                  "Orbital period (d)":  "18.64980000000",
+                                                  "Radius (Earth)":  "1.51000000",
+                                                  "Mass (Earth)":  "2.89000000",
+                                                  "Eq. temperature (K)":  "292.47",
+                                                  "Insolation (Earth)":  "1.0600",
+                                                  "Semimajor axis (AU)":  "0.0911010000",
+                                                  "Eccentricity":  "0.100000",
+                                                  "Discovered":  "2017",
+                                                  "Method":  "Radial Velocity",
+                                                  "Facility":  "La Silla Observatory"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "quasar_j0313":  {
+                                        "Status":  "ok",
+                                        "Lookup":  "fixed",
+                                        "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                        "Values":  {
+                                                       "Redshift":  "z = 7.64",
+                                                       "Notable":  "earliest known quasar (2021)",
+                                                       "Light travel distance":  "~13.0 billion ly",
+                                                       "Black hole mass":  "1.6 billion Suns"
+                                                   },
+                                        "Evidence":  [
+                                                         "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                         "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                     ]
+                                    },
+                   "enceladus":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "sat:saturnian:Enceladus",
+                                     "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+                                     "Values":  {
+                                                    "Mass(1020 kg)":  "1.08",
+                                                    "Radius(km)":  "257 x 251 x 248",
+                                                    "Mean density(kg/m3)":  "1610",
+                                                    "Visual geometric albedo":  "1.0"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "arches_cluster":  {
+                                          "Status":  "ok",
+                                          "Lookup":  "fixed",
+                                          "Source":  "https://science.nasa.gov/universe/stars/",
+                                          "Values":  {
+                                                         "Notable":  "densest known star cluster in the Milky Way",
+                                                         "Stars":  "~1,000 massive stars in a 1 ly core",
+                                                         "Type":  "young massive cluster",
+                                                         "Distance":  "~25,000 ly"
+                                                     },
+                                          "Evidence":  [
+                                                           "Molecular clouds range from 1,000 to 10 million times the mass of the Sun and can span as much as hundreds of light-years.",
+                                                           "(This will be the fate of our Sun, in several billion years.",
+                                                           "The Helix nebula, imaged here, lies 650 light-years away in the constellation Aquarius.",
+                                                           "nant of a supernova observed in 1572, notably studied by the Danish astronomer Tycho Brahe, lies about 13,000 light-years away in the constellation Cassiopeia."
+                                                       ]
+                                      },
+                   "trappist1_h":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:TRAPPIST-1:TRAPPIST-1 h",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/TRAPPIST-1",
+                                       "Values":  {
+                                                      "Host star":  "TRAPPIST-1",
+                                                      "Spectral type":  "M8.0 V",
+                                                      "Distance (pc)":  "12.42988881",
+                                                      "Orbital period (d)":  "18.77286600000",
+                                                      "Radius (Earth)":  "0.75500000",
+                                                      "Mass (Earth)":  "0.32600000",
+                                                      "Eq. temperature (K)":  "171.70",
+                                                      "Insolation (Earth)":  "0.1440",
+                                                      "Semimajor axis (AU)":  "0.0618900000",
+                                                      "Eccentricity":  "0.005670",
+                                                      "Discovered":  "2017",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Multiple Observatories"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "centaurus_a":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "fixed",
+                                       "Source":  "https://science.nasa.gov/universe/galaxies/",
+                                       "Values":  {
+                                                      "Notable":  "nearest active galactic nucleus with radio jets",
+                                                      "Type":  "lenticular / elliptical with dust lane (S0 pec)",
+                                                      "Distance":  "~12 million ly"
+                                                  },
+                                       "Evidence":  [
+                                                        "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                        "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                        "6 billion years old.",
+                                                        "8 billion years ago."
+                                                    ]
+                                   },
+                   "titan":  {
+                                 "Status":  "ok",
+                                 "Lookup":  "sat:saturnian:Titan",
+                                 "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+                                 "Values":  {
+                                                "Mass(1020 kg)":  "1,345.5",
+                                                "Radius(km)":  "2,575",
+                                                "Mean density(kg/m3)":  "1880",
+                                                "Visual geometric albedo":  "0.22"
+                                            },
+                                 "Evidence":  [
+
+                                              ]
+                             },
+                   "cmb":  {
+                               "Status":  "ok",
+                               "Lookup":  "fixed",
+                               "Source":  "https://science.nasa.gov/universe/",
+                               "Values":  {
+                                              "Mapped by":  "COBE (1992), WMAP, Planck",
+                                              "Comoving distance":  "~46.5 billion ly",
+                                              "Age":  "380,000 years after the Big Bang",
+                                              "Temperature":  "2.725 K today, 3000 K then"
+                                          },
+                               "Evidence":  null
+                           },
+                   "quasar_3c273":  {
+                                        "Status":  "ok",
+                                        "Lookup":  "fixed",
+                                        "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                        "Values":  {
+                                                       "Redshift":  "z = 0.158",
+                                                       "Notable":  "first quasar identified (1963)",
+                                                       "Luminosity":  "~4 trillion times the Sun",
+                                                       "Distance":  "~2.4 billion ly"
+                                                   },
+                                        "Evidence":  [
+                                                         "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                         "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                     ]
+                                    },
+                   "miranda":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "sat:uranian:Miranda",
+                                   "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uraniansatfact.html",
+                                   "Values":  {
+                                                  "Mass(1020 kg)":  "0.66",
+                                                  "Radius(km)":  "240 x 234.2 x 232.9",
+                                                  "Mean density(kg/m3)":  "1,200",
+                                                  "Visual geometric albedo":  "0.32"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "mercury":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "sheet:mercuryfact:Mercury",
+                                   "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html",
+                                   "Values":  {
+                                                  "Ratio (Mercury/Earth)":  "0.33010",
+                                                  "Mass (1024 kg)":  "0.33010",
+                                                  "Volume (1010 km3)":  "6.083",
+                                                  "Equatorial radius (km)":  "2440.5",
+                                                  "Polar radius (km)":  "2438.3",
+                                                  "Volumetric mean radius (km)":  "2439.7",
+                                                  "Ellipticity (Flattening)":  "0.0009",
+                                                  "Mean density (kg/m3)":  "5429",
+                                                  "Surface gravity (mean) (m/s2)":  "3.70",
+                                                  "Surface acceleration (eq.) (m/s2)":  "3.70",
+                                                  "Surface acceleration (pole) (m/s2)":  "3.71",
+                                                  "Escape velocity (km/s)":  "4.3",
+                                                  "GM (x 106 km3/s2)":  "0.022032",
+                                                  "V-band magnitude V(1,0)":  "-0.613",
+                                                  "Solar irradiance (W/m2)":  "9082.7",
+                                                  "Black-body temperature (K)":  "439.6",
+                                                  "Topographic range (km)":  "7",
+                                                  "Moment of inertia (I/MR2)":  "0.35",
+                                                  "J2 (x 10-6)":  "50.3",
+                                                  "Semimajor axis (106 km)":  "57.909",
+                                                  "Sidereal orbit period (days)":  "87.969",
+                                                  "Tropical orbit period (days)":  "87.968",
+                                                  "Perihelion (106 km)":  "46.000",
+                                                  "Aphelion (106 km)":  "69.818",
+                                                  "Synodic period (days)":  "115.88",
+                                                  "Mean orbital velocity (km/s)":  "47.36",
+                                                  "Max. orbital velocity (km/s)":  "58.97",
+                                                  "Min. orbital velocity (km/s)":  "38.86",
+                                                  "Orbit inclination (deg)":  "7.004",
+                                                  "Sidereal rotation period (hrs)":  "1407.6",
+                                                  "Length of day (hrs)":  "4222.6",
+                                                  "Obliquity to orbit (deg)":  "0.034",
+                                                  "Inclination of equator (deg)":  "0.034",
+                                                  "Atmosphere composition":  "Atmospheric composition (Column abundances in 10 6 per cm 2 ): Sodium 12,000-200,000; Magnesium 100,000; Oxygen \u0026lt;40,000; Hydrogen 5000, Potassium 800-1300, Calcium 300-1000; Iron \u0026lt;300; Aluminum 15; and possible trace amounts of Argon (Ar), Carbon Dioxide (CO 2 ), Water (H 2 O), Nitrogen (N 2 ), Xenon (Xe), Krypton (Kr), Neon (Ne), Helium (He) (The atmosphere of Mercury is a surface bounded exosphere, essentially a vacuum. Values for some species can vary with local time or location, these are given as ranges.)",
+                                                  "Mass (1024kg)":  "0.330",
+                                                  "Diameter (km)":  "4879",
+                                                  "Density (kg/m3)":  "5429",
+                                                  "Gravity (m/s2)":  "3.7",
+                                                  "Rotation Period (hours)":  "1407.6",
+                                                  "Length of Day (hours)":  "4222.6",
+                                                  "Distance from Sun (106 km)":  "57.9",
+                                                  "Orbital Period (days)":  "88.0",
+                                                  "Orbital Velocity (km/s)":  "47.4",
+                                                  "Orbital Inclination (degrees)":  "7.0",
+                                                  "Orbital Eccentricity":  "0.206",
+                                                  "Obliquity to Orbit (degrees)":  "0.034",
+                                                  "Mean Temperature (C)":  "167",
+                                                  "Number of Moons":  "0"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "quasar_j1342":  {
+                                        "Status":  "ok",
+                                        "Lookup":  "fixed",
+                                        "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                        "Values":  {
+                                                       "Redshift":  "z = 7.54",
+                                                       "Notable":  "first quasar found beyond z = 7 (2017)",
+                                                       "Light travel distance":  "~13.1 billion ly",
+                                                       "Black hole mass":  "800 million Suns"
+                                                   },
+                                        "Evidence":  [
+                                                         "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                         "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                     ]
+                                    },
+                   "barnarda_c2":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:Barnard\u0027s star:Barnard d",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Barnard\u0027s%20star",
+                                       "Values":  {
+                                                      "Host star":  "Barnard\u0027s star",
+                                                      "Spectral type":  "M3.5-4 V",
+                                                      "Distance (pc)":  "1.82655000",
+                                                      "Orbital period (d)":  "2.34020000000",
+                                                      "Radius (Earth)":  "0.69400000",
+                                                      "Mass (Earth)":  "0.26300000",
+                                                      "Eq. temperature (K)":  "483.00",
+                                                      "Insolation (Earth)":  "10.0441",
+                                                      "Semimajor axis (AU)":  "0.0188000000",
+                                                      "Eccentricity":  "0.040000",
+                                                      "Discovered":  "2025",
+                                                      "Method":  "Radial Velocity",
+                                                      "Facility":  "Gemini Observatory"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "grs1915":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "fixed",
+                                   "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                   "Values":  {
+                                                  "Notable":  "first galactic source with apparent superluminal jets",
+                                                  "Mass":  "~12 Suns",
+                                                  "Type":  "microquasar (black hole + companion)",
+                                                  "Distance":  "~40,000 ly"
+                                              },
+                                   "Evidence":  [
+                                                    "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                    "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                ]
+                               },
+                   "sgr_a_star":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "fixed",
+                                      "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                      "Values":  {
+                                                     "Imaged":  "2022 (EHT)",
+                                                     "Type":  "supermassive black hole",
+                                                     "Mass":  "4.3 million Suns",
+                                                     "Distance":  "~26,000 ly"
+                                                 },
+                                      "Evidence":  [
+                                                       "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                       "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                   ]
+                                  },
+                   "kepler70_c":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:KOI-55:KOI-55 c",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/KOI-55",
+                                      "Values":  {
+                                                     "Host star":  "KOI-55",
+                                                     "Spectral type":  "B",
+                                                     "Distance (pc)":  "1231.02000000",
+                                                     "Orbital period (d)":  "0.34288700000",
+                                                     "Radius (Earth)":  "0.86700000",
+                                                     "Mass (Earth)":  "0.65500000",
+                                                     "Eq. temperature (K)":  "6910.74",
+                                                     "Insolation (Earth)":  "396618.3609",
+                                                     "Semimajor axis (AU)":  "0.0076000000",
+                                                     "Eccentricity":  "",
+                                                     "Discovered":  "2011",
+                                                     "Method":  "Orbital Brightness Modulation",
+                                                     "Facility":  "Kepler"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "borisov":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "fixed",
+                                   "Source":  "https://science.nasa.gov/solar-system/",
+                                   "Values":  {
+                                                  "Discovered":  "2019-08-30 (Gennadiy Borisov)",
+                                                  "Core diameter":  "~1 km",
+                                                  "Notable":  "first confirmed interstellar comet",
+                                                  "Origin":  "interstellar"
+                                              },
+                                   "Evidence":  null
+                               },
+                   "moon":  {
+                                "Status":  "ok",
+                                "Lookup":  "sheet:moonfact:Moon",
+                                "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+                                "Values":  {
+                                               "Ratio (Moon/Earth)":  "0.07346",
+                                               "Mass (1024 kg)":  "0.07346",
+                                               "Volume (1010 km3)":  "2.1968",
+                                               "Equatorial radius (km)":  "1738.1",
+                                               "Polar radius (km)":  "1736.0",
+                                               "Volumetric mean radius (km)":  "1737.4",
+                                               "Ellipticity (Flattening)":  "0.0012",
+                                               "Mean density (kg/m3)":  "3344",
+                                               "Surface gravity (m/s2)":  "1.62",
+                                               "Surface acceleration (m/s2)":  "1.62",
+                                               "Escape velocity (km/s)":  "2.38",
+                                               "GM (x 106 km3/s2)":  "0.00490",
+                                               "V-band magnitude V(1,0)":  "-0.08",
+                                               "Solar irradiance (W/m2)":  "1361.0",
+                                               "Black-body temperature (K)":  "270.4",
+                                               "Topographic range (km)":  "13",
+                                               "Moment of inertia (I/MR2)":  "0.394",
+                                               "J2 (x 10-6)":  "202.7",
+                                               "Orbital parameters (for orbit about the Earth)":  "0.3844",
+                                               "Semimajor axis (106 km)":  "0.3844",
+                                               "Perigee (106 km)*":  "0.3633",
+                                               "Apogee (106 km)*":  "0.4055",
+                                               "Revolution period (days)":  "27.3217",
+                                               "Synodic period (days)":  "29.53",
+                                               "Mean orbital velocity (km/s)":  "1.022",
+                                               "Max. orbital velocity (km/s)":  "1.082",
+                                               "Min. orbital velocity (km/s)":  "0.970",
+                                               "Inclination to ecliptic (deg)":  "5.145",
+                                               "Inclination to Earth equator (deg)":  "18.28 - 28.58",
+                                               "Sidereal rotation period (hrs)":  "655.720",
+                                               "Obliquity to orbit (deg)":  "6.68",
+                                               "Recession rate from Earth (cm/yr)":  "3.8",
+                                               "Mass (1024kg)":  "0.073",
+                                               "Diameter (km)":  "3475",
+                                               "Density (kg/m3)":  "3340",
+                                               "Gravity (m/s2)":  "1.6",
+                                               "Rotation Period (hours)":  "655.7",
+                                               "Length of Day (hours)":  "708.7",
+                                               "Distance from Sun (106 km)":  "0.384*",
+                                               "Perihelion (106 km)":  "0.363*",
+                                               "Aphelion (106 km)":  "0.406*",
+                                               "Orbital Period (days)":  "27.3*",
+                                               "Orbital Velocity (km/s)":  "1.0*",
+                                               "Orbital Inclination (degrees)":  "5.1",
+                                               "Orbital Eccentricity":  "0.055",
+                                               "Obliquity to Orbit (degrees)":  "6.7",
+                                               "Mean Temperature (C)":  "-20",
+                                               "Number of Moons":  "0"
+                                           },
+                                "Evidence":  [
+
+                                             ]
+                            },
+                   "phobos":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "moonnames:marsfact:Phobos:Satellites of Mars",
+                                  "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+                                  "Values":  {
+                                                 "Semimajor axis* (km)":  "9378",
+                                                 "Sidereal rotation period (days)":  "0.31891",
+                                                 "Orbital inclination (deg)":  "1.08",
+                                                 "Orbital eccentricity":  "0.0151",
+                                                 "Subplanetary axis radius (km)":  "13.0",
+                                                 "Along-orbit axis radius (km)":  "11.4",
+                                                 "Polar axis radius (km)":  "9.1",
+                                                 "Mass (1015 kg)":  "10.6",
+                                                 "Visual magnitude V(1,0)":  "+11.8",
+                                                 "Apparent visual magnitude (V0)":  "11.3"
+                                             },
+                                  "Evidence":  [
+
+                                               ]
+                              },
+                   "psr1257_b":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "exo:PSR B1257+12:PSR B1257+12 b",
+                                     "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/PSR%20B1257%2B12",
+                                     "Values":  {
+                                                    "Host star":  "PSR B1257+12",
+                                                    "Spectral type":  "",
+                                                    "Distance (pc)":  "600.00000000",
+                                                    "Orbital period (d)":  "25.26200000000",
+                                                    "Radius (Earth)":  "0.33800000",
+                                                    "Mass (Earth)":  "0.02000000",
+                                                    "Eq. temperature (K)":  "",
+                                                    "Insolation (Earth)":  "",
+                                                    "Semimajor axis (AU)":  "0.1900000000",
+                                                    "Eccentricity":  "0.000000",
+                                                    "Discovered":  "1994",
+                                                    "Method":  "Pulsar Timing",
+                                                    "Facility":  "Arecibo Observatory"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "vela_pulsar":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "fixed",
+                                       "Source":  "https://science.nasa.gov/universe/neutron-stars/",
+                                       "Values":  {
+                                                      "Notable":  "brightest persistent radio pulsar",
+                                                      "Spin period":  "89 milliseconds",
+                                                      "Age":  "~11,000 years",
+                                                      "Distance":  "~960 ly"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ],
+                                       "EvidenceError":  "GET failed after 1 attempts: https://science.nasa.gov/universe/neutron-stars/ :: 请求被中止: 连接被意外关闭。"
+                                   },
+                   "hd219134_b":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:HD 219134:HD 219134 b",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/HD%20219134",
+                                      "Values":  {
+                                                     "Host star":  "HD 219134",
+                                                     "Spectral type":  "K3 V",
+                                                     "Distance (pc)":  "6.53127000",
+                                                     "Orbital period (d)":  "3.09292600000",
+                                                     "Radius (Earth)":  "1.60200000",
+                                                     "Mass (Earth)":  "4.74000000",
+                                                     "Eq. temperature (K)":  "1015.00",
+                                                     "Insolation (Earth)":  "176.2000",
+                                                     "Semimajor axis (AU)":  "0.0387600000",
+                                                     "Eccentricity":  "0.000000",
+                                                     "Discovered":  "2015",
+                                                     "Method":  "Radial Velocity",
+                                                     "Facility":  "Roque de los Muchachos Observatory"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "kepler138_c":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:Kepler-138:Kepler-138 c",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-138",
+                                       "Values":  {
+                                                      "Host star":  "Kepler-138",
+                                                      "Spectral type":  "M1 V",
+                                                      "Distance (pc)":  "66.86240000",
+                                                      "Orbital period (d)":  "13.78150000000",
+                                                      "Radius (Earth)":  "1.51000000",
+                                                      "Mass (Earth)":  "2.30000000",
+                                                      "Eq. temperature (K)":  "410.00",
+                                                      "Insolation (Earth)":  "6.8000",
+                                                      "Semimajor axis (AU)":  "0.0913000000",
+                                                      "Eccentricity":  "0.017000",
+                                                      "Discovered":  "2014",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Kepler"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "kepler22_b":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:Kepler-22:Kepler-22 b",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-22",
+                                      "Values":  {
+                                                     "Host star":  "Kepler-22",
+                                                     "Spectral type":  "G5 V",
+                                                     "Distance (pc)":  "194.64200000",
+                                                     "Orbital period (d)":  "289.86387600000",
+                                                     "Radius (Earth)":  "2.10000000",
+                                                     "Mass (Earth)":  "9.10000000",
+                                                     "Eq. temperature (K)":  "279.00",
+                                                     "Insolation (Earth)":  "1.0130",
+                                                     "Semimajor axis (AU)":  "0.8120000000",
+                                                     "Eccentricity":  "0.720000",
+                                                     "Discovered":  "2011",
+                                                     "Method":  "Transit",
+                                                     "Facility":  "Kepler"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "venus":  {
+                                 "Status":  "ok",
+                                 "Lookup":  "sheet:venusfact:Venus",
+                                 "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html",
+                                 "Values":  {
+                                                "Ratio (Venus/Earth)":  "4.8673",
+                                                "Mass (1024 kg)":  "4.8673",
+                                                "Volume (1010 km3)":  "92.843",
+                                                "Equatorial radius (km)":  "6051.8",
+                                                "Polar radius (km)":  "6051.8",
+                                                "Volumetric mean radius (km)":  "6051.8",
+                                                "Ellipticity (Flattening)":  "0.000",
+                                                "Mean density (kg/m3)":  "5243",
+                                                "Surface gravity (mean) (m/s2)":  "8.87",
+                                                "Surface acceleration (eq.) (m/s2)":  "8.87",
+                                                "Surface acceleration (pole) (m/s2)":  "8.87",
+                                                "Escape velocity (km/s)":  "10.36",
+                                                "GM (x 106 km3/s2)":  "0.32486",
+                                                "V-band magnitude V(1,0)":  "-4.38",
+                                                "Solar irradiance (W/m2)":  "2601.3",
+                                                "Black-body temperature (K)":  "226.6",
+                                                "Topographic range (km)":  "13",
+                                                "Moment of inertia (I/MR2)":  "0.337",
+                                                "J2 (x 10-6)":  "4.458",
+                                                "Semimajor axis (106 km)":  "108.210",
+                                                "Sidereal orbit period (days)":  "224.701",
+                                                "Tropical orbit period (days)":  "224.695",
+                                                "Perihelion (106 km)":  "107.480",
+                                                "Aphelion (106 km)":  "108.941",
+                                                "Synodic period (days)":  "583.92",
+                                                "Mean orbital velocity (km/s)":  "35.02",
+                                                "Max. orbital velocity (km/s)":  "35.26",
+                                                "Min. orbital velocity (km/s)":  "34.78",
+                                                "Orbit inclination (deg)":  "3.395",
+                                                "Sidereal rotation period (hrs)":  "-5832.6",
+                                                "Length of day (hrs)":  "2802.0",
+                                                "Obliquity to orbit (deg)":  "177.36",
+                                                "Inclination of equator (deg)":  "2.64",
+                                                "Atmosphere composition":  "Atmospheric composition (near surface, by volume): Major: 96.5% Carbon Dioxide (CO 2 ), 3.5% Nitrogen (N 2 ) Minor (ppm): Sulfur Dioxide (SO 2 ) - 150; Argon (Ar) - 70; Water (H 2 O) - 20; Carbon Monoxide (CO) - 17; Helium (He) - 12; Neon (Ne) - 7",
+                                                "Mass (1024kg)":  "4.87",
+                                                "Diameter (km)":  "12,104",
+                                                "Density (kg/m3)":  "5243",
+                                                "Gravity (m/s2)":  "8.9",
+                                                "Rotation Period (hours)":  "-5832.5",
+                                                "Length of Day (hours)":  "2802.0",
+                                                "Distance from Sun (106 km)":  "108.2",
+                                                "Orbital Period (days)":  "224.7",
+                                                "Orbital Velocity (km/s)":  "35.0",
+                                                "Orbital Inclination (degrees)":  "3.4",
+                                                "Orbital Eccentricity":  "0.007",
+                                                "Obliquity to Orbit (degrees)":  "177.4",
+                                                "Mean Temperature (C)":  "464",
+                                                "Number of Moons":  "0"
+                                            },
+                                 "Evidence":  [
+
+                                              ]
+                             },
+                   "kepler16_b":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:Kepler-16:Kepler-16 b",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-16",
+                                      "Values":  {
+                                                     "Host star":  "Kepler-16",
+                                                     "Spectral type":  "",
+                                                     "Distance (pc)":  "75.08520000",
+                                                     "Orbital period (d)":  "228.77600000000",
+                                                     "Radius (Earth)":  "8.44930000",
+                                                     "Mass (Earth)":  "105.83300000",
+                                                     "Eq. temperature (K)":  "205.90",
+                                                     "Insolation (Earth)":  "0.2517",
+                                                     "Semimajor axis (AU)":  "0.7048000000",
+                                                     "Eccentricity":  "0.006900",
+                                                     "Discovered":  "2011",
+                                                     "Method":  "Transit",
+                                                     "Facility":  "Kepler"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "m104":  {
+                                "Status":  "ok",
+                                "Lookup":  "fixed",
+                                "Source":  "https://science.nasa.gov/universe/galaxies/",
+                                "Values":  {
+                                               "Notable":  "100-billion-solar-mass bulge",
+                                               "Black hole":  "~1 billion Suns",
+                                               "Type":  "unbarred spiral",
+                                               "Distance":  "~31 million ly"
+                                           },
+                                "Evidence":  [
+                                                 "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                 "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                 "6 billion years old.",
+                                                 "8 billion years ago."
+                                             ]
+                            },
+                   "gj1002_b":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "exo:GJ 1002:GJ 1002 b",
+                                    "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/GJ%201002",
+                                    "Values":  {
+                                                   "Host star":  "GJ 1002",
+                                                   "Spectral type":  "M5.5 V",
+                                                   "Distance (pc)":  "4.84867000",
+                                                   "Orbital period (d)":  "10.34650000000",
+                                                   "Radius (Earth)":  "1.03000000",
+                                                   "Mass (Earth)":  "1.08000000",
+                                                   "Eq. temperature (K)":  "230.90",
+                                                   "Insolation (Earth)":  "0.6700",
+                                                   "Semimajor axis (AU)":  "0.0457000000",
+                                                   "Eccentricity":  "",
+                                                   "Discovered":  "2022",
+                                                   "Method":  "Radial Velocity",
+                                                   "Facility":  "Multiple Observatories"
+                                               },
+                                    "Evidence":  [
+
+                                                 ]
+                                },
+                   "trappist1_d":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:TRAPPIST-1:TRAPPIST-1 d",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/TRAPPIST-1",
+                                       "Values":  {
+                                                      "Host star":  "TRAPPIST-1",
+                                                      "Spectral type":  "M8.0 V",
+                                                      "Distance (pc)":  "12.42988881",
+                                                      "Orbital period (d)":  "4.04921900000",
+                                                      "Radius (Earth)":  "0.78800000",
+                                                      "Mass (Earth)":  "0.38800000",
+                                                      "Eq. temperature (K)":  "286.20",
+                                                      "Insolation (Earth)":  "1.1150",
+                                                      "Semimajor axis (AU)":  "0.0222700000",
+                                                      "Eccentricity":  "0.008370",
+                                                      "Discovered":  "2016",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "La Silla Observatory"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "earth":  {
+                                 "Status":  "ok",
+                                 "Lookup":  "sheet:earthfact:Earth",
+                                 "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html",
+                                 "Values":  {
+                                                "Mass (1024 kg)":  "5.9722",
+                                                "Volume (1010 km3)":  "108.321",
+                                                "Equatorial radius (km)":  "6378.137",
+                                                "Polar radius (km)":  "6356.752",
+                                                "Volumetric mean radius (km)":  "6371.000",
+                                                "Core radius (km)":  "3485",
+                                                "Ellipticity (Flattening)":  "0.003353",
+                                                "Mean density (kg/m3)":  "5513",
+                                                "Surface gravity (mean) (m/s2)":  "9.820",
+                                                "Surface acceleration (eq) (m/s2)":  "9.780",
+                                                "Surface acceleration (pole) (m/s2)":  "9.832",
+                                                "Escape velocity (km/s)":  "11.186",
+                                                "GM (x 106 km3/s2)":  "0.39860",
+                                                "V-band magnitude V(1,0)":  "-3.99",
+                                                "Solar irradiance (W/m2)":  "1361.0",
+                                                "Black-body temperature (K)":  "254.0",
+                                                "Topographic range (km)":  "20.4",
+                                                "Moment of inertia (I/MR2)":  "0.3308",
+                                                "J2 (x 10-6)":  "1082.63",
+                                                "Semimajor axis (106 km)":  "149.598",
+                                                "Sidereal orbit period (days)":  "365.256",
+                                                "Tropical orbit period (days)":  "365.242",
+                                                "Perihelion (106 km)":  "147.095",
+                                                "Aphelion (106 km)":  "152.100",
+                                                "Mean orbital velocity (km/s)":  "29.78",
+                                                "Max. orbital velocity (km/s)":  "30.29",
+                                                "Min. orbital velocity (km/s)":  "29.29",
+                                                "Orbit inclination (deg)":  "0.000",
+                                                "Sidereal rotation period (hrs)":  "23.9345",
+                                                "Length of day (hrs)":  "24.0000",
+                                                "Obliquity to orbit (deg)":  "23.44",
+                                                "Inclination of equator (deg)":  "23.44",
+                                                "Semimajor axis (AU)":  "1.00000011",
+                                                "Orbital inclination (deg)":  "0.00005",
+                                                "Longitude of ascending node (deg)":  "-11.26064",
+                                                "Longitude of perihelion (deg)":  "102.94719",
+                                                "Mean Longitude (deg)":  "100.46435",
+                                                "Atmosphere composition":  "Atmospheric composition (by volume, dry air): Major : 78.08% Nitrogen (N 2 ), 20.95% Oxygen (O 2 ), Minor (ppm): Argon (Ar) - 9340; Carbon Dioxide (CO 2 ) - 420 Neon (Ne) - 18.18; Helium (He) - 5.24; CH 4 - 1.94 Krypton (Kr) - 1.14; Hydrogen (H 2 ) - 0.55 Numbers do not add up to exactly 100% due to roundoff and uncertainty Water is highly variable, typically makes up about 1%",
+                                                "Mass (1024kg)":  "5.97",
+                                                "Diameter (km)":  "12,756",
+                                                "Density (kg/m3)":  "5514",
+                                                "Gravity (m/s2)":  "9.8",
+                                                "Rotation Period (hours)":  "23.9",
+                                                "Length of Day (hours)":  "24.0",
+                                                "Distance from Sun (106 km)":  "149.6",
+                                                "Orbital Period (days)":  "365.2",
+                                                "Orbital Velocity (km/s)":  "29.8",
+                                                "Orbital Inclination (degrees)":  "0.0",
+                                                "Orbital Eccentricity":  "0.017",
+                                                "Obliquity to Orbit (degrees)":  "23.4",
+                                                "Mean Temperature (C)":  "15",
+                                                "Number of Moons":  "1"
+                                            },
+                                 "Evidence":  [
+
+                                              ]
+                             },
+                   "westerlund_1":  {
+                                        "Status":  "ok",
+                                        "Lookup":  "fixed",
+                                        "Source":  "https://science.nasa.gov/universe/stars/",
+                                        "Values":  {
+                                                       "Notable":  "many red supergiants",
+                                                       "Stars":  "hundreds of thousands",
+                                                       "Type":  "young massive super star cluster",
+                                                       "Distance":  "~15,000 ly"
+                                                   },
+                                        "Evidence":  [
+                                                         "Molecular clouds range from 1,000 to 10 million times the mass of the Sun and can span as much as hundreds of light-years.",
+                                                         "(This will be the fate of our Sun, in several billion years.",
+                                                         "The Helix nebula, imaged here, lies 650 light-years away in the constellation Aquarius.",
+                                                         "nant of a supernova observed in 1572, notably studied by the Danish astronomer Tycho Brahe, lies about 13,000 light-years away in the constellation Cassiopeia."
+                                                     ]
+                                    },
+                   "proxima_d":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "exo:Proxima Cen:Proxima Cen d",
+                                     "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Proxima%20Cen",
+                                     "Values":  {
+                                                    "Host star":  "Proxima Cen",
+                                                    "Spectral type":  "M5.5 V",
+                                                    "Distance (pc)":  "1.30119000",
+                                                    "Orbital period (d)":  "5.12338000000",
+                                                    "Radius (Earth)":  "0.69200000",
+                                                    "Mass (Earth)":  "0.26000000",
+                                                    "Eq. temperature (K)":  "282.00",
+                                                    "Insolation (Earth)":  "1.8140",
+                                                    "Semimajor axis (AU)":  "0.0288100000",
+                                                    "Eccentricity":  "0.000000",
+                                                    "Discovered":  "2025",
+                                                    "Method":  "Radial Velocity",
+                                                    "Facility":  "La Silla Observatory"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "earendel":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "fixed",
+                                    "Source":  "https://science.nasa.gov/mission/webb/",
+                                    "Values":  {
+                                                   "Redshift":  "z = 6.2",
+                                                   "Found by":  "Hubble (2022), JWST confirmed",
+                                                   "Light travel distance":  "~12.9 billion ly",
+                                                   "Notable":  "most distant star ever seen, magnified by a gravitational lens"
+                                               },
+                                    "Evidence":  "5 billion years to see the first galaxies born after the Big Bang."
+                                },
+                   "gj1061_c":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "exo:GJ 1061:GJ 1061 c",
+                                    "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/GJ%201061",
+                                    "Values":  {
+                                                   "Host star":  "GJ 1061",
+                                                   "Spectral type":  "M5.5 V",
+                                                   "Distance (pc)":  "3.67278000",
+                                                   "Orbital period (d)":  "6.68210000000",
+                                                   "Radius (Earth)":  "1.19000000",
+                                                   "Mass (Earth)":  "1.81000000",
+                                                   "Eq. temperature (K)":  "304.12",
+                                                   "Insolation (Earth)":  "1.4000",
+                                                   "Semimajor axis (AU)":  "0.0342000000",
+                                                   "Eccentricity":  "0.020000",
+                                                   "Discovered":  "2020",
+                                                   "Method":  "Radial Velocity",
+                                                   "Facility":  "La Silla Observatory"
+                                               },
+                                    "Evidence":  [
+
+                                                 ]
+                                },
+                   "cygnus_x1":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "fixed",
+                                     "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                     "Values":  {
+                                                    "Companion":  "HDE 226868 (blue supergiant)",
+                                                    "Type":  "stellar-mass black hole",
+                                                    "Mass":  "21 Suns",
+                                                    "Distance":  "~7,200 ly"
+                                                },
+                                     "Evidence":  [
+                                                      "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                      "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                  ]
+                                 },
+                   "psr_j1748":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "fixed",
+                                     "Source":  "https://science.nasa.gov/universe/neutron-stars/",
+                                     "Values":  {
+                                                    "Spin period":  "1.396 milliseconds (716 Hz)",
+                                                    "Notable":  "fastest-spinning pulsar known",
+                                                    "Distance":  "~18,000 ly"
+                                                },
+                                     "Evidence":  [
+
+                                                  ],
+                                     "EvidenceError":  "GET failed after 1 attempts: https://science.nasa.gov/universe/neutron-stars/ :: 请求被中止: 连接被意外关闭。"
+                                 },
+                   "grb090423":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "fixed",
+                                     "Source":  "https://science.nasa.gov/mission/swift/",
+                                     "Values":  {
+                                                    "Redshift":  "z = 8.2",
+                                                    "Detected":  "2009-04-23 (Swift)",
+                                                    "Light travel distance":  "~13.0 billion ly",
+                                                    "Notable":  "oldest gamma-ray burst then known; the burst lasted ~10 seconds"
+                                                },
+                                     "Evidence":  null
+                                 },
+                   "teegarden_b":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:Teegarden\u0027s Star:Teegarden\u0027s Star b",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Teegarden\u0027s%20Star",
+                                       "Values":  {
+                                                      "Host star":  "Teegarden\u0027s Star",
+                                                      "Spectral type":  "M7.0 V",
+                                                      "Distance (pc)":  "3.83078000",
+                                                      "Orbital period (d)":  "4.90634000000",
+                                                      "Radius (Earth)":  "1.05000000",
+                                                      "Mass (Earth)":  "1.16000000",
+                                                      "Eq. temperature (K)":  "277.00",
+                                                      "Insolation (Earth)":  "1.0800",
+                                                      "Semimajor axis (AU)":  "0.0259000000",
+                                                      "Eccentricity":  "0.030000",
+                                                      "Discovered":  "2019",
+                                                      "Method":  "Radial Velocity",
+                                                      "Facility":  "Calar Alto Observatory"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "sn_1987a":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "fixed",
+                                    "Source":  "https://science.nasa.gov/mission/hubble/",
+                                    "Values":  {
+                                                   "Notable":  "first supernova visible to the naked eye since 1604",
+                                                   "Exploded":  "February 1987",
+                                                   "Type":  "core-collapse supernova remnant",
+                                                   "Distance":  "~168,000 ly"
+                                               },
+                                    "Evidence":  null
+                                },
+                   "mom_z14":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "fixed",
+                                   "Source":  "https://science.nasa.gov/mission/webb/",
+                                   "Values":  {
+                                                  "Redshift":  "z = 14.44",
+                                                  "Found by":  "JWST (2025, spectroscopic)",
+                                                  "Light travel distance":  "~13.5 billion ly",
+                                                  "Notable":  "most distant galaxy confirmed at the time"
+                                              },
+                                   "Evidence":  "5 billion years to see the first galaxies born after the Big Bang."
+                               },
+                   "trappist1_c":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:TRAPPIST-1:TRAPPIST-1 c",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/TRAPPIST-1",
+                                       "Values":  {
+                                                      "Host star":  "TRAPPIST-1",
+                                                      "Spectral type":  "M8.0 V",
+                                                      "Distance (pc)":  "12.42988881",
+                                                      "Orbital period (d)":  "2.42193700000",
+                                                      "Radius (Earth)":  "1.09700000",
+                                                      "Mass (Earth)":  "1.30800000",
+                                                      "Eq. temperature (K)":  "339.70",
+                                                      "Insolation (Earth)":  "2.2140",
+                                                      "Semimajor axis (AU)":  "0.0158000000",
+                                                      "Eccentricity":  "0.006540",
+                                                      "Discovered":  "2016",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "La Silla Observatory"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "virgo_cluster":  {
+                                         "Status":  "ok",
+                                         "Lookup":  "fixed",
+                                         "Source":  "https://science.nasa.gov/universe/galaxies/",
+                                         "Values":  {
+                                                        "Galaxies":  "~1,300-2,000",
+                                                        "Notable":  "center of the Local Supercluster",
+                                                        "Distance":  "~65 million ly",
+                                                        "Diameter":  "~15 million ly"
+                                                    },
+                                         "Evidence":  [
+                                                          "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                          "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                          "6 billion years old.",
+                                                          "8 billion years ago."
+                                                      ]
+                                     },
+                   "trappist1_f":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:TRAPPIST-1:TRAPPIST-1 f",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/TRAPPIST-1",
+                                       "Values":  {
+                                                      "Host star":  "TRAPPIST-1",
+                                                      "Spectral type":  "M8.0 V",
+                                                      "Distance (pc)":  "12.42988881",
+                                                      "Orbital period (d)":  "9.20754000000",
+                                                      "Radius (Earth)":  "1.04500000",
+                                                      "Mass (Earth)":  "1.03900000",
+                                                      "Eq. temperature (K)":  "217.70",
+                                                      "Insolation (Earth)":  "0.3730",
+                                                      "Semimajor axis (AU)":  "0.0384900000",
+                                                      "Eccentricity":  "0.010070",
+                                                      "Discovered":  "2017",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Multiple Observatories"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "psr1620_b":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "exo:PSR B1620-26:PSR B1620-26 b",
+                                     "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/PSR%20B1620-26",
+                                     "Values":  {
+                                                    "Host star":  "PSR B1620-26",
+                                                    "Spectral type":  "",
+                                                    "Distance (pc)":  "",
+                                                    "Orbital period (d)":  "",
+                                                    "Radius (Earth)":  "13.30000000",
+                                                    "Mass (Earth)":  "794.57500000",
+                                                    "Eq. temperature (K)":  "",
+                                                    "Insolation (Earth)":  "",
+                                                    "Semimajor axis (AU)":  "23.0000000000",
+                                                    "Eccentricity":  "",
+                                                    "Discovered":  "2003",
+                                                    "Method":  "Pulsar Timing",
+                                                    "Facility":  "Hubble Space Telescope"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "m87_star":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "fixed",
+                                    "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                    "Values":  {
+                                                   "Notable":  "first black hole ever photographed",
+                                                   "Imaged":  "2019 (EHT)",
+                                                   "Mass":  "6.5 billion Suns",
+                                                   "Distance":  "~55 million ly"
+                                               },
+                                    "Evidence":  [
+                                                     "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                     "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                 ]
+                                },
+                   "kepler442_b":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:Kepler-442:Kepler-442 b",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-442",
+                                       "Values":  {
+                                                      "Host star":  "Kepler-442",
+                                                      "Spectral type":  "",
+                                                      "Distance (pc)":  "365.96500000",
+                                                      "Orbital period (d)":  "112.30530000000",
+                                                      "Radius (Earth)":  "1.34000000",
+                                                      "Mass (Earth)":  "2.36000000",
+                                                      "Eq. temperature (K)":  "241.00",
+                                                      "Insolation (Earth)":  "0.6600",
+                                                      "Semimajor axis (AU)":  "0.4090000000",
+                                                      "Eccentricity":  "0.040000",
+                                                      "Discovered":  "2015",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Kepler"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "gj887_d":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "exo:GJ 887:GJ 887 d",
+                                   "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/GJ%20887",
+                                   "Values":  {
+                                                  "Host star":  "GJ 887",
+                                                  "Spectral type":  "M1 V",
+                                                  "Distance (pc)":  "3.28679000",
+                                                  "Orbital period (d)":  "50.77000000000",
+                                                  "Radius (Earth)":  "2.34000000",
+                                                  "Mass (Earth)":  "6.10000000",
+                                                  "Eq. temperature (K)":  "241.00",
+                                                  "Insolation (Earth)":  "0.8100",
+                                                  "Semimajor axis (AU)":  "0.2120000000",
+                                                  "Eccentricity":  "",
+                                                  "Discovered":  "2026",
+                                                  "Method":  "Radial Velocity",
+                                                  "Facility":  "Multiple Observatories"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "cnc55_e":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "exo:55 Cnc:55 Cnc e",
+                                   "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/55%20Cnc",
+                                   "Values":  {
+                                                  "Host star":  "55 Cnc",
+                                                  "Spectral type":  "G8 V",
+                                                  "Distance (pc)":  "12.58550000",
+                                                  "Orbital period (d)":  "0.73654740000",
+                                                  "Radius (Earth)":  "1.87500000",
+                                                  "Mass (Earth)":  "7.99000000",
+                                                  "Eq. temperature (K)":  "1958.00",
+                                                  "Insolation (Earth)":  "2657.8322",
+                                                  "Semimajor axis (AU)":  "0.0154400000",
+                                                  "Eccentricity":  "0.050000",
+                                                  "Discovered":  "2004",
+                                                  "Method":  "Radial Velocity",
+                                                  "Facility":  "McDonald Observatory"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "sirius_b":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "fixed",
+                                    "Source":  "https://science.nasa.gov/universe/stars/",
+                                    "Values":  {
+                                                   "Diameter":  "~11,600 km",
+                                                   "Mass":  "1.02 Suns",
+                                                   "Type":  "DA2 white dwarf",
+                                                   "Discovered":  "1862",
+                                                   "Distance":  "8.6 ly",
+                                                   "Surface temperature":  "~25,000 K"
+                                               },
+                                    "Evidence":  [
+                                                     "Molecular clouds range from 1,000 to 10 million times the mass of the Sun and can span as much as hundreds of light-years.",
+                                                     "(This will be the fate of our Sun, in several billion years.",
+                                                     "The Helix nebula, imaged here, lies 650 light-years away in the constellation Aquarius.",
+                                                     "nant of a supernova observed in 1572, notably studied by the Danish astronomer Tycho Brahe, lies about 13,000 light-years away in the constellation Cassiopeia."
+                                                 ]
+                                },
+                   "gw150914":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "fixed",
+                                    "Source":  "https://science.nasa.gov/universe/",
+                                    "Values":  {
+                                                   "Merged":  "two black holes of ~36 and ~29 Suns",
+                                                   "Detected":  "2015-09-14, announced 2016-02-11 (LIGO)",
+                                                   "Distance":  "~1.3 billion ly",
+                                                   "Output":  "3 Suns of energy as gravitational waves"
+                                               },
+                                    "Evidence":  null
+                                },
+                   "kepler37_b":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:Kepler-37:Kepler-37 b",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-37",
+                                      "Values":  {
+                                                     "Host star":  "Kepler-37",
+                                                     "Spectral type":  "",
+                                                     "Distance (pc)":  "63.92070000",
+                                                     "Orbital period (d)":  "13.36702000000",
+                                                     "Radius (Earth)":  "0.30980000",
+                                                     "Mass (Earth)":  "0.79000000",
+                                                     "Eq. temperature (K)":  "718.00",
+                                                     "Insolation (Earth)":  "44.5000",
+                                                     "Semimajor axis (AU)":  "0.1019000000",
+                                                     "Eccentricity":  "0.098000",
+                                                     "Discovered":  "2013",
+                                                     "Method":  "Transit",
+                                                     "Facility":  "Kepler"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "tauceti_f":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "fixed",
+                                     "Source":  "https://science.nasa.gov/universe/exoplanets/",
+                                     "Values":  {
+                                                    "Mass":  "~6.6 Earths",
+                                                    "Status":  "candidate (Tuomi 2017), not in the archive",
+                                                    "Period":  "~636 days",
+                                                    "Distance":  "11.9 ly",
+                                                    "Host star":  "Tau Ceti (G8 V)"
+                                                },
+                                     "Evidence":  [
+
+                                                  ],
+                                     "EvidenceError":  "GET failed after 1 attempts: https://science.nasa.gov/universe/exoplanets/ :: 请求被中止: 连接被意外关闭。"
+                                 },
+                   "kepler186_f":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:Kepler-186:Kepler-186 f",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-186",
+                                       "Values":  {
+                                                      "Host star":  "Kepler-186",
+                                                      "Spectral type":  "M1",
+                                                      "Distance (pc)":  "177.59400000",
+                                                      "Orbital period (d)":  "129.94410000000",
+                                                      "Radius (Earth)":  "1.17000000",
+                                                      "Mass (Earth)":  "1.71000000",
+                                                      "Eq. temperature (K)":  "177.00",
+                                                      "Insolation (Earth)":  "0.3000",
+                                                      "Semimajor axis (AU)":  "0.4320000000",
+                                                      "Eccentricity":  "0.040000",
+                                                      "Discovered":  "2014",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Kepler"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "smc":  {
+                               "Status":  "ok",
+                               "Lookup":  "fixed",
+                               "Source":  "https://science.nasa.gov/universe/galaxies/",
+                               "Values":  {
+                                              "Satellite of":  "Milky Way",
+                                              "Diameter":  "~18,900 ly",
+                                              "Type":  "dwarf irregular galaxy",
+                                              "Distance":  "~200,000 ly"
+                                          },
+                               "Evidence":  [
+                                                "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                "6 billion years old.",
+                                                "8 billion years ago."
+                                            ]
+                           },
+                   "haumea":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "fixed",
+                                  "Source":  "https://science.nasa.gov/dwarf-planets/haumea/",
+                                  "Values":  {
+                                                 "Diameter":  "~1,600 x 1,100 km",
+                                                 "Discovered":  "2004",
+                                                 "Orbital period":  "284 years",
+                                                 "Mass (1024 kg)":  "0.004006",
+                                                 "Mean radius (km)":  "780",
+                                                 "Distance from Sun":  "43.1 AU (mean)"
+                                             },
+                                  "Evidence":  "5 billion years ago."
+                              },
+                   "ganymede":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "sat:jovian:Ganymede",
+                                    "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+                                    "Values":  {
+                                                   "Mass(1020 kg)":  "1481.9",
+                                                   "Radius(km)":  "2631.2",
+                                                   "Mean density(kg/m3)":  "1940",
+                                                   "Visual geometric albedo":  "0.44"
+                                               },
+                                    "Evidence":  [
+
+                                                 ]
+                                },
+                   "deimos":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "moonnames:marsfact:Deimos:Satellites of Mars",
+                                  "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+                                  "Values":  {
+                                                 "Semimajor axis* (km)":  "23459",
+                                                 "Sidereal rotation period (days)":  "1.26244",
+                                                 "Orbital inclination (deg)":  "1.79",
+                                                 "Orbital eccentricity":  "0.0005",
+                                                 "Subplanetary axis radius (km)":  "7.8",
+                                                 "Along-orbit axis radius (km)":  "6.0",
+                                                 "Polar axis radius (km)":  "5.1",
+                                                 "Mass (1015 kg)":  "2.4",
+                                                 "Visual magnitude V(1,0)":  "+12.89",
+                                                 "Apparent visual magnitude (V0)":  "12.40"
+                                             },
+                                  "Evidence":  [
+
+                                               ]
+                              },
+                   "triton":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "sat:neptunian:Triton",
+                                  "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/neptuniansatfact.html",
+                                  "Values":  {
+                                                 "Mass(1020 kg)":  "214.",
+                                                 "Radius(km)":  "1,353.4",
+                                                 "Mean density(kg/m3)":  "2,050",
+                                                 "Visual geometric albedo":  "0.72"
+                                             },
+                                  "Evidence":  [
+
+                                               ]
+                              },
+                   "wolf1061_c":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:Wolf 1061:Wolf 1061 c",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Wolf%201061",
+                                      "Values":  {
+                                                     "Host star":  "Wolf 1061",
+                                                     "Spectral type":  "M3.5",
+                                                     "Distance (pc)":  "4.30592000",
+                                                     "Orbital period (d)":  "17.87190000000",
+                                                     "Radius (Earth)":  "1.66000000",
+                                                     "Mass (Earth)":  "3.41000000",
+                                                     "Eq. temperature (K)":  "299.30",
+                                                     "Insolation (Earth)":  "1.3000",
+                                                     "Semimajor axis (AU)":  "0.0890000000",
+                                                     "Eccentricity":  "0.110000",
+                                                     "Discovered":  "2015",
+                                                     "Method":  "Radial Velocity",
+                                                     "Facility":  "La Silla Observatory"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "mars":  {
+                                "Status":  "ok",
+                                "Lookup":  "sheet:marsfact:Mars",
+                                "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+                                "Values":  {
+                                               "Ratio (Mars/Earth)":  "0.64169",
+                                               "Mass (1024 kg)":  "0.64169",
+                                               "Volume (1010 km3)":  "16.312",
+                                               "Equatorial radius (km)":  "3396.2",
+                                               "Polar radius (km)":  "3376.2",
+                                               "Volumetric mean radius (km)":  "3389.5",
+                                               "Core radius (km)":  "1830**",
+                                               "Ellipticity (Flattening)":  "0.00589",
+                                               "Mean density (kg/m3)":  "3934",
+                                               "Surface gravity (mean) (m/s2)":  "3.73",
+                                               "Surface acceleration (eq) (m/s2)":  "3.69",
+                                               "Surface acceleration (pole) (m/s2)":  "3.73",
+                                               "Escape velocity (km/s)":  "5.03",
+                                               "GM (x 106 km3/s2)":  "0.042828",
+                                               "V-band magnitude V(1,0)":  "-1.60",
+                                               "Solar irradiance (W/m2)":  "586.2",
+                                               "Black-body temperature (K)":  "209.8",
+                                               "Topographic range (km)":  "30",
+                                               "Moment of inertia (I/MR2)":  "0.366",
+                                               "J2 (x 10-6)":  "1960.45",
+                                               "Semimajor axis (106 km)":  "227.956",
+                                               "Sidereal orbit period (days)":  "686.980",
+                                               "Tropical orbit period* (days)":  "686.972",
+                                               "Perihelion (106 km)":  "206.650",
+                                               "Aphelion (106 km)":  "249.261",
+                                               "Synodic period (days)":  "779.94",
+                                               "Mean orbital velocity (km/s)":  "24.08",
+                                               "Max. orbital velocity (km/s)":  "26.50",
+                                               "Min. orbital velocity (km/s)":  "21.97",
+                                               "Orbit inclination (deg)":  "1.848",
+                                               "Sidereal rotation period (hrs)":  "24.6229",
+                                               "Length of day (hrs)":  "24.6597",
+                                               "Obliquity to orbit (deg)":  "25.19",
+                                               "Inclination of equator (deg)":  "25.19",
+                                               "Semimajor axis* (km)":  "9378",
+                                               "Sidereal rotation period (days)":  "0.31891",
+                                               "Orbital inclination (deg)":  "1.08",
+                                               "Subplanetary axis radius (km)":  "13.0",
+                                               "Along-orbit axis radius (km)":  "11.4",
+                                               "Polar axis radius (km)":  "9.1",
+                                               "Mass (1015 kg)":  "10.6",
+                                               "Visual magnitude V(1,0)":  "+11.8",
+                                               "Apparent visual magnitude (V0)":  "11.3",
+                                               "Atmosphere composition":  "Atmospheric composition (by volume): Major : Carbon Dioxide (CO 2 ) - 95.1% ; Nitrogen (N 2 ) - 2.59% Argon (Ar) - 1.94%; Oxygen (O 2 ) - 0.16%; Carbon Monoxide (CO) - 0.06% Minor (ppm): Water (H 2 O) - 210; Nitrogen Oxide (NO) - 100; Neon (Ne) - 2.5; Hydrogen-Deuterium-Oxygen (HDO) - 0.85; Krypton (Kr) - 0.3; Xenon (Xe) - 0.08 Satellites of Mars Phobos Deimos Semimajor axis* (km) 9378 23459 Sidereal orbit period (days) 0.31891 1.26244 Sidereal rotation period (days) 0.31891 1.26244 Orbital inclination (deg) 1.08 1.79 Orbital eccentricity 0.0151 0.0005",
+                                               "Mass (1024kg)":  "0.642",
+                                               "Diameter (km)":  "6792",
+                                               "Density (kg/m3)":  "3934",
+                                               "Gravity (m/s2)":  "3.7",
+                                               "Rotation Period (hours)":  "24.6",
+                                               "Length of Day (hours)":  "24.7",
+                                               "Distance from Sun (106 km)":  "228.0",
+                                               "Orbital Period (days)":  "687.0",
+                                               "Orbital Velocity (km/s)":  "24.1",
+                                               "Orbital Inclination (degrees)":  "1.8",
+                                               "Orbital Eccentricity":  "0.094",
+                                               "Obliquity to Orbit (degrees)":  "25.2",
+                                               "Mean Temperature (C)":  "-65",
+                                               "Number of Moons":  "2"
+                                           },
+                                "Evidence":  [
+
+                                             ]
+                            },
+                   "boyajian_star":  {
+                                         "Status":  "ok",
+                                         "Lookup":  "fixed",
+                                         "Source":  "https://science.nasa.gov/universe/exoplanets/",
+                                         "Values":  {
+                                                        "Famous for":  "aperiodic dimming up to 22%",
+                                                        "Explained by":  "dust, not a megastructure",
+                                                        "Type":  "F3 V",
+                                                        "Distance":  "~1,470 ly"
+                                                    },
+                                         "Evidence":  [
+
+                                                      ],
+                                         "EvidenceError":  "GET failed after 1 attempts: https://science.nasa.gov/universe/exoplanets/ :: 请求被中止: 连接被意外关闭。"
+                                     },
+                   "kepler70_b":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "exo:KOI-55:KOI-55 b",
+                                      "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/KOI-55",
+                                      "Values":  {
+                                                     "Host star":  "KOI-55",
+                                                     "Spectral type":  "B",
+                                                     "Distance (pc)":  "1231.02000000",
+                                                     "Orbital period (d)":  "0.24010400000",
+                                                     "Radius (Earth)":  "0.75900000",
+                                                     "Mass (Earth)":  "0.44000000",
+                                                     "Eq. temperature (K)":  "7777.78",
+                                                     "Insolation (Earth)":  "636352.1258",
+                                                     "Semimajor axis (AU)":  "0.0060000000",
+                                                     "Eccentricity":  "",
+                                                     "Discovered":  "2011",
+                                                     "Method":  "Orbital Brightness Modulation",
+                                                     "Facility":  "Kepler"
+                                                 },
+                                      "Evidence":  [
+
+                                                   ]
+                                  },
+                   "kepler1649_c":  {
+                                        "Status":  "ok",
+                                        "Lookup":  "exo:Kepler-1649:Kepler-1649 c",
+                                        "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-1649",
+                                        "Values":  {
+                                                       "Host star":  "Kepler-1649",
+                                                       "Spectral type":  "",
+                                                       "Distance (pc)":  "92.19130000",
+                                                       "Orbital period (d)":  "19.53527000000",
+                                                       "Radius (Earth)":  "1.06000000",
+                                                       "Mass (Earth)":  "1.20000000",
+                                                       "Eq. temperature (K)":  "234.00",
+                                                       "Insolation (Earth)":  "0.7500",
+                                                       "Semimajor axis (AU)":  "0.0649000000",
+                                                       "Eccentricity":  "0.000000",
+                                                       "Discovered":  "2020",
+                                                       "Method":  "Transit",
+                                                       "Facility":  "Kepler"
+                                                   },
+                                        "Evidence":  [
+
+                                                     ]
+                                    },
+                   "trappist1_b":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:TRAPPIST-1:TRAPPIST-1 b",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/TRAPPIST-1",
+                                       "Values":  {
+                                                      "Host star":  "TRAPPIST-1",
+                                                      "Spectral type":  "M8.0 V",
+                                                      "Distance (pc)":  "12.42988881",
+                                                      "Orbital period (d)":  "1.51082600000",
+                                                      "Radius (Earth)":  "1.11600000",
+                                                      "Mass (Earth)":  "1.37400000",
+                                                      "Eq. temperature (K)":  "397.60",
+                                                      "Insolation (Earth)":  "4.1530",
+                                                      "Semimajor axis (AU)":  "0.0115400000",
+                                                      "Eccentricity":  "0.006220",
+                                                      "Discovered":  "2016",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "La Silla Observatory"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "tarantula_nebula":  {
+                                            "Status":  "ok",
+                                            "Lookup":  "fixed",
+                                            "Source":  "https://science.nasa.gov/mission/hubble/",
+                                            "Values":  {
+                                                           "Notable":  "most active star-forming region in the Local Group",
+                                                           "Diameter":  "~650 ly",
+                                                           "Type":  "H II region",
+                                                           "Distance":  "~160,000 ly"
+                                                       },
+                                            "Evidence":  null
+                                        },
+                   "callisto":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "sat:jovian:Callisto",
+                                    "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+                                    "Values":  {
+                                                   "Mass(1020 kg)":  "1075.9",
+                                                   "Radius(km)":  "2410.3",
+                                                   "Mean density(kg/m3)":  "1830",
+                                                   "Visual geometric albedo":  "0.19"
+                                               },
+                                    "Evidence":  [
+
+                                                 ]
+                                },
+                   "great_annihilator":  {
+                                             "Status":  "ok",
+                                             "Lookup":  "fixed",
+                                             "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                             "Values":  {
+                                                            "Notable":  "brightest source of 511 keV positron annihilation in the sky",
+                                                            "Type":  "stellar-mass black hole binary (microquasar)",
+                                                            "Distance":  "~23,000 ly"
+                                                        },
+                                             "Evidence":  [
+                                                              "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                              "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                          ]
+                                         },
+                   "pluto":  {
+                                 "Status":  "ok",
+                                 "Lookup":  "sheet:plutofact:Pluto",
+                                 "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/plutofact.html",
+                                 "Values":  {
+                                                "Ratio (Pluto/Earth)":  "0.01303",
+                                                "Mass (1024 kg)":  "0.01303",
+                                                "Volume (1010 km3)":  "0.702",
+                                                "Equatorial radius (km)":  "1188",
+                                                "Polar radius (km)":  "1188",
+                                                "Volumetric mean radius (km)":  "1188",
+                                                "Ellipticity (Flattening)":  "0.0000",
+                                                "Mean density (kg/m3)":  "1854",
+                                                "Surface Gravity (mean) (m/s2)":  "0.62",
+                                                "Surface acceleration (eq.) (m/s2)":  "0.62",
+                                                "Surface acceleration (pole) (m/s2)":  "0.62",
+                                                "Escape velocity (km/s)":  "1.21",
+                                                "GM (x 106 km3/s2)":  "0.000870",
+                                                "V-band magnitude V(1,0)":  "-1.0",
+                                                "Solar irradiance (W/m2)":  "0.873",
+                                                "Black-body temperature (K)":  "37.5",
+                                                "Semimajor axis (106 km)":  "5869.656",
+                                                "Sidereal orbit period (days)":  "90,560",
+                                                "Tropical orbit period (days)":  "365.242",
+                                                "Perihelion (106 km)":  "4434.987",
+                                                "Aphelion (106 km)":  "7304.326",
+                                                "Synodic period (days)":  "366.73",
+                                                "Mean orbital velocity (km/s)":  "4.64",
+                                                "Max. orbital velocity (km/s)":  "6.10",
+                                                "Min. orbital velocity (km/s)":  "3.71",
+                                                "Orbit inclination (deg)":  "17.16",
+                                                "Sidereal rotation period (hrs)":  "-153.2928",
+                                                "Length of day (hrs)":  "153.2820",
+                                                "Obliquity to orbit (deg)":  "119.51",
+                                                "Inclination of equator (deg)":  "57.47",
+                                                "Mean Diameter (km)":  "42,413",
+                                                "Styx (P5)":  "42,413",
+                                                "Nix (P2)":  "48,690",
+                                                "Kerberos (P4)":  "57,750",
+                                                "Hydra (P3)":  "64,721",
+                                                "Atmosphere composition":  "Mean distance from Pluto (km) 19,596 Sidereal orbit period (days) 6.3872 Sidereal rotation period (days) 6.3872 Orbital inclination to Pluto (deg) 0.00005 Orbital eccentricity 0.0 Equatorial radius (km) 606 Mass (10 21 kg) 1.586 Mean density (kg/m 3 ) 1700 Surface gravity (m/s 2 ) 0.29 Escape velocity (km/s) 0.59 Geometric Albedo 0.42 Bond Albedo 0.25 Apparent visual magnitude 16.8",
+                                                "Mass (1024kg)":  "0.0130",
+                                                "Diameter (km)":  "2376",
+                                                "Density (kg/m3)":  "1850",
+                                                "Gravity (m/s2)":  "0.7",
+                                                "Rotation Period (hours)":  "-153.3",
+                                                "Length of Day (hours)":  "153.3",
+                                                "Distance from Sun (106 km)":  "5906.4",
+                                                "Orbital Period (days)":  "90,560",
+                                                "Orbital Velocity (km/s)":  "4.7",
+                                                "Orbital Inclination (degrees)":  "17.2",
+                                                "Orbital Eccentricity":  "0.244",
+                                                "Obliquity to Orbit (degrees)":  "119.5",
+                                                "Mean Temperature (C)":  "-225",
+                                                "Number of Moons":  "5"
+                                            },
+                                 "Evidence":  [
+
+                                              ]
+                             },
+                   "betelgeuse":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "fixed",
+                                      "Source":  "https://science.nasa.gov/universe/stars/",
+                                      "Values":  {
+                                                     "Radius":  "~700 times the Sun",
+                                                     "Mass":  "~16-19 Suns",
+                                                     "Type":  "red supergiant (M1-2 Ia-ab)",
+                                                     "Distance":  "~548 ly"
+                                                 },
+                                      "Evidence":  [
+                                                       "Molecular clouds range from 1,000 to 10 million times the mass of the Sun and can span as much as hundreds of light-years.",
+                                                       "(This will be the fate of our Sun, in several billion years.",
+                                                       "The Helix nebula, imaged here, lies 650 light-years away in the constellation Aquarius.",
+                                                       "nant of a supernova observed in 1572, notably studied by the Danish astronomer Tycho Brahe, lies about 13,000 light-years away in the constellation Cassiopeia."
+                                                   ]
+                                  },
+                   "m33":  {
+                               "Status":  "ok",
+                               "Lookup":  "fixed",
+                               "Source":  "https://science.nasa.gov/universe/galaxies/",
+                               "Values":  {
+                                              "Notable":  "third largest in the Local Group",
+                                              "Diameter":  "~60,000 ly",
+                                              "Type":  "unbarred spiral",
+                                              "Distance":  "~2.7 million ly"
+                                          },
+                               "Evidence":  [
+                                                "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                "6 billion years old.",
+                                                "8 billion years ago."
+                                            ]
+                           },
+                   "alpha_cen_a":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "fixed",
+                                       "Source":  "https://science.nasa.gov/universe/stars/",
+                                       "Values":  {
+                                                      "Binary period":  "79.9 years",
+                                                      "Mass":  "1.08 Suns",
+                                                      "Type":  "G2 V",
+                                                      "Distance":  "4.37 ly"
+                                                  },
+                                       "Evidence":  [
+                                                        "Molecular clouds range from 1,000 to 10 million times the mass of the Sun and can span as much as hundreds of light-years.",
+                                                        "(This will be the fate of our Sun, in several billion years.",
+                                                        "The Helix nebula, imaged here, lies 650 light-years away in the constellation Aquarius.",
+                                                        "nant of a supernova observed in 1572, notably studied by the Danish astronomer Tycho Brahe, lies about 13,000 light-years away in the constellation Cassiopeia."
+                                                    ]
+                                   },
+                   "eps_eri_b":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "exo:eps Eri:eps Eri b",
+                                     "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/eps%20Eri",
+                                     "Values":  {
+                                                    "Host star":  "eps Eri",
+                                                    "Spectral type":  "K2 V",
+                                                    "Distance (pc)":  "3.20260000",
+                                                    "Orbital period (d)":  "2680.00000000000",
+                                                    "Radius (Earth)":  "13.80000000",
+                                                    "Mass (Earth)":  "317.82840700",
+                                                    "Eq. temperature (K)":  "112.26",
+                                                    "Insolation (Earth)":  "0.0306",
+                                                    "Semimajor axis (AU)":  "3.5300000000",
+                                                    "Eccentricity":  "0.060000",
+                                                    "Discovered":  "2000",
+                                                    "Method":  "Radial Velocity",
+                                                    "Facility":  "Multiple Observatories"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "m51":  {
+                               "Status":  "ok",
+                               "Lookup":  "fixed",
+                               "Source":  "https://science.nasa.gov/universe/galaxies/",
+                               "Values":  {
+                                              "Notable":  "interacting with NGC 5195",
+                                              "Type":  "grand-design spiral",
+                                              "Distance":  "~31 million ly"
+                                          },
+                               "Evidence":  [
+                                                "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                "6 billion years old.",
+                                                "8 billion years ago."
+                                            ]
+                           },
+                   "gj667c_c":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "exo:GJ 667 C:GJ 667 C c",
+                                    "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/GJ%20667%20C",
+                                    "Values":  {
+                                                   "Host star":  "GJ 667 C",
+                                                   "Spectral type":  "M1.5 V",
+                                                   "Distance (pc)":  "7.24396000",
+                                                   "Orbital period (d)":  "28.14000000000",
+                                                   "Radius (Earth)":  "1.77000000",
+                                                   "Mass (Earth)":  "3.80000000",
+                                                   "Eq. temperature (K)":  "",
+                                                   "Insolation (Earth)":  "0.8774",
+                                                   "Semimajor axis (AU)":  "0.1250000000",
+                                                   "Eccentricity":  "0.020000",
+                                                   "Discovered":  "2013",
+                                                   "Method":  "Radial Velocity",
+                                                   "Facility":  "La Silla Observatory"
+                                               },
+                                    "Evidence":  [
+
+                                                 ]
+                                },
+                   "barnarda_c1":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:Barnard\u0027s star:Barnard c",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Barnard\u0027s%20star",
+                                       "Values":  {
+                                                      "Host star":  "Barnard\u0027s star",
+                                                      "Spectral type":  "M3.5-4 V",
+                                                      "Distance (pc)":  "1.82655000",
+                                                      "Orbital period (d)":  "4.12440000000",
+                                                      "Radius (Earth)":  "0.74300000",
+                                                      "Mass (Earth)":  "0.33500000",
+                                                      "Eq. temperature (K)":  "400.00",
+                                                      "Insolation (Earth)":  "4.7285",
+                                                      "Semimajor axis (AU)":  "0.0274000000",
+                                                      "Eccentricity":  "0.080000",
+                                                      "Discovered":  "2025",
+                                                      "Method":  "Radial Velocity",
+                                                      "Facility":  "Gemini Observatory"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "k2_18_b":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "exo:K2-18:K2-18 b",
+                                   "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/K2-18",
+                                   "Values":  {
+                                                  "Host star":  "K2-18",
+                                                  "Spectral type":  "M2.5 V",
+                                                  "Distance (pc)":  "38.02660000",
+                                                  "Orbital period (d)":  "32.93962300000",
+                                                  "Radius (Earth)":  "2.37000000",
+                                                  "Mass (Earth)":  "8.92000000",
+                                                  "Eq. temperature (K)":  "284.00",
+                                                  "Insolation (Earth)":  "1.0050",
+                                                  "Semimajor axis (AU)":  "0.1429000000",
+                                                  "Eccentricity":  "0.200000",
+                                                  "Discovered":  "2015",
+                                                  "Method":  "Transit",
+                                                  "Facility":  "K2"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "hd40307_g":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "exo:HD 40307:HD 40307 g",
+                                     "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/HD%2040307",
+                                     "Values":  {
+                                                    "Host star":  "HD 40307",
+                                                    "Spectral type":  "K2.5 V",
+                                                    "Distance (pc)":  "12.93630000",
+                                                    "Orbital period (d)":  "197.80000000000",
+                                                    "Radius (Earth)":  "2.56000000",
+                                                    "Mass (Earth)":  "7.10000000",
+                                                    "Eq. temperature (K)":  "255.00",
+                                                    "Insolation (Earth)":  "0.6378",
+                                                    "Semimajor axis (AU)":  "0.6000000000",
+                                                    "Eccentricity":  "0.290000",
+                                                    "Discovered":  "2013",
+                                                    "Method":  "Radial Velocity",
+                                                    "Facility":  "La Silla Observatory"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "ross128_b":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "exo:Ross 128:Ross 128 b",
+                                     "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Ross%20128",
+                                     "Values":  {
+                                                    "Host star":  "Ross 128",
+                                                    "Spectral type":  "M4",
+                                                    "Distance (pc)":  "3.37454000",
+                                                    "Orbital period (d)":  "9.86580000000",
+                                                    "Radius (Earth)":  "1.11000000",
+                                                    "Mass (Earth)":  "1.40000000",
+                                                    "Eq. temperature (K)":  "301.00",
+                                                    "Insolation (Earth)":  "1.3800",
+                                                    "Semimajor axis (AU)":  "0.0496000000",
+                                                    "Eccentricity":  "0.116000",
+                                                    "Discovered":  "2017",
+                                                    "Method":  "Radial Velocity",
+                                                    "Facility":  "La Silla Observatory"
+                                                },
+                                     "Evidence":  [
+
+                                                  ]
+                                 },
+                   "trappist1_g":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:TRAPPIST-1:TRAPPIST-1 g",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/TRAPPIST-1",
+                                       "Values":  {
+                                                      "Host star":  "TRAPPIST-1",
+                                                      "Spectral type":  "M8.0 V",
+                                                      "Distance (pc)":  "12.42988881",
+                                                      "Orbital period (d)":  "12.35244600000",
+                                                      "Radius (Earth)":  "1.12900000",
+                                                      "Mass (Earth)":  "1.32100000",
+                                                      "Eq. temperature (K)":  "197.30",
+                                                      "Insolation (Earth)":  "0.2520",
+                                                      "Semimajor axis (AU)":  "0.0468300000",
+                                                      "Eccentricity":  "0.002080",
+                                                      "Discovered":  "2017",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Multiple Observatories"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "s2_star":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "fixed",
+                                   "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                   "Values":  {
+                                                  "Orbital period":  "16.05 years",
+                                                  "Closest approach":  "~120 AU",
+                                                  "Speed at closest":  "~3% of light speed",
+                                                  "Distance":  "~26,000 ly"
+                                              },
+                                   "Evidence":  [
+                                                    "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                    "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                                ]
+                               },
+                   "sgr_b2":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "fixed",
+                                  "Source":  "https://science.nasa.gov/universe/",
+                                  "Values":  {
+                                                 "Notable":  "largest molecular cloud near the Galactic Center, rich in organic molecules",
+                                                 "Mass":  "3 million Suns",
+                                                 "Type":  "giant molecular cloud",
+                                                 "Distance":  "~27,000 ly"
+                                             },
+                                  "Evidence":  null
+                              },
+                   "kepler452_b":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "exo:Kepler-452:Kepler-452 b",
+                                       "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-452",
+                                       "Values":  {
+                                                      "Host star":  "Kepler-452",
+                                                      "Spectral type":  "G2",
+                                                      "Distance (pc)":  "551.72700000",
+                                                      "Orbital period (d)":  "384.84300000000",
+                                                      "Radius (Earth)":  "1.63000000",
+                                                      "Mass (Earth)":  "3.29000000",
+                                                      "Eq. temperature (K)":  "265.00",
+                                                      "Insolation (Earth)":  "1.1000",
+                                                      "Semimajor axis (AU)":  "1.0460000000",
+                                                      "Eccentricity":  "0.000000",
+                                                      "Discovered":  "2015",
+                                                      "Method":  "Transit",
+                                                      "Facility":  "Kepler"
+                                                  },
+                                       "Evidence":  [
+
+                                                    ]
+                                   },
+                   "gj581_c":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "exo:GJ 581:GJ 581 c",
+                                   "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/GJ%20581",
+                                   "Values":  {
+                                                  "Host star":  "GJ 581",
+                                                  "Spectral type":  "M3.0 V",
+                                                  "Distance (pc)":  "6.29810000",
+                                                  "Orbital period (d)":  "12.92110000000",
+                                                  "Radius (Earth)":  "2.50000000",
+                                                  "Mass (Earth)":  "6.81000000",
+                                                  "Eq. temperature (K)":  "346.13",
+                                                  "Insolation (Earth)":  "2.3985",
+                                                  "Semimajor axis (AU)":  "0.0718000000",
+                                                  "Eccentricity":  "0.032000",
+                                                  "Discovered":  "2007",
+                                                  "Method":  "Radial Velocity",
+                                                  "Facility":  "La Silla Observatory"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "eta_carinae":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "fixed",
+                                       "Source":  "https://science.nasa.gov/universe/stars/",
+                                       "Values":  {
+                                                      "Event":  "Great Eruption 1837-1856",
+                                                      "Mass":  "~100 Suns each",
+                                                      "Type":  "luminous blue variable binary",
+                                                      "Distance":  "~7,500 ly"
+                                                  },
+                                       "Evidence":  [
+                                                        "Molecular clouds range from 1,000 to 10 million times the mass of the Sun and can span as much as hundreds of light-years.",
+                                                        "(This will be the fate of our Sun, in several billion years.",
+                                                        "The Helix nebula, imaged here, lies 650 light-years away in the constellation Aquarius.",
+                                                        "nant of a supernova observed in 1572, notably studied by the Danish astronomer Tycho Brahe, lies about 13,000 light-years away in the constellation Cassiopeia."
+                                                    ]
+                                   },
+                   "ouamuamua":  {
+                                     "Status":  "ok",
+                                     "Lookup":  "fixed",
+                                     "Source":  "https://science.nasa.gov/solar-system/",
+                                     "Values":  {
+                                                    "Discovered":  "2017-10-19 (Pan-STARRS1)",
+                                                    "Notable":  "first known interstellar object, unexplained non-gravitational acceleration",
+                                                    "Origin":  "interstellar",
+                                                    "Length":  "~100-1,000 m"
+                                                },
+                                     "Evidence":  null
+                                 },
+                   "m87":  {
+                               "Status":  "ok",
+                               "Lookup":  "fixed",
+                               "Source":  "https://science.nasa.gov/universe/galaxies/",
+                               "Values":  {
+                                              "Notable":  "host of the first imaged black hole, 1,500 ly plasma jet",
+                                              "Diameter":  "~120,000 ly",
+                                              "Type":  "supergiant elliptical (E0)",
+                                              "Distance":  "~55 million ly"
+                                          },
+                               "Evidence":  [
+                                                "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                "6 billion years old.",
+                                                "8 billion years ago."
+                                            ]
+                           },
+                   "kuiper_belt":  {
+                                       "Status":  "ok",
+                                       "Lookup":  "fixed",
+                                       "Source":  "https://science.nasa.gov/solar-system/kuiper-belt/",
+                                       "Values":  {
+                                                      "Population":  "hundreds of thousands \u003e100 km",
+                                                      "Region":  "30-50 AU",
+                                                      "Composition":  "ice, rock, organic",
+                                                      "Named for":  "Gerard Kuiper"
+                                                  },
+                                       "Evidence":  null
+                                   },
+                   "great_wall":  {
+                                      "Status":  "ok",
+                                      "Lookup":  "fixed",
+                                      "Source":  "https://science.nasa.gov/universe/",
+                                      "Values":  {
+                                                     "Notable":  "largest known structure in the observable universe",
+                                                     "Found in":  "gamma-ray burst distribution (2013)",
+                                                     "Size":  "~10 billion ly"
+                                                 },
+                                      "Evidence":  null
+                                  },
+                   "gj876_b":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "exo:GJ 876:GJ 876 b",
+                                   "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/GJ%20876",
+                                   "Values":  {
+                                                  "Host star":  "GJ 876",
+                                                  "Spectral type":  "M2.5V",
+                                                  "Distance (pc)":  "4.67517000",
+                                                  "Orbital period (d)":  "61.11660000000",
+                                                  "Radius (Earth)":  "13.30000000",
+                                                  "Mass (Earth)":  "723.22350000",
+                                                  "Eq. temperature (K)":  "190.60",
+                                                  "Insolation (Earth)":  "0.2857",
+                                                  "Semimajor axis (AU)":  "0.2083170000",
+                                                  "Eccentricity":  "0.032400",
+                                                  "Discovered":  "1998",
+                                                  "Method":  "Radial Velocity",
+                                                  "Facility":  "Multiple Observatories"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "antennae":  {
+                                    "Status":  "ok",
+                                    "Lookup":  "fixed",
+                                    "Source":  "https://science.nasa.gov/universe/galaxies/",
+                                    "Values":  {
+                                                   "Collision began":  "~600 million years ago",
+                                                   "Notable":  "prototype of a starburst galaxy",
+                                                   "Type":  "colliding spiral pair",
+                                                   "Distance":  "~45 million ly"
+                                               },
+                                    "Evidence":  [
+                                                     "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                     "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                     "6 billion years old.",
+                                                     "8 billion years ago."
+                                                 ]
+                                },
+                   "ceres":  {
+                                 "Status":  "ok",
+                                 "Lookup":  "fixed",
+                                 "Source":  "https://science.nasa.gov/dwarf-planets/ceres/",
+                                 "Values":  {
+                                                "Diameter":  "~940 km",
+                                                "Discovered":  "1801",
+                                                "Orbital period":  "4.6 years",
+                                                "Mass (1024 kg)":  "0.000938",
+                                                "Mean radius (km)":  "469.7",
+                                                "Distance from Sun":  "2.77 AU"
+                                            },
+                                 "Evidence":  null
+                             },
+                   "europa":  {
+                                  "Status":  "ok",
+                                  "Lookup":  "sat:jovian:Europa",
+                                  "Source":  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+                                  "Values":  {
+                                                 "Mass(1020 kg)":  "480.0",
+                                                 "Radius(km)":  "1560.8",
+                                                 "Mean density(kg/m3)":  "3010",
+                                                 "Visual geometric albedo":  "0.68"
+                                             },
+                                  "Evidence":  [
+
+                                               ]
+                              },
+                   "uhz1":  {
+                                "Status":  "ok",
+                                "Lookup":  "fixed",
+                                "Source":  "https://science.nasa.gov/universe/black-holes/",
+                                "Values":  {
+                                               "Redshift":  "z = 10.07",
+                                               "Black hole mass":  "~10-100 million Suns",
+                                               "Light travel distance":  "~13.2 billion ly",
+                                               "Notable":  "X-ray detected growing black hole in an early galaxy (Chandra/Webb, 2023)"
+                                           },
+                                "Evidence":  [
+                                                 "NASA Essential Black Hole Facts 01 Closest The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+                                                 "Farthest The most distant black hole detected, at the center of a galaxy called QSO J0313-1806, is around 13 billion light-years away."
+                                             ]
+                            },
+                   "peg51_b":  {
+                                   "Status":  "ok",
+                                   "Lookup":  "exo:51 Peg:51 Peg b",
+                                   "Source":  "https://exoplanetarchive.ipac.caltech.edu/overview/51%20Peg",
+                                   "Values":  {
+                                                  "Host star":  "51 Peg",
+                                                  "Spectral type":  "G5V",
+                                                  "Distance (pc)":  "15.46140000",
+                                                  "Orbital period (d)":  "4.23079660000",
+                                                  "Radius (Earth)":  "14.10000000",
+                                                  "Mass (Earth)":  "193.87532827",
+                                                  "Eq. temperature (K)":  "1328.93",
+                                                  "Insolation (Earth)":  "506.1775",
+                                                  "Semimajor axis (AU)":  "0.0520000000",
+                                                  "Eccentricity":  "0.006300",
+                                                  "Discovered":  "1995",
+                                                  "Method":  "Radial Velocity",
+                                                  "Facility":  "Haute-Provence Observatory"
+                                              },
+                                   "Evidence":  [
+
+                                                ]
+                               },
+                   "m31":  {
+                               "Status":  "ok",
+                               "Lookup":  "fixed",
+                               "Source":  "https://science.nasa.gov/universe/galaxies/",
+                               "Values":  {
+                                              "Collision":  "with the Milky Way in ~4.5 billion years",
+                                              "Diameter":  "~200,000 ly",
+                                              "Type":  "barred spiral (SA(s)b)",
+                                              "Distance":  "~2.5 million ly"
+                                          },
+                               "Evidence":  [
+                                                "The largest contain trillions of stars and can be more than a million light-years across.",
+                                                "The smallest can contain a few thousand stars and span just a few hundred light-years.",
+                                                "6 billion years old.",
+                                                "8 billion years ago."
+                                            ]
+                           }
+               }
+}

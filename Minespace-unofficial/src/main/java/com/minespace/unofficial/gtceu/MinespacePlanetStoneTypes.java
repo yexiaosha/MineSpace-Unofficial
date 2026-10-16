@@ -1,7 +1,9 @@
 package com.minespace.unofficial.gtceu;
 
 import com.minespace.unofficial.Minespace;
-import gregtech.api.unification.material.Material;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.common.blocks.BlockOre;
@@ -10,10 +12,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +30,6 @@ import java.util.function.Predicate;
  * {@link EventPriority#HIGH} — after Galacticraft's blocks exist, before GTCEu builds its
  * ore blocks at the default priority.
  */
-@Mod.EventBusSubscriber(modid = Minespace.MOD_ID)
 public final class MinespacePlanetStoneTypes {
 
     private static final Logger LOG = LogManager.getLogger("minespace");
@@ -48,8 +45,8 @@ public final class MinespacePlanetStoneTypes {
     private MinespacePlanetStoneTypes() {
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
+    /** Called from {@link MinespaceMaterials#onMaterialsInit()} - inside GT's preInit. */
+    public static void register() {
         if (registered) {
             return;
         }
@@ -74,25 +71,29 @@ public final class MinespacePlanetStoneTypes {
 
     private static void register(int typeId, String materialName, ResourceLocation baseId,
                                  Predicate<IBlockState> predicate) {
-        Material material = MinespaceMaterials.lookup(materialName);
-        if (material == null) {
-            LOG.error("Material '{}' is missing, so its stone type cannot be built. "
-                    + "It must be registered from MaterialEvent.", materialName);
-            return;
-        }
+        // GT's own stone material: GTCE's StoneType only needs it to name/build the ore block
+        // variant, and reusing it keeps this addon out of GT's shared 1000-slot material
+        // registry (see MinespaceMaterials).
+        DustMaterial stoneMaterial = Materials.Stone;
 
+        // The texture is this mod's own rock block for that body (see MinespacePlanetRocks):
+        // GTCE's StoneType carries the ore's background texture instead of deriving it from the
+        // block state model like GTCEu did.
         new StoneType(
                 typeId,
                 materialName,
+                new ResourceLocation(baseId.getResourceDomain(),
+                        "blocks/" + baseId.getResourcePath()),
                 SoundType.STONE,
                 OrePrefix.ore,
-                material,
+                stoneMaterial,
+                "pickaxe",
+                0,
                 () -> MinespacePlanetRocks.defaultState(baseId),
-                predicate,
-                false);
+                predicate);
 
         REGISTERED.add(materialName);
-        LOG.info("Registered GTCEu stone type '{}' (id {}) — ores there now use the '{}' base",
+        LOG.info("Registered GregTech stone type '{}' (id {}) — ores there now use the '{}' base",
                 materialName, typeId, baseId);
     }
 

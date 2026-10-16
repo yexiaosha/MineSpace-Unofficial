@@ -1,0 +1,31 @@
+{
+    "name": "Tidal_Hydrothermal_Vein",
+    "description": "Ocean-floor hydrothermal sulphides: Jupiter's tides are the heat source, so these are the vein that proves the ocean is still active.",
+    "weight": 150,
+    "density": 0.2,
+    "min_height": 5,
+    "max_height": 50,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [12, 14]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:sulfur"},
+                {"weight": 25, "value": "ore:galena"},
+                {"weight": 20, "value": "ore:sphalerite"},
+                {"weight": 15, "value": "ore:pyrite"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "sphalerite"
+    },
+    "dimension_filter": [
+        "dimension_id:-1015"
+    ]
+}

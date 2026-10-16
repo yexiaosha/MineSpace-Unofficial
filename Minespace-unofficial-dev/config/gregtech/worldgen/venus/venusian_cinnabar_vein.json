@@ -1,0 +1,32 @@
+{
+    "name": "Venusian_Cinnabar_Vein",
+    "description": "Volatile metals that only stay put this close to a hot surface: mercury as cinnabar, with the tellurium that travels with it.",
+    "weight": 25,
+    "density": 0.15,
+    "min_height": 5,
+    "max_height": 35,
+    "generator": {
+        "type": "ellipsoid",
+        "radius": [8, 12]
+    },
+    "filler": {
+        "type": "simple",
+        "value": {
+            "type": "weight_random",
+            "values": [
+                {"weight": 40, "value": "ore:cinnabar"},
+                {"weight": 30, "value": "ore:tellurium"},
+                {"weight": 20, "value": "ore:redstone"},
+                {"weight": 10, "value": "ore:silver"}
+            ]
+        }
+    },
+    "vein_populator": {
+        "type": "surface_rock",
+        "material": "cinnabar"
+    },
+    "dimension_filter": [
+        "dimension_id:-1006",
+        "dimension_id:-31"
+    ]
+}
