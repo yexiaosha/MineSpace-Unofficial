@@ -152,6 +152,11 @@ MineSpace Unofficial 是一个以 GregTech CE: TJ Edition（GTCE-TJ）为核心�
 构建产物为 build\libs\minespace-0.2.0.jar。
 部署任务会把它复制到 Minespace-unofficial-dev\mods\。
 
+完整回归验证（构建 + 启动专用服务器 + 检查矿脉/BYG 配方/崩溃）：
+
+  .\tools\verify-pack.ps1
+  .\tools\verify-pack.ps1 -SkipBuild
+
 
 六、目录结构
 ------------

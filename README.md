@@ -28,6 +28,7 @@ Minespace-unofficial-dev\Play-Minespace.bat
 cd Minespace-unofficial
 .\tools\gradle.ps1 build
 .\tools\gradle.ps1 deployToInstance
+.\tools\verify-pack.ps1
 ```
 
 详细开发记录见 [PROGRESS.md](PROGRESS.md) 和
