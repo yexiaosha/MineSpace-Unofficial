@@ -30,5 +30,5 @@ cd Minespace-unofficial
 .\tools\gradle.ps1 deployToInstance
 ```
 
-详细开发记录见 [PROGRESS.md](Minespace-unofficial/PROGRESS.md) 和
+详细开发记录见 [PROGRESS.md](PROGRESS.md) 和
 [DEV-NOTES.md](Minespace-unofficial/DEV-NOTES.md)。

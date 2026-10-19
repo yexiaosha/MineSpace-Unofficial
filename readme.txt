@@ -163,7 +163,7 @@ MineSpace Unofficial 是一个以 GregTech CE: TJ Edition（GTCE-TJ）为核心�
 
 详细文档：
 
-  Minespace-unofficial\PROGRESS.md
+  PROGRESS.md
   Minespace-unofficial\DEV-NOTES.md
   Minespace-unofficial\docs\byg-2026-10-18.md
   Minespace-unofficial\docs\nuclear-gt-unification-2026-10-17.md
