@@ -156,7 +156,7 @@ $nullVeinBlocks = Count-Lines $latestLog 'GT vein .* returned no block'
 Add-Check 'no null vein filler blocks' ($nullVeinBlocks -eq 0) `
     "$nullVeinBlocks warnings"
 
-$passiveMobs = $latest -match 'Passive hostile mobs: enabled'
+$passiveMobs = $latest -match 'Neutral hostile mobs: enabled'
 Add-Check 'passive hostile mobs enabled' $passiveMobs `
     $(if ($passiveMobs) { 'enabled' } else { 'not enabled' })
 
