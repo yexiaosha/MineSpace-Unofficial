@@ -39,6 +39,26 @@ $ErrorActionPreference = 'Stop'
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 $invariant = [System.Globalization.CultureInfo]::InvariantCulture
 
+# GTCE 1.12 reads worldgen JSON with InputStreamReader's platform default charset, not UTF-8.
+# Writing Chinese directly therefore shows mojibake on a Chinese Windows (GBK) JVM. JSON's
+# \uXXXX escapes are ASCII on disk and decode to the same characters under every charset.
+function ConvertTo-JsonEscapedString([string]$value) {
+    $builder = New-Object System.Text.StringBuilder
+    foreach ($ch in $value.ToCharArray()) {
+        $code = [int][char]$ch
+        if ($ch -eq '\') {
+            [void]$builder.Append('\\')
+        } elseif ($ch -eq '"') {
+            [void]$builder.Append('\"')
+        } elseif ($code -lt 32 -or $code -ge 128) {
+            [void]$builder.AppendFormat('\u{0:x4}', $code)
+        } else {
+            [void]$builder.Append($ch)
+        }
+    }
+    return $builder.ToString()
+}
+
 # Every dimension's vein count as the tree stands now, for the coverage comparison at the end. It has
 # to be taken before anything is written, or a file that is about to be pruned still counts.
 $coverageBefore = @{}
@@ -267,8 +287,8 @@ Write-Host ("table: {0} variants, {1} managed body/bodies, ore vocabulary {2}" -
 function Format-VeinJson($variant, [int[]]$dimensionIds) {
     $lines = New-Object System.Collections.Generic.List[string]
     $lines.Add('{')
-    $lines.Add('    "name": "' + $variant.Name + '",')
-    $lines.Add('    "description": "' + ($variant.Reason -replace '"', "'") + '",')
+    $lines.Add('    "name": "' + (ConvertTo-JsonEscapedString $variant.Name) + '",')
+    $lines.Add('    "description": "' + (ConvertTo-JsonEscapedString $variant.Reason) + '",')
     $lines.Add('    "weight": ' + $variant.Weight + ',')
     $lines.Add('    "density": ' + ([double]$variant.Density).ToString($invariant) + ',')
     $lines.Add('    "min_height": ' + $variant.Min + ',')
@@ -428,11 +448,13 @@ if ($planned.Count -gt 0) {
     }
 }
 
-# Bodies whose cards are written but whose dimensions do not exist yet: the design is in the table and
-# the catalog can read it, and nothing of it is in the config until the planet is built.
+    # Bodies whose cards are written but whose world is still the shared void provider. Their dimension id
+    # *is* registered - the star map needs it - and 6dn measured that a void world cannot hold ore at all,
+    # so there is nothing for a vein file to generate in until the body gets terrain of its own. The design
+    # is in the table and the catalog can read it; nothing of it is in the config until then.
 if ($pendingKeys.Count -gt 0) {
     Write-Host ''
-    Write-Host ("designed but not generated: {0} bodies, {1} variants (no dimension exists yet):" -f `
+        Write-Host ("designed but not generated: {0} bodies, {1} variants (id registered, world still void):" -f `
             $pendingKeys.Count, $designedOnly.Count)
     foreach ($key in $pendingKeys | Sort-Object { [int]$bodies[$_].DimensionId }) {
         $names = @($variants | Where-Object { (Get-VariantBodies $_) -contains $key } | ForEach-Object { $_.Name })

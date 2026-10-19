@@ -1,6 +1,7 @@
 package com.minespace.unofficial.gtceu;
 
 import com.minespace.unofficial.Minespace;
+import com.minespace.unofficial.MinespaceContent;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.Materials;
@@ -79,7 +80,7 @@ import java.util.function.Supplier;
  */
 public final class MinespaceStoneTypes {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     /** Kept in the pack's 32000+ addon range, after the two existing materials. */
     // The material id for the Lunar rock is allocated at runtime in MinespaceMaterials: GTCE's
@@ -134,7 +135,7 @@ public final class MinespaceStoneTypes {
         new StoneType(
                 MOON_STONE_TYPE_ID,
                 MOON_STONE,
-                new ResourceLocation(Minespace.MOD_ID, "blocks/moon_rock"),
+                new ResourceLocation(MinespaceContent.NAMESPACE, "blocks/moon_rock"),
                 net.minecraft.block.SoundType.STONE,
                 OrePrefix.ore,
                 stoneMaterial,

@@ -181,6 +181,28 @@ dependencies {
     }
     compileOnly files(mixinBooter)
 
+    // The Prospector metadata fix targets Gregicality's scanner. Compile against the instance's
+    // copy only (the mod is already a runtime dependency of the pack), so the core module can name
+    // ProspectingPacket without bundling a second copy of Gregicality.
+    compileOnly fileTree(dir: "${pack_dir}/mods", include: ['gregicality*.jar'])
+
+    // NuclearCraft: Overhauled is an optional runtime content mod. The material-processing bridge
+    // reads its BasicRecipe list and re-registers those recipes in TJ's RecipeMaps; it is loaded
+    // only when nuclearcraft is present, so this stays compileOnly.
+    compileOnly fileTree(dir: "${pack_dir}/mods", include: ['nuclearcraft-*.jar'])
+
+    // QMD is the optional particle-physics addon. The diagnostic exporter reads its
+    // QMDRecipeHandler lists; normal gameplay never loads that exporter.
+    compileOnly fileTree(dir: "${pack_dir}/mods", include: ['QMD-*.jar'])
+
+    // JEI is a client-side runtime dependency. The navigation module only needs its API to
+    // replace GT's unbounded ore-vein page with bounded pages (see MinespaceJeiPlugin).
+    compileOnly fileTree(dir: "${pack_dir}/mods", include: ['jei_*.jar'])
+
+    // Forestry's arboretum keeps its own farmable registry. The core module compiles against
+    // its API so BYG saplings can be registered as arboretum germlings.
+    compileOnly fileTree(dir: "${pack_dir}/mods", include: ['forestry_*.jar'])
+
     // ------------------------------------------------------------------
     // CraftTweaker (compile only).
     //
@@ -343,6 +365,101 @@ task deployToInstance(type: Copy, dependsOn: 'reobfJar') {
 }
 
 // ---------------------------------------------------------------------------
+// checkModuleBoundaries -- the module split's standing guard.
+//
+// One jar, one Gradle project, one mcmod.info, four mods. Nothing at compile time stops a module from
+// reaching for something it has no business knowing - a planets class importing Galacticraft, say, or core
+// importing navigation - so this task is the check the compiler cannot give. It follows the pack's own guard
+// style (MinespaceRecipeHygiene): it reports what it finds, and a violation fails the build rather than being
+// tolerated silently.
+//
+// A module is a set of source directories plus what it may not import:
+//   denyExternals  other mods it has no business knowing about
+//   denyModules    sibling modules, per the graph core -> planets -> navigation -> cosmic
+// core is the pack's integration layer, so it may import any other mod; what it may not do is import a sibling
+// module, because the graph points the other way.
+//
+// The mixin rule is separate and comes from a real crash (2026-10-16): a mixin class has to live in the package
+// its mixin config declares, and Mixin marks that package as its own, so mixins belong in a mixin/ package of
+// their own module - code outside one may never import them.
+//
+// Every rule below was checked against the tree as it stands, so a failure means a line was actually crossed
+// rather than that the rule is aspirational. See MODULE-SPLIT-PLAN.md, section five.
+// ---------------------------------------------------------------------------
+task checkModuleBoundaries {
+    description = 'Report imports that leave a module\'s allowed surface.'
+    group = 'verification'
+
+    def base = file('src/main/java/com/minespace/unofficial')
+    def modules = [
+            core      : [dirs: ['.', 'api', 'gtceu', 'galacticraft', 'mixin', 'proxy'],
+                         denyExternals: [],
+                         denyModules: ['planets', 'navigation', 'cosmic']],
+            planets   : [dirs: ['planets'],
+                         denyExternals: ['micdoodle8', 'asmodeuscore', 'planetprogression',
+                                         'appliedenergistics2', 'crazypants', 'forestry', 'gregicadditions'],
+                         denyModules: ['navigation', 'cosmic']],
+            navigation: [dirs: ['navigation'],
+                         denyExternals: ['asmodeuscore', 'appliedenergistics2', 'crazypants',
+                                         'forestry', 'gregicadditions'],
+                         denyModules: ['cosmic']],
+            cosmic    : [dirs: ['cosmic'],
+                         denyExternals: ['micdoodle8', 'asmodeuscore', 'planetprogression',
+                                         'appliedenergistics2', 'crazypants', 'forestry', 'gregicadditions'],
+                         denyModules: []],
+    ]
+
+    doLast {
+        def violations = []
+        def checked = 0
+        modules.each { moduleName, spec ->
+            spec.dirs.each { dir ->
+                def root = (dir == '.') ? base : new File(base, dir)
+                if (!root.isDirectory()) {
+                    return
+                }
+                fileTree(dir: root, include: (dir == '.') ? '*.java' : '**/*.java').files.sort().each { f ->
+                    checked++
+                    def inMixinPackage = f.path.replace('\\', '/').contains('/mixin/')
+                    f.eachLine { line, number ->
+                        def matcher = line =~ /^import\s+(?:static\s+)?([\w.]+);/
+                        if (!matcher.find()) {
+                            return
+                        }
+                        def imported = matcher.group(1)
+                        if (imported.startsWith('org.spongepowered.asm.mixin.') && !inMixinPackage) {
+                            violations << "${moduleName}: ${f.name}:${number} imports a mixin from outside a mixin " +
+                                    "package - ${imported}"
+                        }
+                        spec.denyExternals.each { denied ->
+                            if (imported.startsWith(denied + '.')) {
+                                violations << "${moduleName}: ${f.name}:${number} imports ${denied} - ${imported}"
+                            }
+                        }
+                        spec.denyModules.each { denied ->
+                            if (imported.startsWith('com.minespace.unofficial.' + denied + '.')) {
+                                violations << "${moduleName}: ${f.name}:${number} imports module ${denied} - ${imported}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!violations.isEmpty()) {
+            logger.lifecycle("checkModuleBoundaries: ${violations.size()} violation(s) in ${checked} files")
+            violations.each { logger.lifecycle("    ${it}") }
+            throw new GradleException(
+                    "checkModuleBoundaries: ${violations.size()} import(s) cross a module boundary. " +
+                    "See MODULE-SPLIT-PLAN.md section five for what each module is allowed to know.")
+        }
+        logger.lifecycle("checkModuleBoundaries: ${checked} files checked, no violations")
+    }
+}
+
+deployToInstance.dependsOn checkModuleBoundaries
+tasks.matching { it.name == 'check' }.all { dependsOn checkModuleBoundaries }
+
+// ---------------------------------------------------------------------------
 // MCP mappings for GTCEu's ASM transformer.
 //
 // GTCEu is a coremod: its GregTechTransformer rewrites Minecraft classes at
@@ -463,9 +580,11 @@ jar {
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :mod_author,
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            // MixinBooter discovers mixin configs from this attribute (the same way
-            // AsmodeusCore and Galaxy Space do). See mixins.minespace.json.
-            "MixinConfigs": "mixins.minespace.json"
+            // MixinBooter discovers mixin configs from this attribute (the same way AsmodeusCore and Galaxy
+            // Space do), and it takes a comma-separated list: one config per module, so a module's mixins move
+            // with the module the way Galacticraft's do. See mixins.minespace.json (core) and
+            // mixins.minespace.navigation.json (navigation).
+            "MixinConfigs": "mixins.minespace.json,mixins.minespace.navigation.json"
         ])
     }
 }

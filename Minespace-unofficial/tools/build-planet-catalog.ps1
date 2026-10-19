@@ -296,7 +296,15 @@ foreach ($key in ($catalog.Bodies.Keys | Sort-Object)) {
         Zh           = "$($body.Zh)"
         En           = "$($body.En)"
         Type         = "$($body.Type)"
-        Stage        = "$($layer.Stage)"
+        # The solar layer is a range ("0-3") in the table, but its bodies have individual stages:
+        # Earth is home (0), the Moon is the first landing (2), and every other solar body is EV (3).
+        # Keeping this in the generator means a later catalog rebuild cannot silently flatten the plan.
+        Stage        = if ($body.Layer -eq 'sol') {
+                           if ($key -eq 'earth') { '0' }
+                           elseif ($key -eq 'moon') { '2' }
+                           else { '3' }
+                       } elseif ($body.ContainsKey('Stage')) { "$($body.Stage)" }
+                       else { "$($layer.Stage)" }
         Voltage      = "$($layer.Voltage)"
         Star         = $star
         DistanceRaw  = $distance

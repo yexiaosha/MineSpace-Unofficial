@@ -32,7 +32,7 @@ import java.util.function.Predicate;
  */
 public final class MinespacePlanetStoneTypes {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     /** Ids 0..15 are GT's own stone types, 16 is the Lunar one, so these follow. */
     private static final int MARS_STONE_TYPE_ID = 17;

@@ -1,0 +1,6 @@
+"handler","index","item_inputs","fluid_inputs","item_outputs","fluid_outputs","extras"
+"liquefier_coolant","0","","liquid_helium x1","","helium x64","[1000, 4, 300]"
+"liquefier_coolant","1","","liquid_nitrogen x1","","nitrogen x64","[1000, 77, 300]"
+"liquefier_coolant","2","","liquid_neon x1","","neon x64","[1000, 27, 300]"
+"liquefier_coolant","3","","liquid_argon x1","","argon x64","[1000, 87, 300]"
+"liquefier_coolant","4","","water x1","","condensate_water x1","[32, 300, 350]"

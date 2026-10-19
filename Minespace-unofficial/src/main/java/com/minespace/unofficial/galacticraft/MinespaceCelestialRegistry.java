@@ -68,7 +68,11 @@ public final class MinespaceCelestialRegistry {
     /** AsmodeusCore is Galaxy Space's astronomy library: the helper every body registered here goes through. */
     public static final String ASMODEUS_CORE = "asmodeuscore";
 
-    private static final String MOD_ID = "minespace";
+    /**
+     * The frozen content namespace (see {@link com.minespace.unofficial.MinespaceContent}): the body keys handed
+     * to AsmodeusCore and the icon paths are built from it, and both are couplings to generated files.
+     */
+    private static final String NAMESPACE = com.minespace.unofficial.MinespaceContent.NAMESPACE;
     private static final Logger LOG = Minespace.log();
 
     /** Galacticraft's own four rocket tiers are what a body's tier means, so the pack's layers map onto them. */
@@ -423,7 +427,7 @@ public final class MinespaceCelestialRegistry {
                 (float) (Math.cos(angle) * Math.cos(tilt) * radius),
                 (float) (Math.sin(tilt) * radius),
                 (float) (Math.sin(angle) * Math.cos(tilt) * radius));
-        SolarSystem system = BodiesRegistry.registerSolarSystem(MOD_ID, slug, Galaxies.MILKYWAY, position,
+        SolarSystem system = BodiesRegistry.registerSolarSystem(NAMESPACE, slug, Galaxies.MILKYWAY, position,
                 starSlug, starSize(rows.get(0)));
         if (system == null) {
             return null;
@@ -467,7 +471,7 @@ public final class MinespaceCelestialRegistry {
     }
 
     private static CelestialBody newPlanet(SolarSystem system, MinespacePlanetDimensions.Planet row) {
-        ExPlanet planet = BodiesRegistry.registerExPlanet(system, row.key, MOD_ID, relativeSize(row));
+        ExPlanet planet = BodiesRegistry.registerExPlanet(system, row.key, NAMESPACE, relativeSize(row));
         if (planet == null) {
             return null;
         }
@@ -484,7 +488,7 @@ public final class MinespaceCelestialRegistry {
                     row.name, row.parent);
             return null;
         }
-        ExMoon moon = BodiesRegistry.registerExMoon(parent, row.key, MOD_ID, relativeSize(row));
+        ExMoon moon = BodiesRegistry.registerExMoon(parent, row.key, NAMESPACE, relativeSize(row));
         if (moon == null) {
             return null;
         }
@@ -641,7 +645,7 @@ public final class MinespaceCelestialRegistry {
      * pack's own map never looks at would be eighty-seven files to keep, and it is kinds that a map legend shows.
      */
     private static ResourceLocation icon(String kind) {
-        return new ResourceLocation(MOD_ID, "textures/gui/celestialbodies/" + kind + ".png");
+        return new ResourceLocation(NAMESPACE, "textures/gui/celestialbodies/" + kind + ".png");
     }
 
     private static String iconKind(MinespacePlanetDimensions.Planet row) {

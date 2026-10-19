@@ -18,11 +18,16 @@
         -Tier 1   the same, plus what research data I opens: a handful of nearby systems too
         -Tier -1  the real gate with no player: an empty chart, which is what "nothing unlocked" looks like
 
+    Since 6eu the solar system is researched **one body at a time**, so the stand-in can answer for a single body:
+
+        -Tier 0 -Surveyed moon    only the Moon surveyed: the chart should carry the Moon and nothing else
+
     Usage:
         .\tools\capture-starmap.ps1                     # full chart, six poses
         .\tools\capture-starmap.ps1 -Tier 0             # the owner's own state: telescope done, no survey data
         .\tools\capture-starmap.ps1 -Tier 1             # the same, one tier of survey data in
         .\tools\capture-starmap.ps1 -Tier -1            # nothing charted
+        .\tools\capture-starmap.ps1 -Tier 0 -PlanetProgression $false -Surveyed moon   # one body surveyed
         .\tools\capture-starmap.ps1 -System Crab        # ... and a named system's own view
 #>
 [CmdletBinding()]
@@ -32,6 +37,7 @@ param(
     [string]$System = '',
     [int]$Tier = 6,
     [bool]$PlanetProgression = $true,
+    [string]$Surveyed = '',
     [int]$Width = 1920,
     [int]$Height = 1000,
     [int]$GuiScale = 2,
@@ -112,6 +118,7 @@ $argsList = New-Object System.Collections.Generic.List[string]
 # other road into a body this pack registered is its own survey data, and -PlanetProgression $false photographs that
 # one on its own.
 [void]$argsList.Add("-Dminespace.starmap.capture.pp=$($PlanetProgression.ToString().ToLowerInvariant())")
+if ($Surveyed -ne '') { [void]$argsList.Add("-Dminespace.starmap.capture.surveyed=$($Surveyed.ToLowerInvariant())") }
 if ($System -ne '') { [void]$argsList.Add("-Dminespace.starmap.capture.system=$System") }
 [void]$argsList.Add('-cp'); [void]$argsList.Add(($classpath -join ';'))
 [void]$argsList.Add($mainClass)

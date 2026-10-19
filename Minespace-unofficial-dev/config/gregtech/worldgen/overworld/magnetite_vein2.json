@@ -31,6 +31,10 @@
                                                     "value":  "ore:vanadium_magnetite"
                                                 },
                                                 {
+                                                    "weight":  6,
+                                                    "value":  "block:byg:tamrelite_ore"
+                                                },
+                                                {
                                                     "weight":  10,
                                                     "value":  "ore:precious_metal"
                                                 }

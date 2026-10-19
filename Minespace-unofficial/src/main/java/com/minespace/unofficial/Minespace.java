@@ -41,9 +41,13 @@ import org.apache.logging.log4j.Logger;
 )
 public class Minespace {
 
-    public static final String MOD_ID = "minespace";
-    public static final String MOD_NAME = "Minespace Unofficial";
-    public static final String VERSION = "0.2.0";
+    public static final String MOD_ID = MinespaceModules.CORE;
+    public static final String MOD_NAME = MinespaceModules.CORE_NAME;
+    public static final String VERSION = MinespaceModules.VERSION;
+    // NOTE 2026-10-16: this is the *core module's* Forge mod id, one of the four this jar ships (see
+    // MinespaceModules). It is deliberately NOT the content namespace: registry names, model and texture paths,
+    // translation keys and the GregTech material namespace stay on MinespaceContent.NAMESPACE, which is frozen
+    // at "minespace" so that existing worlds and the generated resources under assets/minespace/ keep working.
 
     /** See the class javadoc: the order here is load bearing. */
     public static final String DEPENDENCIES =
@@ -125,7 +129,8 @@ public class Minespace {
         // system's main star and a body's relative distance, and this registration sets neither. The
         // class is kept; the call returns when those fields are supplied and the result has been seen
         // in a client. Do not re-enable it without one to test on.
-        // com.minespace.unofficial.gtceu.MinespacePlanetSkyRegistry.register();
+        // com.minespace.unofficial.navigation.MinespacePlanetSkyRegistry.register();  (the class moved to the
+        // navigation module in the split; when it comes back the call belongs in that module's own init, not here)
 
         proxy.preInit(event);
     }
@@ -157,6 +162,8 @@ public class Minespace {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .registerNuclearAlloyDustVariants();
 
         // Safety net for the fluid adoption above: if a mod ever registers its fluids later than
         // Ender IO does, or the init pass saw an empty registry, this catches it.
@@ -230,6 +237,43 @@ public class Minespace {
         } else {
             logger.warn("GregTech materials were never registered 鈥?is the registry created in preInit?");
         }
+
+        // Remove the old NCO table routes and add their GT replacements before JEI builds its
+        // recipe list at loadComplete. The block converter's machine half stays in loadComplete
+        // because it must follow the unreachable-machine cleanup.
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .removeNuclearBlockCrafting();
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .registerNuclearPlatingRecipes();
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .removeNuclearPlatingCrafting();
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .registerNuclearBatteryRecipes();
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .removeNuclearBatteryCrafting();
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .registerNuclearSolarPanelRecipes();
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .removeNuclearSolarPanelCrafting();
+
+        // BYG's own ore-dictionary list is hand-written; fill the standard wood/stone names
+        // after BYG and every other block/item registry have finished.
+        com.minespace.unofficial.gtceu.MinespaceBygOreDictionary.register();
+
+        // Forestry's arboretum only plants entries in its own farmArboreal list, not anything
+        // carrying treeSapling. The adapter is optional and loaded reflectively with Forestry.
+        if (net.minecraftforge.fml.common.Loader.isModLoaded("forestry")
+                && net.minecraftforge.fml.common.Loader.isModLoaded("byg")) {
+            try {
+                Class.forName("com.minespace.unofficial.gtceu.MinespaceForestryBygFarm")
+                        .getMethod("register")
+                        .invoke(null);
+            } catch (ReflectiveOperationException e) {
+                logger.warn("Forestry BYG sapling registration could not start", e);
+            }
+        }
+
+        com.minespace.unofficial.gtceu.MinespaceBygProcessing.register();
     }
 
     public static Logger log() {
@@ -257,10 +301,15 @@ public class Minespace {
     @EventHandler
     public void serverStarted(net.minecraftforge.fml.common.event.FMLServerStartedEvent event) {
         com.minespace.unofficial.galacticraft.MinespaceCelestialRegistry.verify("server started");
+        com.minespace.unofficial.gtceu.nuclear.MinespaceDiagnosticsEvents.exportIfRequested();
     }
 
     @EventHandler
     public void loadComplete(FMLLoadCompleteEvent event) {
+        // NCO/QMD add part of their recipe lists in postInit, after the registry-event pass. Rewrite
+        // once more before this file's own material re-point passes inspect the finished lists.
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .rewriteLoadedRecipes();
         com.minespace.unofficial.gtceu.MinespaceForestryTubes.convert("loadComplete");
         com.minespace.unofficial.gtceu.MinespaceForestryCarpenter.convert("loadComplete");
         com.minespace.unofficial.gtceu.MinespaceForestryCarpenter
@@ -307,6 +356,12 @@ public class Minespace {
         // one stack of eight. Reports (never rewrites) any recipe whose input list is not folded.
         com.minespace.unofficial.gtceu.MinespaceRecipeHygiene
                 .checkUnmergedInputs("loadComplete");
+        // The machine cleanup above treats NCO block items as "unified away" inputs and would delete
+        // the unpacker half of these conversions. Register both machine routes after that cleanup.
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .registerNuclearBlockConversions();
+        com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
+                .removeNuclearBlockCrafting();
         // Standing guard for the celestial registration (6er): names, icons and dimensions are couplings to generated
         // files and to other mods, and all three fail silently. One line per start, like the recipe hygiene checks.
         com.minespace.unofficial.galacticraft.MinespaceCelestialRegistry.verify("loadComplete");
@@ -314,6 +369,10 @@ public class Minespace {
             logger.info("Late recipe fixes at load complete: {} compressed-plate producers re-pointed",
                     removed);
         }
+
+        // The module self-check (MinespaceModules): one line per module of this jar, with the version it actually
+        // loaded as. All four ship together, so a line reading "absent" here is a build problem, not a config one.
+        MinespaceModules.report(logger);
 
     }
 

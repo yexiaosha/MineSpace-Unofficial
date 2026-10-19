@@ -1,0 +1,4 @@
+# Minespace Planets owns this resource namespace but keeps no English keys of its own yet.
+# The pack's keys live in the frozen "minespace" namespace - see MinespaceContent for why that never moves.
+# This file exists so FML's per-namespace check has something to find; when this module grows keys of its own,
+# they go in below.

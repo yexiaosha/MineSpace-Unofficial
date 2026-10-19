@@ -1,6 +1,13 @@
-package com.minespace.unofficial.gtceu;
+package com.minespace.unofficial.navigation;
 
+import com.minespace.unofficial.gtceu.MinespacePlanetDimensions;
+import com.minespace.unofficial.gtceu.MinespaceResearchData;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -99,7 +106,7 @@ public class MinespaceStarMapScreen extends GuiScreen {
 
     /** The mod's own log channel, so a star map line is findable in a client log by the same name. */
     private static final org.apache.logging.log4j.Logger LOG =
-            org.apache.logging.log4j.LogManager.getLogger("minespace");
+            org.apache.logging.log4j.LogManager.getLogger("minespace_navigation");
 
     /** One drawable thing: a system on the first level, a body on the second. */
     private static final class Node {
@@ -393,7 +400,15 @@ public class MinespaceStarMapScreen extends GuiScreen {
         if (body.dimensionId == currentDimension()) {
             return true;
         }
-        // One body, one question, and the answer depends on who made the body - not on the layer it sits in:
+        // A row in the sun's own system is researched **one body at a time** - the telescope surveys the Moon, then
+        // Mars, then ... - which is how Galacticraft's and Galaxy Space's own charts behave, and what the owner asked
+        // for (6eu). This used to be a system-level question, and that lit up all twenty-four solar rows the moment one
+        // of them was surveyed: Jupiter, Saturn, Uranus and Neptune appeared on a chart that had never surveyed them.
+        // One system, one progression (6eq) still holds - it is the *unit of research* that is the body, not the system.
+        if (body.layer <= 1) {
+            return surveySolarBody(body);
+        }
+        // Past the solar system, one body, one question, and the answer depends on who made the body:
         //
         //   * a body this pack registered (6er) has **two roads**: PlanetProgression's research of it - which the
         //     telescope, a research paper and `unlockAllCelestialBodies` all reach, because the body is in Galacticraft's
@@ -401,18 +416,14 @@ public class MinespaceStarMapScreen extends GuiScreen {
         //     the road.
         //   * a body Galacticraft or Galaxy Space made has exactly one road, theirs: if that research has surveyed the
         //     Moon, the Moon is open here too - one progression, not two (see MinespacePlanetResearch).
-        //   * and a row in the sun's own system is theirs even where the catalog owns the dimension (the four gas giants
-        //     and Deimos, which Galaxy Space registers with no dimension at all - 6eq), so it is charted with the system.
         if (com.minespace.unofficial.galacticraft.MinespaceCelestialRegistry.registeredByPack(body)) {
-            return body.layer <= 1
-                    ? systemSurveyed(body) || tierGate(body.layer)
-                    : surveyedOurs(body) || tierGate(body.layer);
+            return surveyedOurs(body) || tierGate(body.layer);
         }
         if (com.minespace.unofficial.galacticraft.MinespacePlanetResearch
                 .bodyKnownToGalacticraft(body.dimensionId) != null) {
             return surveyed(body.dimensionId);
         }
-        return systemSurveyed(body) || tierGate(body.layer);
+        return surveyedOurs(body) || tierGate(body.layer);
     }
 
     /** This pack's own survey data covers this layer, once the capture's stand-in has had its say. */
@@ -423,40 +434,54 @@ public class MinespaceStarMapScreen extends GuiScreen {
     /** Has the pack's planet research surveyed this row? (For a row this pack did not register, false.) */
     private boolean surveyedOurs(MinespacePlanetDimensions.Planet row) {
         if (CAPTURE_DIR != null) {
-            // A camera has no player: it stands in for "PlanetProgression has surveyed everything" unless told not to,
-            // which is the state the owner is in after unlocking everything (see CAPTURE_PP).
-            return CAPTURE_PP;
+            // A camera has no player: it stands in for PlanetProgression's answer (see CAPTURE_PP / CAPTURE_SURVEYED).
+            return captureSurveyed(row);
         }
         return com.minespace.unofficial.galacticraft.MinespacePlanetResearch
                 .surveyedOursOnClient(mc == null ? null : mc.player, row);
     }
 
-    /** PlanetProgression's answer for one dimension, or the capture run's stand-in for it (see CAPTURE_TIER). */
+    /** PlanetProgression's answer for one dimension, or the capture run's stand-in for it (see the CAPTURE_ fields). */
     private boolean surveyed(int dimensionId) {
         if (CAPTURE_DIR != null) {
+            for (MinespacePlanetDimensions.Planet row : MinespacePlanetDimensions.PLANETS) {
+                if (row.dimensionId == dimensionId) {
+                    return captureSurveyed(row);
+                }
+            }
             return CAPTURE_PP;
         }
         return com.minespace.unofficial.galacticraft.MinespacePlanetResearch
                 .surveyedOnClient(mc == null ? null : mc.player, dimensionId);
     }
 
-    /** Per-frame answers for {@link #systemSurveyed}, keyed by system - a system's state is asked about by every row. */
-    private final java.util.Map<String, Boolean> systemSurveyedThisFrame =
-            new java.util.HashMap<String, Boolean>();
-
-    /** True when the pack's planet research has surveyed this row's own system (see the layer-1 case above). */
-    private boolean systemSurveyed(MinespacePlanetDimensions.Planet body) {
-        String key = com.minespace.unofficial.galacticraft.MinespacePlanetResearch.systemKeyOf(body);
-        Boolean cached = systemSurveyedThisFrame.get(key);
-        if (cached != null) {
-            return cached.booleanValue();
+    /**
+     * What a capture run answers in PlanetProgression's place.
+     *
+     * <p>All or nothing by default (see {@link #CAPTURE_PP}), and one body when the camera was told which - because
+     * the solar system is researched one body at a time now (6eu), and a gate that can only answer "everything" or
+     * "nothing" cannot photograph that rule at all.</p>
+     */
+    private static boolean captureSurveyed(MinespacePlanetDimensions.Planet row) {
+        if (CAPTURE_SURVEYED.isEmpty()) {
+            return CAPTURE_PP;
         }
-        boolean surveyed = CAPTURE_DIR != null
-                ? CAPTURE_PP
-                : com.minespace.unofficial.galacticraft.MinespacePlanetResearch
-                        .systemSurveyedOnClient(mc == null ? null : mc.player, body);
-        systemSurveyedThisFrame.put(key, Boolean.valueOf(surveyed));
-        return surveyed;
+        return row != null && row.key.toLowerCase(java.util.Locale.ROOT).contains(CAPTURE_SURVEYED);
+    }
+
+    /**
+     * The gate for one row of the sun's own system: that body's own research, or this pack's own survey data for the
+     * body object that stands for it (6eu).
+     *
+     * <p>The server's copy of this rule is {@code MinespacePlanetResearch.surveyedSolarOnServer} - the same two lines
+     * written without this screen's stand-in for PlanetProgression, which a capture run has instead of a player. The
+     * two have to answer the same way, or the map offers a destination the server refuses.</p>
+     */
+    private boolean surveySolarBody(MinespacePlanetDimensions.Planet row) {
+        return com.minespace.unofficial.galacticraft.MinespacePlanetResearch
+                .bodyKnownToGalacticraft(row.dimensionId) != null
+                ? surveyed(row.dimensionId)
+                : surveyedOurs(row);
     }
 
     /**
@@ -491,7 +516,6 @@ public class MinespaceStarMapScreen extends GuiScreen {
                 ? MinespaceResearchData.highestHeld(mc == null ? null : mc.player)
                 : CAPTURE_TIER;
         gateThisFrame.clear();
-        systemSurveyedThisFrame.clear();
         // Which layers have anything charted in them, once a frame: the legend used to answer that question with the
         // survey data the player is carrying, and since 6er that is only one of the two roads into a body - a chart whose
         // every layer is drawn and whose legend says every layer is locked is a legend that lies about the map it sits on.
@@ -521,6 +545,13 @@ public class MinespaceStarMapScreen extends GuiScreen {
     private int lastX;
     private int lastY;
 
+    /** The search box: a plain vanilla text field, kept in the top-right corner of the chart. */
+    private GuiTextField searchField;
+    private static final int LAUNCH_BUTTON_WIDTH = 100;
+    private static final int LAUNCH_BUTTON_HEIGHT = 20;
+    /** Set when a search opens a system; the matching body is selected after the transition completes. */
+    private MinespacePlanetDimensions.Planet pendingSearchBody;
+
     /** Where the self-portrait below writes its frames, or null - which it is for every player. */
     private static final String CAPTURE_DIR = System.getProperty("minespace.starmap.capture");
 
@@ -546,6 +577,13 @@ public class MinespaceStarMapScreen extends GuiScreen {
      */
     private static final boolean CAPTURE_PP =
             Boolean.parseBoolean(System.getProperty("minespace.starmap.capture.pp", "true"));
+
+    /**
+     * Which body a capture run pretends PlanetProgression has surveyed - a substring of the row's key, lower case.
+     * Empty means "take {@link #CAPTURE_PP}'s word for it".
+     */
+    private static final String CAPTURE_SURVEYED =
+            System.getProperty("minespace.starmap.capture.surveyed", "").toLowerCase(java.util.Locale.ROOT);
 
     /**
      * Which system a capture run photographs, by name (a substring, case-insensitive). Empty means the solar system,
@@ -594,6 +632,14 @@ public class MinespaceStarMapScreen extends GuiScreen {
 
     /** Screen positions of the current level's nodes, refreshed each frame and reused for picking. */
     private final List<float[]> onScreen = new ArrayList<>();
+    /** Reused drawing scratch lists: the map is redrawn every frame and these were fresh each time. */
+    private final List<float[]> layerPoints = new ArrayList<>();
+    private final List<Integer> layerLabelled = new ArrayList<>();
+    private final List<float[]> layerLabelPos = new ArrayList<>();
+    private final List<int[]> layerTaken = new ArrayList<>();
+    private final List<String> tooltipLines = new ArrayList<>();
+    private final List<Integer> tooltipColours = new ArrayList<>();
+    private int[] layerOrder = new int[0];
 
     /** The nodes the active layer is drawing - what the cursor and the card are referring to. */
     private List<Node> activeNodes;
@@ -806,7 +852,8 @@ public class MinespaceStarMapScreen extends GuiScreen {
                         active * (pinned ? 1.0F : Math.max(0.4F, hoverGlow)));
             }
         }
-
+        drawSearchBox();
+        drawLaunchButton();
         if (CAPTURE_DIR != null) {
             captureTick();
         }
@@ -875,6 +922,10 @@ public class MinespaceStarMapScreen extends GuiScreen {
                 selected = -1;
                 pendingLevel = -1;
                 pendingSystem = -1;
+                if (pendingSearchBody != null && level == 1) {
+                    selectSearchedBody(pendingSearchBody);
+                    pendingSearchBody = null;
+                }
             }
         }
     }
@@ -915,22 +966,59 @@ public class MinespaceStarMapScreen extends GuiScreen {
         if (ly <= 0.0D) {
             return null;
         }
+        boolean chinese;
+        try {
+            String language = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
+            chinese = language != null
+                    && language.toLowerCase(java.util.Locale.ROOT).startsWith("zh");
+        } catch (Throwable ignored) {
+            chinese = true;
+        }
         if (ly < 1.0e-5D) {
-            return String.format(java.util.Locale.ROOT, "%,.0f 公里", ly * KM_IN_LY);
+            return String.format(java.util.Locale.ROOT,
+                    chinese ? "%,.0f 公里" : "%,.0f km", ly * KM_IN_LY);
         }
         if (ly < 0.1D) {
             return String.format(java.util.Locale.ROOT, "%.3f AU", ly / AU_IN_LY);
         }
         if (ly < 1000.0D) {
-            return String.format(java.util.Locale.ROOT, "%.1f 光年", ly);
+            return chinese
+                    ? trimNumber(ly, 1) + " 光年"
+                    : trimNumber(ly, 1) + " ly";
+        }
+        if (chinese) {
+            // Chinese counting units, not "200 thousand": 20万 and 120亿 are what a Chinese reader expects.
+            if (ly < 1.0e4D) {
+                return String.format(java.util.Locale.ROOT, "%,.0f 光年", ly);
+            }
+            if (ly < 1.0e8D) {
+                return trimNumber(ly / 1.0e4D, 2) + " 万光年";
+            }
+            return trimNumber(ly / 1.0e8D, 2) + " 亿光年";
         }
         if (ly < 1.0e6D) {
-            return String.format(java.util.Locale.ROOT, "%.0f 千光年", ly / 1.0e3D);
+            return trimNumber(ly / 1.0e3D, 1) + " thousand ly";
         }
         if (ly < 1.0e9D) {
-            return String.format(java.util.Locale.ROOT, "%.1f 百万光年", ly / 1.0e6D);
+            return trimNumber(ly / 1.0e6D, 2) + " million ly";
         }
-        return String.format(java.util.Locale.ROOT, "%.1f 十亿光年", ly / 1.0e9D);
+        return trimNumber(ly / 1.0e9D, 2) + " billion ly";
+    }
+
+    /** A decimal with trailing zeroes removed, so 20.00 reads as 20 and 1.20 as 1.2. */
+    private static String trimNumber(double value, int decimals) {
+        String text = String.format(java.util.Locale.ROOT, "%." + decimals + "f", value);
+        if (text.indexOf('.') >= 0) {
+            int end = text.length();
+            while (end > 0 && text.charAt(end - 1) == '0') {
+                end--;
+            }
+            if (end > 0 && text.charAt(end - 1) == '.') {
+                end--;
+            }
+            text = text.substring(0, end);
+        }
+        return text;
     }
 
     /**
@@ -980,7 +1068,8 @@ public class MinespaceStarMapScreen extends GuiScreen {
         // what "relativeScale == 1" means.
         viewScale = viewFocal / referenceDistance;
 
-        List<float[]> points = new ArrayList<float[]>(nodes.size());
+        List<float[]> points = layerPoints;
+        points.clear();
         int hoveredHere = -1;
         float hoveredDepth = Float.MAX_VALUE;
         for (int i = 0; i < nodes.size(); i++) {
@@ -1020,11 +1109,16 @@ public class MinespaceStarMapScreen extends GuiScreen {
         }
 
         /** Which nodes earned a label, in draw order (far to near), and where each one goes. */
-        List<Integer> labelled = new ArrayList<Integer>();
-        List<float[]> labelPos = new ArrayList<float[]>();
+        List<Integer> labelled = layerLabelled;
+        labelled.clear();
+        List<float[]> labelPos = layerLabelPos;
+        labelPos.clear();
 
         // Back to front, so nearer spheres overdraw the ones behind them.
-        int[] order = new int[nodes.size()];
+        if (layerOrder.length != nodes.size()) {
+            layerOrder = new int[nodes.size()];
+        }
+        int[] order = layerOrder;
         for (int i = 0; i < order.length; i++) {
             order[i] = i;
         }
@@ -1121,7 +1215,8 @@ public class MinespaceStarMapScreen extends GuiScreen {
         // Labels last, nearest first, and never on top of each other. A system's seven bodies sit within a
         // hundred pixels of one another, so "label everything" without this produced a pile of overlapping
         // names - which is worse than an unlabelled star, because it is unreadable *and* hides the map.
-        List<int[]> taken = new ArrayList<int[]>();
+        List<int[]> taken = layerTaken;
+        taken.clear();
         for (int k = labelled.size() - 1; k >= 0; k--) {
             int index = labelled.get(k).intValue();
             Node node = nodes.get(index);
@@ -1170,27 +1265,12 @@ public class MinespaceStarMapScreen extends GuiScreen {
     /** The title, legend, selection line, hints and card, all faded together with the layer they describe. */
     private void drawReadouts(float alpha) {
         if (level == 0) {
-            // The counts are the player's own progress, because the chart now shows the progress and nothing else:
-            // "3 / 77" says how much of the catalogue has been surveyed without drawing a single unsurveyed star.
-            String title = "Minespace 星图 — 已测绘 " + chartedSystems() + " / " + SYSTEMS.size() + " 个星系 · "
-                    + chartedBodies() + " / " + MinespacePlanetDimensions.PLANETS.size() + " 个天体（其中 "
-                    + LONE_OBJECTS + " 个单一天体）";
-            // A backing under the title and the legend: the chart puts a name next to every star, and one of
-            // them will always land on the legend - unreadable text in the corner of a readable map.
-            // Two small backings rather than one big one: the chart puts a name next to every star, and one of
-            // them will land on the legend - but a single box around both the title and the legend reads as a
-            // black panel someone left on the map.
-            int legendWidest = fontRenderer.getStringWidth(LEGEND_CAPTION) + 16;
-            for (int layer = 2; layer < LAYER_LABELS.length; layer++) {
-                legendWidest = Math.max(legendWidest, fontRenderer.getStringWidth(legendText(layer)) + 16);
-            }
+            // The counts and the layer legend used to sit here. They told the player exactly how much of the
+            // catalogue existed before they had explored it; the chart now keeps that information in the system
+            // and body cards, where it belongs to the thing the player is looking at.
+            String title = "Minespace 星图";
             drawRect(4, 4, 12 + fontRenderer.getStringWidth(title), 20, withAlpha(0x000000, 0.55F * alpha));
-            // One line taller than the number of tiers, because the legend now carries a caption: it marks which
-            // tiers are still locked, and an unlabelled list of greyed-out names is a riddle.
-            drawRect(4, 22, 8 + legendWidest, 24 + (LAYER_LABELS.length - 1) * 11 + 3,
-                    withAlpha(0x000000, 0.55F * alpha));
             drawString(fontRenderer, title, 8, 8, withAlpha(0xFFFFFF, alpha));
-            drawLegend(alpha);
             String hint = "点击星系进入 · 拖拽平移 · 滚轮缩放 · R 复位 · ESC 关闭"
                     + " · 未解锁的天体不会出现在星图上（按 T 前往，见右下卡片）";
             if (clock - lockedHint < 4.0F && lockedHint > 0.0F) {
@@ -1204,25 +1284,109 @@ public class MinespaceStarMapScreen extends GuiScreen {
                     withAlpha(0x000000, 0.66F * alpha));
             drawString(fontRenderer, hint, 8, height - 18, withAlpha(0xB0B0B0, alpha));
         } else {
-            List<Node> bodies = nodesOfSystem(openedSystem);
-            int chartedHere = 0;
-            for (int i = 0; i < bodies.size(); i++) {
-                if (!locked(bodies.get(i))) {
-                    chartedHere++;
-                }
-            }
-            String header = "▸ " + (openedSystem >= 0 ? SYSTEMS.get(openedSystem).systemKey : "?")
-                    + "   已测绘 " + chartedHere + " / " + bodies.size() + " 个天体";
+            String header = "▸ " + (openedSystem >= 0 ? SYSTEMS.get(openedSystem).systemKey : "?");
             drawRect(4, 4, 14 + fontRenderer.getStringWidth(header), 20, withAlpha(0x000000, 0.42F * alpha));
             drawString(fontRenderer, header, 8, 8, withAlpha(0xFFFFFF, alpha));
             String hint = choosingDestination
-                    ? "已进入轨道：选一颗可登陆星球按 T 前往 · 未解锁的天体不显示 · 右键单击返回 · ESC 取消"
+                    ? "已进入轨道：选一颗可登陆星球按 T 或点右下角“发射” · 未解锁的天体不显示 · 右键返回 · 必须选择目的地"
                     : "左键拖拽旋转 · 右键拖拽平移 · 滚轮缩放 · [ ] 调速 · P "
                             + (realRatios ? "改用压缩比例" : "改用真实比例")
                             + " · T 设为目的地 · 未解锁的天体不显示 · 右键单击返回 · ESC 关闭";
             drawRect(4, height - 22, 14 + fontRenderer.getStringWidth(hint), height - 6,
                     withAlpha(0x000000, 0.66F * alpha));
             drawString(fontRenderer, hint, 8, height - 18, withAlpha(0xB0B0B0, alpha));
+        }
+    }
+
+    /** The search box, drawn above the chart in the top-right corner. */
+    private void drawSearchBox() {
+        if (searchField == null) {
+            return;
+        }
+        int x = searchField.x;
+        int y = searchField.y;
+        drawRect(x - 27, y - 4, x + searchField.width + 4, y + searchField.height + 4,
+                withAlpha(0x000000, 0.58F));
+        drawString(fontRenderer, "搜索", x - 24, y + 4, 0xA8B0C0);
+        searchField.drawTextBox();
+        if (searchField.getText().isEmpty() && !searchField.isFocused()) {
+            drawString(fontRenderer, "星系 / 天体", x + 4, y + 4, 0x707888);
+        }
+    }
+
+    /**
+     * Search only what is on the chart. An unsurveyed body is deliberately absent from the map, and a
+     * search that revealed its name would undo the hiding the whole screen is built around.
+     */
+    private void applySearch() {
+        if (searchField == null) {
+            return;
+        }
+        String query = searchField.getText().trim();
+        if (query.isEmpty()) {
+            searchField.setFocused(false);
+            return;
+        }
+        String needle = query.toLowerCase(java.util.Locale.ROOT);
+        for (MinespacePlanetDimensions.Planet body : MinespacePlanetDimensions.PLANETS) {
+            if (!bodyUnlocked(body) || !bodyMatches(body, needle)) {
+                continue;
+            }
+            int system = findSystem(keyOf(body));
+            if (system >= 0) {
+                openSystemForSearch(system, body);
+                searchField.setFocused(false);
+                return;
+            }
+        }
+        for (int i = 0; i < SYSTEMS.size(); i++) {
+            Node system = SYSTEMS.get(i);
+            if (locked(system)) {
+                continue;
+            }
+            if (system.systemKey.toLowerCase(java.util.Locale.ROOT).contains(needle)) {
+                openSystemForSearch(i, null);
+                searchField.setFocused(false);
+                return;
+            }
+        }
+        refusal = "未找到已测绘的星系或天体：" + query;
+        lockedHint = clock;
+        searchField.setFocused(false);
+    }
+
+    private static boolean bodyMatches(MinespacePlanetDimensions.Planet body, String needle) {
+        return body.name.toLowerCase(java.util.Locale.ROOT).contains(needle)
+                || body.nameZh.toLowerCase(java.util.Locale.ROOT).contains(needle);
+    }
+
+    private void openSystemForSearch(int systemIndex, MinespacePlanetDimensions.Planet body) {
+        if (level == 1 && openedSystem == systemIndex) {
+            if (body != null) {
+                selectSearchedBody(body);
+            }
+            pendingSearchBody = null;
+            return;
+        }
+        pendingSystem = systemIndex;
+        pendingLevel = 1;
+        transition = 0.0F;
+        spinYaw = 0.0F;
+        spinPitch = 0.0F;
+        targetPitch = 0.35F;
+        targetZoom = 1.0F;
+        targetPanX = 0.0F;
+        targetPanY = 0.0F;
+        pendingSearchBody = body;
+    }
+
+    private void selectSearchedBody(MinespacePlanetDimensions.Planet body) {
+        List<Node> nodes = nodesOfSystem(openedSystem);
+        for (int i = 0; i < nodes.size(); i++) {
+            if (nodes.get(i).body == body) {
+                selected = i;
+                return;
+            }
         }
     }
 
@@ -1243,8 +1407,10 @@ public class MinespaceStarMapScreen extends GuiScreen {
         if (node == null || alpha < 0.12F) {
             return;
         }
-        List<String> lines = new ArrayList<String>();
-        List<Integer> colours = new ArrayList<Integer>();
+        List<String> lines = tooltipLines;
+        lines.clear();
+        List<Integer> colours = tooltipColours;
+        colours.clear();
         MinespacePlanetDimensions.Planet body = node.body;
         int layer = Math.max(0, Math.min(LAYER_LABELS.length - 1, body.layer));
         if (overview) {
@@ -1254,15 +1420,15 @@ public class MinespaceStarMapScreen extends GuiScreen {
                 // The distinction the owner asked for, in words: this is a body, not a system.
                 lines.add("单一天体 · 非恒星系");
                 colours.add(Integer.valueOf(0xC0C0E0));
-                lines.add("stage " + body.stage);
+                lines.add("阶数 " + body.stage);
                 colours.add(Integer.valueOf(0xA0A0A0));
             } else {
                 lines.add("恒星系 · 宿主 " + body.star);
                 colours.add(Integer.valueOf(0xE0C080));
-                lines.add(node.bodyCount + " 个天体 · stage " + body.stage);
+                lines.add(node.bodyCount + " 个天体 · 阶数 " + body.stage);
                 colours.add(Integer.valueOf(0xA0A0A0));
             }
-            lines.add(LAYER_LABELS[layer]);
+            lines.add("星层 " + LAYER_LABELS[layer]);
             colours.add(Integer.valueOf(LAYER_COLORS[layer]));
             // The gate, on the card, as the reason this body is on the chart at all. Every card that exists belongs to
             // a charted body - an unsurveyed one is not drawn and cannot be hovered (see locked) - so there is no
@@ -1306,7 +1472,7 @@ public class MinespaceStarMapScreen extends GuiScreen {
             colours.add(Integer.valueOf(0xFFFFFF));
             lines.add(body.nameZh);
             colours.add(Integer.valueOf(0xFFE080));
-            lines.add(LAYER_LABELS[layer] + " · stage " + body.stage);
+            lines.add("星层 " + LAYER_LABELS[layer] + " · 阶数 " + body.stage);
             colours.add(Integer.valueOf(LAYER_COLORS[layer]));
             if (!body.parent.isEmpty()) {
                 String parentZh = ZH_BY_NAME.get(body.parent);
@@ -1329,7 +1495,7 @@ public class MinespaceStarMapScreen extends GuiScreen {
                 lines.add(choosingDestination
                         ? "按 T 前往此处"
                         : "按 T 设为火箭目的地（需 T"
-                                + com.minespace.unofficial.galacticraft.MinespaceRocketTarget
+                + com.minespace.unofficial.navigation.MinespaceRocketTarget
                                         .rocketTierForLayer(body.layer) + " 火箭 + 燃料）");
                 colours.add(Integer.valueOf(0xC0FFC0));
             } else if (body.star.isEmpty()) {
@@ -1440,6 +1606,14 @@ public class MinespaceStarMapScreen extends GuiScreen {
     private void drawStarDust() {
         float offsetX = yaw * 0.05F;
         float offsetY = pitch * 0.05F;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(
+                GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         for (int i = 0; i < DUST.length; i++) {
             float u = DUST[i][0] + offsetX;
             float v = DUST[i][1] + offsetY;
@@ -1451,8 +1625,20 @@ public class MinespaceStarMapScreen extends GuiScreen {
             int alpha = (int) (30.0F + 190.0F * bright);
             int tint = bright > 0.93F ? 0xFFE8C0 : bright > 0.6F ? 0xE8F0FF : 0xC0D0FF;
             int size = bright > 0.86F ? 2 : 1;
-            drawRect(x, y, x + size, y + size, (alpha << 24) | tint);
+            int colour = (alpha << 24) | tint;
+            float r = ((colour >> 16) & 0xFF) / 255.0F;
+            float g = ((colour >> 8) & 0xFF) / 255.0F;
+            float b = (colour & 0xFF) / 255.0F;
+            float a = ((colour >> 24) & 0xFF) / 255.0F;
+            buffer.pos(x, y + size, 0.0D).color(r, g, b, a).endVertex();
+            buffer.pos(x + size, y + size, 0.0D).color(r, g, b, a).endVertex();
+            buffer.pos(x + size, y, 0.0D).color(r, g, b, a).endVertex();
+            buffer.pos(x, y, 0.0D).color(r, g, b, a).endVertex();
         }
+        tessellator.draw();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     /**
@@ -1468,6 +1654,16 @@ public class MinespaceStarMapScreen extends GuiScreen {
     @Override
     public void initGui() {
         super.initGui();
+        if (searchField == null) {
+            searchField = new GuiTextField(0, fontRenderer, 0, 0, 150, 16);
+            searchField.setMaxStringLength(48);
+            searchField.setTextColor(0xE8E8E8);
+        }
+        searchField.width = 150;
+        searchField.x = width - searchField.width - 8;
+        searchField.y = 7;
+        searchField.setFocused(false);
+        pendingSearchBody = null;
         // A fresh timestamp, so the first frame's delta is a frame rather than however long the screen sat on
         // the stack before being opened.
         lastFrameNanos = 0L;
@@ -1476,8 +1672,9 @@ public class MinespaceStarMapScreen extends GuiScreen {
             // with, so the first capture run selects something itself.
             selected = 2;
         }
-        LOG.info("star map opened: gui {}x{} scale {}, {} systems from {} table rows",
-                width, height, mc == null ? -1 : mc.gameSettings.guiScale, SYSTEMS.size(),
+        LOG.info("star map opened: gui {}x{} scale {}, choosing={}, {} systems from {} table rows",
+                width, height, mc == null ? -1 : mc.gameSettings.guiScale, choosingDestination,
+                SYSTEMS.size(),
                 MinespacePlanetDimensions.PLANETS.size());
         refreshGate();
         LOG.info("star map gate: research data {} of {}, {} of {} systems charted, {} of {} bodies charted",
@@ -2534,6 +2731,19 @@ public class MinespaceStarMapScreen extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        if (choosingDestination && mouseButton == 0 && overLaunchButton(mouseX, mouseY)) {
+            confirmInFlightDestination();
+            return;
+        }
+        if (searchField != null) {
+            boolean inside = mouseX >= searchField.x - 2 && mouseX < searchField.x + searchField.width + 2
+                    && mouseY >= searchField.y - 2 && mouseY < searchField.y + searchField.height + 2;
+            searchField.setFocused(inside);
+            if (inside) {
+                searchField.mouseClicked(mouseX, mouseY, mouseButton);
+                return;
+            }
+        }
         // Nothing is clickable while a change is in flight: the positions on screen belong to a layer that is
         // on its way out, and picking one of those is exactly the kind of surprise that reads as a bug.
         if (transition < 1.0F) {
@@ -2614,6 +2824,7 @@ public class MinespaceStarMapScreen extends GuiScreen {
                     // A right click that never moved: back out one level.
                     pendingSystem = -1;
                     pendingLevel = 0;
+                    pendingSearchBody = null;
                     transition = 0.0F;
                     spinYaw = 0.0F;
                     spinPitch = 0.0F;
@@ -2630,6 +2841,7 @@ public class MinespaceStarMapScreen extends GuiScreen {
                     } else {
                         pendingSystem = pressedNode;
                         pendingLevel = 1;
+                        pendingSearchBody = null;
                         transition = 0.0F;
                         spinYaw = 0.0F;
                         spinPitch = 0.0F;
@@ -2669,6 +2881,27 @@ public class MinespaceStarMapScreen extends GuiScreen {
      */
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws java.io.IOException {
+        if (keyCode == Keyboard.KEY_ESCAPE) {
+            if (choosingDestination) {
+                refuse("先选择目的地，再关闭星图");
+                return;
+            }
+            mc.displayGuiScreen(null);
+            return;
+        }
+        if (searchField != null && searchField.isFocused()) {
+            if (keyCode == Keyboard.KEY_RETURN) {
+                applySearch();
+                return;
+            }
+            if (keyCode == Keyboard.KEY_ESCAPE) {
+                searchField.setFocused(false);
+                return;
+            }
+            if (searchField.textboxKeyTyped(typedChar, keyCode)) {
+                return;
+            }
+        }
         float stepX = Math.max(12.0F, width * 0.06F);
         float stepY = Math.max(8.0F, height * 0.06F);
         if (keyCode == Keyboard.KEY_W || keyCode == Keyboard.KEY_UP) {
@@ -2697,23 +2930,7 @@ public class MinespaceStarMapScreen extends GuiScreen {
             return;
         } else if (keyCode == Keyboard.KEY_T) {
             if (choosingDestination) {
-                // The in-orbit choice (6eo): the server asked for it at the atmosphere, so picking a body here is
-                // "take me there now" rather than "remember this and ignite".
-                if (level == 1 && activeNodes != null && selected >= 0 && selected < activeNodes.size()) {
-                    Node node = activeNodes.get(selected);
-                    String why = whyNot(node);
-                    if (why == null) {
-                        com.minespace.unofficial.galacticraft.MinespaceNetwork.CHANNEL.sendToServer(
-                                new com.minespace.unofficial.galacticraft.MinespaceNetwork.RocketTargetMessage(
-                                        node.body.dimensionId, true));
-                        choosingDestination = false;
-                        mc.displayGuiScreen(null);
-                    } else {
-                        refuse(why);
-                    }
-                } else {
-                    refuse("先点开一个星系，选中里面的天体，再按 T");
-                }
+                confirmInFlightDestination();
                 return;
             }
             // "Aim my rocket here." Only from a body's own view, only for a body that can be landed on and that the
@@ -2723,8 +2940,8 @@ public class MinespaceStarMapScreen extends GuiScreen {
                 Node node = activeNodes.get(selected);
                 String why = whyNot(node);
                 if (why == null) {
-                    com.minespace.unofficial.galacticraft.MinespaceNetwork.CHANNEL.sendToServer(
-                            new com.minespace.unofficial.galacticraft.MinespaceNetwork.RocketTargetMessage(
+            com.minespace.unofficial.navigation.MinespaceNetwork.CHANNEL.sendToServer(
+                    new com.minespace.unofficial.navigation.MinespaceNetwork.RocketTargetMessage(
                                     node.body.dimensionId));
                 } else {
                     refuse(why);
@@ -2742,9 +2959,75 @@ public class MinespaceStarMapScreen extends GuiScreen {
         clampPan();
     }
 
+    /**
+     * The in-orbit choice: the server asked at the atmosphere, so T (or the launch button) means
+     * "take me there now". No ground-side rocket check is involved.
+     */
+    private void confirmInFlightDestination() {
+        if (level == 1 && activeNodes != null && selected >= 0 && selected < activeNodes.size()) {
+            Node node = activeNodes.get(selected);
+            String why = whyNot(node);
+            if (why == null) {
+                com.minespace.unofficial.navigation.MinespaceNetwork.CHANNEL.sendToServer(
+                        new com.minespace.unofficial.navigation.MinespaceNetwork.RocketTargetMessage(
+                                node.body.dimensionId, true));
+                choosingDestination = false;
+                mc.displayGuiScreen(null);
+            } else {
+                refuse(why);
+            }
+        } else {
+            refuse("先点开一个星系，选中里面的天体，再按 T 或发射按钮");
+        }
+    }
+
+    private int launchButtonX() {
+        return width - LAUNCH_BUTTON_WIDTH - 8;
+    }
+
+    private int launchButtonY() {
+        return height - LAUNCH_BUTTON_HEIGHT - 30;
+    }
+
+    private boolean overLaunchButton(int mouseX, int mouseY) {
+        int x = launchButtonX();
+        int y = launchButtonY();
+        return mouseX >= x && mouseX < x + LAUNCH_BUTTON_WIDTH
+                && mouseY >= y && mouseY < y + LAUNCH_BUTTON_HEIGHT;
+    }
+
+    /**
+     * The same visual language as the chart: a translucent black panel, a thin blue-grey edge and plain
+     * text. The vanilla grey button used before belonged to the options menu, not to this screen.
+     */
+    private void drawLaunchButton() {
+        if (!choosingDestination) {
+            return;
+        }
+        int x = launchButtonX();
+        int y = launchButtonY();
+        boolean hover = overLaunchButton(mouseXNow, mouseYNow);
+        int fill = withAlpha(hover ? 0x16253D : 0x000000, hover ? 0.82F : 0.66F);
+        int edge = hover ? 0x9FC4FF : 0x6F86A8;
+        drawRect(x, y, x + LAUNCH_BUTTON_WIDTH, y + LAUNCH_BUTTON_HEIGHT, fill);
+        drawRect(x, y, x + LAUNCH_BUTTON_WIDTH, y + 1, edge);
+        drawRect(x, y + LAUNCH_BUTTON_HEIGHT - 1, x + LAUNCH_BUTTON_WIDTH,
+                y + LAUNCH_BUTTON_HEIGHT, edge);
+        drawRect(x, y, x + 1, y + LAUNCH_BUTTON_HEIGHT, edge);
+        drawRect(x + LAUNCH_BUTTON_WIDTH - 1, y, x + LAUNCH_BUTTON_WIDTH,
+                y + LAUNCH_BUTTON_HEIGHT, edge);
+        String label = "发射";
+        int textWidth = fontRenderer.getStringWidth(label);
+        drawString(fontRenderer, label, x + (LAUNCH_BUTTON_WIDTH - textWidth) / 2,
+                y + (LAUNCH_BUTTON_HEIGHT - 8) / 2, hover ? 0xFFFFFF : 0xD8E4FF);
+    }
+
     @Override
     public void handleMouseInput() throws java.io.IOException {
         super.handleMouseInput();
+        if (searchField != null && searchField.isFocused()) {
+            return;
+        }
         int wheel = Mouse.getEventDWheel();
         if (wheel != 0) {
             // The target, not the drawn zoom: the wheel chooses where the camera is going and the easing

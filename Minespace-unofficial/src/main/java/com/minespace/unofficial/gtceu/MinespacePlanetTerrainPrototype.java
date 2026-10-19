@@ -15,7 +15,7 @@ import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
-import com.minespace.unofficial.Minespace;
+import com.minespace.unofficial.MinespaceContent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,7 +52,7 @@ import java.util.function.Supplier;
  */
 public final class MinespacePlanetTerrainPrototype {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     /** The body this round makes real. Its dimension id comes from the generated table, never from a guess. */
     private static final String KEY = "trappist_1_e";
@@ -103,7 +103,7 @@ public final class MinespacePlanetTerrainPrototype {
         new StoneType(
                 STONE_TYPE_ID,
                 "trappist_1_e_stone",
-                new ResourceLocation(Minespace.MOD_ID, "blocks/trappist_1_e_rock"),
+                new ResourceLocation(MinespaceContent.NAMESPACE, "blocks/trappist_1_e_rock"),
                 SoundType.STONE,
                 OrePrefix.ore,
                 Materials.Stone,

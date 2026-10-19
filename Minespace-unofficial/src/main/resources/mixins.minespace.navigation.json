@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.7.11",
+  "package": "com.minespace.unofficial.navigation.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinWorldUtil",
+    "MixinTheOneProbeText"
+  ],
+  "client": [
+    "MixinGTOreCategory",
+    "MixinGTOrePageHeight"
+  ],
+  "server": []
+}

@@ -1,6 +1,6 @@
 {
-    "name": "Martian_Desh_Vein",
-    "description": "Desh: this pack's own Martian metal, kept as a vein because Galacticraft's Mars tier expects the ore and there is nowhere else to get it.",
+    "name": "\u706b\u661f\u6234\u65af\u77ff\u8109",
+    "description": "\u6234\u65af\uff1a\u672c\u6574\u5408\u5305\u7684\u706b\u661f\u91d1\u5c5e\uff0c\u4fdd\u7559\u4e3a\u77ff\u8109\uff0c\u56e0\u4e3a GC \u7684\u706b\u661f\u5c42\u7ea7\u9700\u8981\u8fd9\u79cd\u77ff\u77f3\uff0c\u4e14\u6ca1\u6709\u5176\u4ed6\u6765\u6e90\u3002",
     "weight": 150,
     "density": 0.25,
     "min_height": 5,

@@ -1,20 +1,70 @@
-[{
-  "modid": "${modid}",
-  "name": "${name}",
-  "description": "${description}",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "https://github.com/yexiaosha/MineSpace-Unofficial",
-  "updateUrl": "",
-  "authorList": ["${author}"],
-  "credits": "Built on the work of the GregTech CE: Unofficial and Galacticraft teams.",
-  "logoFile": "logo.png",
-  "screenshots": [],
-  "parent": "",
-  "dependencies": [
-    "required-after:forge@[14.23.5.2859,)",
-    "required-after:codechickenlib",
-    "required-after:gregtech",
-    "after:galacticraftcore"
-  ]
-}]
+[
+  {
+    "modid": "minespace_core",
+    "name": "Minespace Core",
+    "description": "${description}",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/yexiaosha/MineSpace-Unofficial",
+    "updateUrl": "",
+    "authorList": ["${author}"],
+    "credits": "Built on the work of the GregTech CE: Unofficial and Galacticraft teams.",
+    "logoFile": "assets/minespace_core/logo.png",
+    "screenshots": [],
+    "parent": "",
+    "dependencies": [
+      "required-after:forge@[14.23.5.2859,)",
+      "required-after:codechickenlib",
+      "required-after:gregtech",
+      "after:galacticraftcore",
+      "after:galaxyspace",
+      "after:asmodeuscore",
+      "after:planetprogression"
+    ]
+  },
+  {
+    "modid": "minespace_planets",
+    "name": "Minespace Planets",
+    "description": "One of the four mods in the Minespace Unofficial jar. The celestial bodies: the solar system's twenty and the deep field's eighty-six, with their geology cards, ore veins, rocks, biomes, environmental hazards and ruins. Its own content arrives with stages two to six of the pack's plan.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/yexiaosha/MineSpace-Unofficial",
+    "updateUrl": "",
+    "authorList": ["${author}"],
+    "credits": "Built on the work of the GregTech CE: Unofficial and Galacticraft teams.",
+    "logoFile": "assets/minespace_planets/logo.png",
+    "screenshots": [],
+    "parent": "",
+    "dependencies": ["required-after:minespace_core"]
+  },
+  {
+    "modid": "minespace_navigation",
+    "name": "Minespace Navigation",
+    "description": "One of the four mods in the Minespace Unofficial jar. The star map and spaceflight: the 3D chart and the key that opens it, the surveyed-body gate, the lanes and their fuel economy, the multi-block launch platforms, and the bridge that flies rockets to bodies Galacticraft has never heard of.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/yexiaosha/MineSpace-Unofficial",
+    "updateUrl": "",
+    "authorList": ["${author}"],
+    "credits": "Built on the work of the GregTech CE: Unofficial and Galacticraft teams.",
+    "logoFile": "assets/minespace_navigation/logo.png",
+    "screenshots": [],
+    "parent": "",
+    "dependencies": ["required-after:minespace_core"]
+  },
+  {
+    "modid": "minespace_cosmic",
+    "name": "Minespace Cosmic",
+    "description": "One of the four mods in the Minespace Unofficial jar. The stage-five systems, built one at a time: the four-machine planet research chain, the time observation instrument and the universe simulator that pairs with it, the Dyson sphere, the three faster-than-light tiers and the creation engine.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/yexiaosha/MineSpace-Unofficial",
+    "updateUrl": "",
+    "authorList": ["${author}"],
+    "credits": "Built on the work of the GregTech CE: Unofficial and Galacticraft teams.",
+    "logoFile": "assets/minespace_cosmic/logo.png",
+    "screenshots": [],
+    "parent": "",
+    "dependencies": ["required-after:minespace_core"]
+  }
+]

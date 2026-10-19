@@ -46,7 +46,7 @@ import java.util.Map;
 public final class MinespaceMaterials implements IMaterialHandler {
 
     /** Kept for log messages; GTCE materials themselves are not namespaced. */
-    public static final String NAMESPACE = com.minespace.unofficial.Minespace.MOD_ID;
+    public static final String NAMESPACE = com.minespace.unofficial.MinespaceContent.NAMESPACE;
 
     /**
      * Material ids are allocated at runtime.
@@ -226,7 +226,7 @@ public final class MinespaceMaterials implements IMaterialHandler {
      * so the logger in the main mod class is still null here.
      */
     private static final org.apache.logging.log4j.Logger LOG =
-            org.apache.logging.log4j.LogManager.getLogger("minespace");
+            org.apache.logging.log4j.LogManager.getLogger("minespace_core");
 
     /**
      * Our own name-to-material map.
@@ -452,6 +452,14 @@ public final class MinespaceMaterials implements IMaterialHandler {
                 REGISTERED.size(), DESH_STEEL, METEORIC_IRON, DESH, SOLAR, ONYX,
                 DOLOMITE, "steel");
 
+        int freeSlots = 0;
+        for (int id = 0; id <= MATERIAL_ID_MAX; id++) {
+            if (Material.MATERIAL_REGISTRY.getObjectById(id) == null) {
+                freeSlots++;
+            }
+        }
+        LOG.info("GT material registry: {} free ids below {}", freeSlots, MATERIAL_ID_MAX + 1);
+
         // ------------------------------------------------------------------
         // Stone types, and why they are registered from a material handler.
         //
@@ -475,6 +483,7 @@ public final class MinespaceMaterials implements IMaterialHandler {
         MinespaceStoneTypes.register();
         MinespacePlanetStoneTypes.register();
         MinespaceGalaxySpaceStones.register();
+        MinespaceBygStones.register();
         // ... and the first body with real terrain, whose stone type has to exist for the same reason.
         MinespacePlanetTerrainPrototype.register();
     }
@@ -492,7 +501,7 @@ public final class MinespaceMaterials implements IMaterialHandler {
      * top-down scan collides with. This mod only ever needs a handful of ids now, so it takes the
      * smallest holes it can find.
      */
-    private static int allocateMaterialId() {
+    public static int allocateMaterialId() {
         while (nextMaterialId <= MATERIAL_ID_MAX) {
             int candidate = nextMaterialId++;
             if (Material.MATERIAL_REGISTRY.getObjectById(candidate) == null) {

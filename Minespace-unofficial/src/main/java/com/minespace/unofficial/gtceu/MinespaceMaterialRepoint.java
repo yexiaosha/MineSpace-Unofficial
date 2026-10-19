@@ -1,6 +1,7 @@
 package com.minespace.unofficial.gtceu;
 
 import com.minespace.unofficial.Minespace;
+import com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearGtMaterials;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
@@ -9,6 +10,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -21,7 +23,9 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -283,7 +287,110 @@ public final class MinespaceMaterialRepoint {
         map.put("enderio:item_material:50", "dyeBlack");
         map.put("enderio:item_material:49", "dyeBrown");
         map.put("enderio:item_material:48", "dyeGreen");
+        addNuclearStableTargets(map);
+        // Aliases where the two mods use a different harmless spelling:
+        // QMD calls chromium "Chromium" while GT's material is Chrome, and NCO's crushed quartz
+        // is registered under both "dustQuartz" and "dustNetherQuartz". The fission-product
+        // caesium item also carries the American "Cesium" spelling.
+        map.put("qmd:ingot:2", "ingotChrome");
+        map.put("qmd:dust:2", "dustChrome");
+        map.put("nuclearcraft:gem_dust:2", "dustNetherQuartz");
         return map;
+    }
+
+    /**
+     * NCO and QMD register their own copies of the stable metals they need. Those copies are useful
+     * to their own machines, but a GregTech machine should not hand them out a second time when the
+     * same ingot/dust already exists in GregTech. Nuclear isotopes are deliberately absent: NCO owns
+     * that chain, and QMD's mass spectrometer owns the GT-side isotope separation.
+     */
+    private static void addNuclearStableTargets(Map<String, String> map) {
+        Set<String> stable = new HashSet<>(Arrays.asList(
+                "Aluminium", "Aluminum", "Barium", "Beryllium", "Calcium", "Chromium",
+                "Cobalt", "Copper", "Dysprosium", "Erbium", "Gadolinium", "Gold",
+                "Graphite", "Hafnium", "Holmium", "Iridium", "Iron", "Lead",
+                "Magnesium", "Manganese", "Molybdenum", "Neodymium", "Nickel",
+                "Niobium", "Osmium", "Palladium", "Platinum", "Potassium", "Samarium",
+                "Silver", "Sodium", "Strontium", "Titanium", "Tungsten", "Yttrium",
+                "Ytterbium", "Zinc", "Zirconium", "Bronze", "Steel", "StainlessSteel",
+                "Invar", "Electrum", "Constantan", "Nichrome", "Osmiridium",
+                "NiobiumTin", "NiobiumTitanium", "TungstenCarbide", "HSLASteel",
+                "Zircaloy", "Hastelloy", "CobaltOxide", "NickelOxide", "TinOxide",
+                "IridiumOxide", "RutheniumOxide", "Diamond", "Obsidian", "Fluorite",
+                "BoronNitride", "Coal", "Wheat", "Sulfur", "Bismuth", "Salt",
+                "SodiumChloride", "Iodine", "SodiumHydroxide", "SodiumFluoride",
+                "PotassiumFluoride", "Borax", "Niter", "Saltpeter", "SodiumNitrate",
+                "Tin", "Boron", "Lithium",
+                "Silicon", "Arsenic", "Barite", "Endstone", "NetherQuartz",
+                "Radium", "Polonium", "Mercury",
+                // Isotopes GregTech already ships. NCO-only isotopes (U-233/238, Pu-238/239/242,
+                // Am-242, Cm-243, Bk-248, Cf-249/250) stay with NCO so its decay chain keeps its
+                // own endpoints; the ones listed here have an exact GregTech counterpart and are
+                // unified like any other shared material.
+                "Uranium", "Thorium", "Uranium235", "Neptunium237", "Plutonium241",
+                "Americium241", "Americium243", "Curium245", "Curium246", "Curium247",
+                "Berkelium247", "Californium251", "Californium252"
+        ));
+        stable.addAll(MinespaceNuclearGtMaterials.materialNames());
+        String[] prefixes = {"ingot", "dust", "block", "plate", "gear", "nugget", "gem", "rod",
+                "item"};
+        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
+            ResourceLocation id = item.getRegistryName();
+            if (id == null || !(id.getResourceDomain().equals("nuclearcraft") || id.getResourceDomain().equals("qmd"))) {
+                continue;
+            }
+            NonNullList<ItemStack> stacks = NonNullList.create();
+            try {
+                item.getSubItems(CreativeTabs.SEARCH, stacks);
+            } catch (Throwable ignored) {
+                stacks.clear();
+            }
+            if (stacks.isEmpty()) {
+                stacks.add(new ItemStack(item));
+            }
+            for (ItemStack stack : stacks) {
+                if (stack.isEmpty()) {
+                    continue;
+                }
+                String mappedName = null;
+                for (int oreId : OreDictionary.getOreIDs(stack)) {
+                    String oreName = OreDictionary.getOreName(oreId);
+                    for (String prefix : prefixes) {
+                        if (!oreName.startsWith(prefix)) {
+                            continue;
+                        }
+                        String material = oreName.substring(prefix.length());
+                        if (stable.contains(material)) {
+                            if (hasGregTech(oreName)) {
+                                mappedName = oreName;
+                            } else if (mappedName == null) {
+                                mappedName = oreName;
+                            }
+                        }
+                        break;
+                    }
+                    if (mappedName != null && hasGregTech(mappedName)) {
+                        break;
+                    }
+                }
+                // A name the mod owns alone (Boron, for example) has no GregTech item to move to.
+                // Mapping it to itself would turn an ore-dictionary output into an exact mod item,
+                // so leave those alone.
+                if (mappedName != null && hasGregTech(mappedName)) {
+                    map.putIfAbsent(idOf(stack), mappedName);
+                }
+            }
+        }
+    }
+
+    private static boolean hasGregTech(String oreName) {
+        for (ItemStack candidate : OreDictionary.getOres(oreName, false)) {
+            ResourceLocation id = candidate.getItem().getRegistryName();
+            if (id != null && id.getResourceDomain().equals("gregtech")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** mod item id -> GregTech's item, resolved from the ore dictionary at runtime. */
@@ -305,7 +412,15 @@ public final class MinespaceMaterialRepoint {
                         entry.getValue(), entry.getKey());
                 continue;
             }
-            targets.put(entry.getKey(), ores.get(0).copy());
+            ItemStack target = ores.get(0);
+            for (ItemStack candidate : ores) {
+                ResourceLocation id = candidate.getItem().getRegistryName();
+                if (id != null && id.getResourceDomain().equals("gregtech")) {
+                    target = candidate;
+                    break;
+                }
+            }
+            targets.put(entry.getKey(), target.copy());
         }
         return targets;
     }
@@ -416,6 +531,27 @@ public final class MinespaceMaterialRepoint {
                                 idOf(old));
                     }
                 }
+                // Chanced outputs are a separate list and were the reason some NCO tin / boron
+                // dusts survived the first pass. ChanceEntry is immutable, so replace the entry.
+                List<Recipe.ChanceEntry> chanced = recipe.getChancedOutputs();
+                for (int i = 0; i < chanced.size(); i++) {
+                    Recipe.ChanceEntry entry = chanced.get(i);
+                    ItemStack old = entry.getItemStack();
+                    ItemStack target = targets.get(idOf(old));
+                    if (target == null || target.isEmpty()) {
+                        continue;
+                    }
+                    ItemStack replacement = target.copy();
+                    replacement.setCount(old.getCount());
+                    chanced.set(i, new Recipe.ChanceEntry(replacement, entry.getChance(),
+                            entry.getBoostPerTier()));
+                    changed++;
+                    if (changed <= 3) {
+                        Minespace.log().info("material re-point ({}): chanced output {} -> {} (was {})",
+                                map.getUnlocalizedName(), idOf(replacement), idOf(replacement),
+                                idOf(old));
+                    }
+                }
             }
         }
         Minespace.log().info("material re-point ({} pass, machines): {} machine outputs now yield "
@@ -462,19 +598,9 @@ public final class MinespaceMaterialRepoint {
                     if (input == null || input.getIngredient() == null) {
                         continue;
                     }
-                    ItemStack replacement = null;
-                    boolean allMapped = true;
-                    int matches = 0;
-                    for (ItemStack match : input.getIngredient().getMatchingStacks()) {
-                        matches++;
-                        ItemStack gt = targets.get(idOf(match));
-                        if (gt == null || gt.isEmpty()) {
-                            allMapped = false;
-                        } else if (replacement == null) {
-                            replacement = gt;
-                        }
-                    }
-                    if (matches > 0 && allMapped && replacement != null) {
+                    ItemStack replacement =
+                            unifiedReplacement(input.getIngredient().getMatchingStacks(), targets);
+                    if (replacement != null) {
                         inputs.set(i, new CountableIngredient(
                                 Ingredient.fromStacks(replacement.copy()), input.getCount()));
                         changed++;
@@ -657,19 +783,8 @@ public final class MinespaceMaterialRepoint {
                 // exact-id ingredient, or a shared name whose every member is a mod item. A mixed name
                 // (the way Ender IO's lapis powder sits in `dyeBlue` next to vanilla lapis) is left
                 // alone, because replacing it with a dust would turn a "blue dye" slot into a dust slot.
-                ItemStack replacement = null;
-                boolean allMapped = true;
-                int matches = 0;
-                for (ItemStack match : ingredient.getMatchingStacks()) {
-                    matches++;
-                    ItemStack gt = targets.get(idOf(match));
-                    if (gt == null || gt.isEmpty()) {
-                        allMapped = false;
-                    } else if (replacement == null) {
-                        replacement = gt;
-                    }
-                }
-                if (matches > 0 && allMapped && replacement != null) {
+                ItemStack replacement = unifiedReplacement(ingredient.getMatchingStacks(), targets);
+                if (replacement != null) {
                     ingredients.set(i, Ingredient.fromStacks(replacement.copy()));
                     changed++;
                     if (changed <= 3) {
@@ -683,6 +798,50 @@ public final class MinespaceMaterialRepoint {
         Minespace.log().info("material re-point ({} pass, crafting inputs): {} ingredient slots now "
                 + "take GregTech's item", phase, changed);
         return changed;
+    }
+
+    /**
+     * Reduces an ingredient's alternatives to one canonical GregTech stack.
+     *
+     * <p>If the list already contains GregTech's item, that item wins - even when a mod copy in the
+     * list is registered under several aliases (QMD's niter dust is also "dustSaltpeter" and
+     * "dustSodiumNitrate", so its mapping does not necessarily point at the same alias). Every other
+     * alternative must be a mod copy this pack has mapped; an unrelated mod's item keeps the
+     * ingredient as it is. Without a GregTech item in the list, every mapped alternative must agree
+     * on one target.</p>
+     */
+    private static ItemStack unifiedReplacement(ItemStack[] matches,
+                                                Map<String, ItemStack> targets) {
+        ItemStack gregTech = null;
+        boolean allMapped = true;
+        for (ItemStack match : matches) {
+            ResourceLocation id = match.getItem().getRegistryName();
+            if (id != null && id.getResourceDomain().equals("gregtech")) {
+                if (gregTech == null) {
+                    gregTech = match;
+                } else if (!gregTech.isItemEqual(match)) {
+                    return null;
+                }
+            } else if (!targets.containsKey(idOf(match))) {
+                allMapped = false;
+            }
+        }
+        if (gregTech != null && allMapped) {
+            return gregTech;
+        }
+        ItemStack replacement = null;
+        for (ItemStack match : matches) {
+            ItemStack mapped = targets.get(idOf(match));
+            if (mapped == null || mapped.isEmpty()) {
+                return null;
+            }
+            if (replacement == null) {
+                replacement = mapped;
+            } else if (!replacement.isItemEqual(mapped)) {
+                return null;
+            }
+        }
+        return replacement;
     }
 
     private static String idOf(ItemStack stack) {

@@ -31,12 +31,12 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = com.minespace.unofficial.Minespace.MOD_ID)
 public final class MinespacePlanetRocks {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
-    private static final String MOD_ID = com.minespace.unofficial.Minespace.MOD_ID;
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
+    private static final String NAMESPACE = com.minespace.unofficial.MinespaceContent.NAMESPACE;
 
-    public static final ResourceLocation MARS_ROCK = new ResourceLocation(MOD_ID, "mars_rock");
-    public static final ResourceLocation VENUS_ROCK = new ResourceLocation(MOD_ID, "venus_rock");
-    public static final ResourceLocation ASTEROID_ROCK = new ResourceLocation(MOD_ID, "asteroid_rock");
+    public static final ResourceLocation MARS_ROCK = new ResourceLocation(NAMESPACE, "mars_rock");
+    public static final ResourceLocation VENUS_ROCK = new ResourceLocation(NAMESPACE, "venus_rock");
+    public static final ResourceLocation ASTEROID_ROCK = new ResourceLocation(NAMESPACE, "asteroid_rock");
 
     private static final Map<ResourceLocation, Block> BLOCKS = new LinkedHashMap<>();
 

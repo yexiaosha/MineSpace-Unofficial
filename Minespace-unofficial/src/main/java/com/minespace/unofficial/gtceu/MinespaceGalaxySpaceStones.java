@@ -1,6 +1,6 @@
 package com.minespace.unofficial.gtceu;
 
-import com.minespace.unofficial.Minespace;
+import com.minespace.unofficial.MinespaceContent;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.Materials;
@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  */
 public final class MinespaceGalaxySpaceStones {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     /** One lazy Galaxy Space block lookup per body, kept so {@link #verifyTargets()} can re-check. */
     private static final java.util.Map<String, Supplier<Block>> TARGETS =
@@ -91,7 +91,7 @@ public final class MinespaceGalaxySpaceStones {
         new StoneType(
                 planet.stoneTypeId,
                 planet.stoneName(),
-                new ResourceLocation(Minespace.MOD_ID, "blocks/" + planet.rockName()),
+                new ResourceLocation(MinespaceContent.NAMESPACE, "blocks/" + planet.rockName()),
                 SoundType.STONE,
                 OrePrefix.ore,
                 stoneMaterial,

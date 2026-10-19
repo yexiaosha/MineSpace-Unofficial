@@ -46,8 +46,8 @@ public final class MinespaceResearchData extends Item {
     public static final MinespaceResearchData ITEM = new MinespaceResearchData();
 
     private MinespaceResearchData() {
-        setRegistryName(com.minespace.unofficial.Minespace.MOD_ID, REGISTRY_NAME);
-        setUnlocalizedName(com.minespace.unofficial.Minespace.MOD_ID + "." + REGISTRY_NAME);
+        setRegistryName(com.minespace.unofficial.MinespaceContent.NAMESPACE, REGISTRY_NAME);
+        setUnlocalizedName(com.minespace.unofficial.MinespaceContent.NAMESPACE + "." + REGISTRY_NAME);
         setHasSubtypes(true);
         setMaxDamage(0);
         setMaxStackSize(16);

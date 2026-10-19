@@ -12,8 +12,8 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
         // Register blocks, items, config here.
-        // The one packet this mod sends: "aim my rocket at that body" (see MinespaceNetwork).
-        com.minespace.unofficial.galacticraft.MinespaceNetwork.register();
+        // The rocket/star-map packet is registered by the navigation module's own proxy - it is that module's
+        // wire protocol, not the core's (see navigation/CommonProxy).
     }
 
     public void init(FMLInitializationEvent event) {

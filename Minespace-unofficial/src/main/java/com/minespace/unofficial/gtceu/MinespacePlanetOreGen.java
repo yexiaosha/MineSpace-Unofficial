@@ -61,7 +61,7 @@ import java.util.Set;
  */
 public final class MinespacePlanetOreGen {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     private static final Set<Integer> REPORTED_DIMENSIONS = new HashSet<>();
 
@@ -72,6 +72,12 @@ public final class MinespacePlanetOreGen {
     private static final Map<Long, int[]> FALLBACK_QUEUE = new LinkedHashMap<>();
 
     private static final int FALLBACK_DELAY_TICKS = 40;
+
+    /**
+     * A planet can queue hundreds of chunks at once when the player teleports or flies. Running every
+     * due chunk in one tick is a visible server stall; spread the same work over several ticks instead.
+     */
+    private static final int MAX_FALLBACK_CHUNKS_PER_TICK = 4;
 
     private static int ticks;
     private static boolean registered;
@@ -156,19 +162,23 @@ public final class MinespacePlanetOreGen {
         }
         ticks++;
 
-        List<int[]> due = new ArrayList<>();
+        List<Map.Entry<Long, int[]>> due = new ArrayList<>();
         synchronized (FALLBACK_QUEUE) {
+            if (FALLBACK_QUEUE.isEmpty()) {
+                return;
+            }
             Iterator<Map.Entry<Long, int[]>> iterator = FALLBACK_QUEUE.entrySet().iterator();
-            while (iterator.hasNext()) {
+            while (iterator.hasNext() && due.size() < MAX_FALLBACK_CHUNKS_PER_TICK) {
                 Map.Entry<Long, int[]> entry = iterator.next();
                 if (entry.getValue()[3] <= ticks) {
-                    due.add(entry.getValue());
+                    due.add(entry);
                     iterator.remove();
                 }
             }
         }
 
-        for (int[] pending : due) {
+        for (Map.Entry<Long, int[]> entry : due) {
+            int[] pending = entry.getValue();
             int dimension = pending[0];
             // A dimension that does fire the populate events has registered itself by now (the
             // fallback waits a couple of seconds on purpose), so its queue entries are dropped

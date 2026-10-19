@@ -258,18 +258,71 @@ Write-Host ("    {0,-42} {1,7} {2,7}" -f 'the stage-two acceptance target is the
 
 # A gap is a material GregTech has an ore for that no vein in this pack generates, directly or as a
 # byproduct - the plan's "any gap is filled by a vein variant".
-$gaps = @($hasOre | Where-Object { -not $reachableAll.Contains($_) } | Sort-Object)
+#
+# One class of gap is not a gap, though, and it used to be reported as one: a material whose only designed
+# home is a body that has no terrain yet. The table marks those bodies `Pending` (6dk: designed, not
+# generated; 6dn measured that a void world cannot hold ore at all), the generator writes no vein file for
+# them on purpose, and the supply half above reads files - so it cannot see them. Calling those six "gaps"
+# was a standing false alarm, and a checklist that is always red is a checklist nobody reads. They get
+# their own line, naming the body that will carry them and the stage it unlocks at.
+$variantOres = @{}
+foreach ($variant in @($table.Variants)) {
+    if ($variant.ContainsKey('Id')) {
+        $variantOres[$variant.Id] = @($variant.Ores | ForEach-Object { $_.Ore })
+    }
+}
+
+$plannedGaps = @{}
+foreach ($key in $bodies.Keys) {
+    if (-not $bodies[$key].ContainsKey('Pending') -or -not $bodies[$key].Pending) { continue }
+    $ids = @()
+    if ($bodies[$key].ContainsKey('Region')) {
+        $region = $regions[$bodies[$key].Region]
+        foreach ($include in @($region.Includes)) {
+            if ($regions.ContainsKey($include)) { $ids += @($regions[$include].Variants) }
+        }
+        $ids += @($region.Variants)
+    }
+    if ($bodies[$key].ContainsKey('Signature')) { $ids += $bodies[$key].Signature }
+
+    $dimensionId = [int]$bodies[$key].DimensionId
+    $where = if ($stageOfDimension.ContainsKey($dimensionId)) { $stageOfDimension[$dimensionId] } else { $null }
+    foreach ($id in $ids) {
+        if (-not $variantOres.ContainsKey($id)) { continue }
+        foreach ($ore in $variantOres[$id]) {
+            if ($hasOre.Contains($ore) -and -not $reachableAll.Contains($ore) -and -not $plannedGaps.ContainsKey($ore)) {
+                $plannedGaps[$ore] = [pscustomobject]@{
+                    Body    = $bodies[$key].Display
+                    Stage   = $(if ($where) { $where.Stage } else { 0 })
+                    Voltage = $(if ($where) { $where.Voltage } else { '' })
+                }
+            }
+        }
+    }
+}
+
+$gaps = @($hasOre | Where-Object {
+        -not $reachableAll.Contains($_) -and -not $plannedGaps.ContainsKey($_)
+    } | Sort-Object)
 Write-Host ''
 Write-Host ("[ {0} ] no ore-bearing material is left without a source          ({1} gaps)" -f `
         $(if ($gaps.Count -eq 0) { 'OK' } else { 'FAIL' }), $gaps.Count)
 if ($gaps.Count -gt 0) { Write-Host ('    ' + ($gaps -join ', ')) -ForegroundColor Yellow }
+if ($plannedGaps.Count -gt 0) {
+    Write-Host ("    designed, not generated yet ({0}) - the only body that will carry them has no terrain:" -f `
+            $plannedGaps.Count)
+    foreach ($ore in @($plannedGaps.Keys | Sort-Object)) {
+        $target = $plannedGaps[$ore]
+        Write-Host ("        {0,-24} {1,-18} stage {2}  {3}" -f $ore, $target.Body, $target.Stage, $target.Voltage)
+    }
+}
 
 # A material whose only source is a later region cannot be needed before that region unlocks. This is
 # the shape a mod's own ore takes when it arrives: it enters the table at exactly one stage.
+# (An earlier version also excluded `$homeOres` here - a variable this script never defines, so the term
+# was a no-op that read like a rule. The solar set already contains every stage-one ore.)
 $laterOres = @($supply.Keys | Where-Object { (Stage-Of $_) -gt 3 })
-$laterOnly = @($laterOres | Where-Object {
-        -not $reachableSolar.Contains($_) -and -not ($homeOres -contains $_)
-    } | Sort-Object)
+$laterOnly = @($laterOres | Where-Object { -not $reachableSolar.Contains($_) } | Sort-Object)
 Write-Host ''
 if ($laterOnly.Count -eq 0) {
     Write-Host 'no ore exists only beyond the solar system'

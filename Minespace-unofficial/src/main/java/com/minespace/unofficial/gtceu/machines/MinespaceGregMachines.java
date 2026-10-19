@@ -1,6 +1,7 @@
 package com.minespace.unofficial.gtceu.machines;
 
 import com.minespace.unofficial.Minespace;
+import com.minespace.unofficial.MinespaceContent;
 import gregtech.api.GregTechAPI;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
@@ -32,19 +33,19 @@ import org.apache.logging.log4j.Logger;
  */
 public final class MinespaceGregMachines {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     /** Registry id of the oxygen compressor. Also its item metadata: gregtech:machine:32000. */
     public static final int OXYGEN_COMPRESSOR_ID = 32000;
 
     public static final ResourceLocation OXYGEN_COMPRESSOR =
-            new ResourceLocation(Minespace.MOD_ID, "oxygen_compressor");
+            new ResourceLocation(MinespaceContent.NAMESPACE, "oxygen_compressor");
 
     /** Registry id of the rocket fuel loader: gregtech:machine:32001. */
     public static final int ROCKET_FUEL_LOADER_ID = 32001;
 
     public static final ResourceLocation ROCKET_FUEL_LOADER =
-            new ResourceLocation(Minespace.MOD_ID, "rocket_fuel_loader");
+            new ResourceLocation(MinespaceContent.NAMESPACE, "rocket_fuel_loader");
 
     private static boolean registered;
 

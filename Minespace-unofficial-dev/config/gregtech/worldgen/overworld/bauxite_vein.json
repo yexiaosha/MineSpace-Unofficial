@@ -31,6 +31,10 @@
                                                     "value":  "ore:ilmenite"
                                                 },
                                                 {
+                                                    "weight":  6,
+                                                    "value":  "block:byg:tamrelite_ore"
+                                                },
+                                                {
                                                     "weight":  3,
                                                     "value":  "ore:rutile"
                                                 }

@@ -54,52 +54,36 @@ public final class MinespacePlanetResearch {
      * gs原本木星，土星等这些都没有了"*, with everything unlocked in PlanetProgression and the solar system still missing
      * its giants.
      *
-     * <p>So the rule is now one progression per system: a row in the sun's system is PlanetProgression's business, and
-     * it is charted when that research has surveyed the system - the rows this pack added are charted together with the
-     * bodies they exist to orbit for. Layer 1 is the solar system by construction (6ea).</p>
+     * <p>So a row in the sun's system is PlanetProgression's business - and it is charted when that research has
+     * surveyed **that body**, one at a time, the way Galacticraft's and Galaxy Space's own charts work. Layer 1 is the
+     * solar system by construction (6ea); the per-body rule is 6eu.</p>
      */
     public static boolean gateIsPlanetProgression(com.minespace.unofficial.gtceu.MinespacePlanetDimensions.Planet body) {
         return body.layer <= 1 || bodyKnownToGalacticraft(body.dimensionId) != null;
     }
 
-    /** The system a catalog row belongs to: the star it orbits, or the row's own name when it orbits nothing. */
-    public static String systemKeyOf(com.minespace.unofficial.gtceu.MinespacePlanetDimensions.Planet body) {
-        return body.star.isEmpty() ? body.name : body.star;
-    }
-
     /**
-     * Client side: has the pack's planet research surveyed any of the bodies Galacticraft owns in this row's system?
+     * Server side: the gate for a row in the sun's own system, which is researched **one body at a time**.
      *
-     * <p>Asked instead of "is this exact body in PlanetProgression's list" because the rows it is asked about are the
-     * ones PlanetProgression has no entry for: Galaxy Space's Jupiter is a planet with no dimension, so there is no
-     * object to hand the research for it. Its system's answer is the closest thing to the truth, and it is the honest
-     * one: the pack's giants are part of the same picture as the moons that orbit them.</p>
+     * <h2>Why not the system (6eu)</h2>
+     *
+     * <p>This used to ask whether *any* body in the row's system had been surveyed, because Galaxy Space's gas giants
+     * are planets with no dimension ({@code jupiter -> planet.jupiter dim -1}) and there looked to be no object to hand
+     * the research for them. There is one: {@link MinespaceCelestialRegistry#bodyOf} resolves a row to the body that
+     * already stands for it - by dimension where it has one, by unlocalized name otherwise - and registers one only
+     * when nobody else has, so the per-body question is askable for every row. It is also the answer the owner wants:
+     * the system-level question lit up all twenty-four solar rows the moment one of them was researched, so Jupiter,
+     * Saturn, Uranus and Neptune appeared on a chart that had never surveyed them.</p>
+     *
+     * <p>The client's copy of this rule is {@code MinespaceStarMapScreen.surveySolarBody} - the same two lines, written
+     * through that screen's stand-in for PlanetProgression, which a capture run has instead of a player. They have to
+     * answer the same way or the map offers a destination the server refuses.</p>
      */
-    public static boolean systemSurveyedOnClient(net.minecraft.client.entity.EntityPlayerSP player,
-            com.minespace.unofficial.gtceu.MinespacePlanetDimensions.Planet body) {
-        String key = systemKeyOf(body);
-        for (com.minespace.unofficial.gtceu.MinespacePlanetDimensions.Planet sibling
-                : com.minespace.unofficial.gtceu.MinespacePlanetDimensions.PLANETS) {
-            if (systemKeyOf(sibling).equals(key) && bodyKnownToGalacticraft(sibling.dimensionId) != null
-                    && surveyedOnClient(player, sibling.dimensionId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** Server side: the same question, from the state that decides whether a rocket may be aimed. */
-    public static boolean systemSurveyedOnServer(EntityPlayerMP player,
-            com.minespace.unofficial.gtceu.MinespacePlanetDimensions.Planet body) {
-        String key = systemKeyOf(body);
-        for (com.minespace.unofficial.gtceu.MinespacePlanetDimensions.Planet sibling
-                : com.minespace.unofficial.gtceu.MinespacePlanetDimensions.PLANETS) {
-            if (systemKeyOf(sibling).equals(key) && bodyKnownToGalacticraft(sibling.dimensionId) != null
-                    && surveyedOnServer(player, sibling.dimensionId)) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean surveyedSolarOnServer(EntityPlayerMP player,
+            com.minespace.unofficial.gtceu.MinespacePlanetDimensions.Planet row) {
+        return bodyKnownToGalacticraft(row.dimensionId) != null
+                ? surveyedOnServer(player, row.dimensionId)
+                : surveyedOursOnServer(player, row);
     }
 
     /** The Galacticraft body that owns this dimension, or null when the dimension is this pack's own. */

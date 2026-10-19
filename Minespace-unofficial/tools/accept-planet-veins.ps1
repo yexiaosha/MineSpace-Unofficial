@@ -43,6 +43,25 @@ $Bodies = @{
     '-1025' = 'Proxima B'; '-1030' = "Barnard's Star b"; '-1031' = "Barnard's Star c"
     '-1032' = "Barnard's Star d"; '-1338' = 'Tau Ceti F'
 }
+
+# The table is the single source of truth for a body's name, and this map above predates it: it is kept for
+# the dimensions the table does not own (Galaxy Space's mirror dimension -1006, for one). Everything else is
+# filled in from the table, which is what prints "TRAPPIST-1 e" instead of "dimension -2103" - and, more to
+# the point, what keeps the two files from drifting apart as bodies are added.
+#
+# Bodies marked `Pending` are skipped on purpose. They are designed but not generated (their world is still
+# the void provider), so they have no vein file by design - counting them here would turn eleven deliberate
+# absences into eleven "MISSING" failures. The closure checklist reports them in their own section instead.
+$TablePath = Join-Path $PSScriptRoot 'planet-veins.psd1'
+if (Test-Path $TablePath) {
+    $planetTable = Import-PowerShellDataFile -Path $TablePath
+    foreach ($key in $planetTable.Bodies.Keys) {
+        $body = $planetTable.Bodies[$key]
+        if ($body.ContainsKey('Pending') -and $body.Pending) { continue }
+        $dimensionId = "$([int]$body.DimensionId)"
+        if (-not $Bodies.ContainsKey($dimensionId)) { $Bodies[$dimensionId] = $body.Display }
+    }
+}
 $SolarSystem = @(-28, -29, -30, -31, -1005, -1006, -1007, -1008, -1009, -1012, -1013, -1014, -1015,
                  -1016, -1017, -1018, -1021, -1022, -1023, -1024)
 $Vanilla = @('dimension_id:0', 'is_nether', 'name:the_end')

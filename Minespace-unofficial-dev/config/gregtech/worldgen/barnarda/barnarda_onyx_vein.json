@@ -1,6 +1,6 @@
 {
-    "name": "Barnarda_Onyx_Vein",
-    "description": "The pack's own material, and Barnarda's signature: onyx with the calcite and sulphur that surround it.",
+    "name": "\u5df4\u7eb3\u5fb7\u7f1f\u739b\u7459\u77ff\u8109",
+    "description": "\u672c\u6574\u5408\u5305\u7684\u539f\u521b\u6750\u6599\uff0c\u4e5f\u662f\u5df4\u7eb3\u5fb7\u661f\u7cfb\u7684\u6807\u5fd7\uff1a\u7f1f\u739b\u7459\uff0c\u4e0e\u5468\u56f4\u7684\u65b9\u89e3\u77f3\u548c\u786b\u5171\u751f\u3002",
     "weight": 120,
     "density": 0.2,
     "min_height": 5,

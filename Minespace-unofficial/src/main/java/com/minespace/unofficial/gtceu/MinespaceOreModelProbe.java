@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
  */
 final class MinespaceOreModelProbe {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     private MinespaceOreModelProbe() {
     }

@@ -9843,6 +9843,540 @@ bodies renumbers PlanetProgression's `research_paper_<n>` item ids, so a world t
 Forge's one-time "missing minecraft:items" list on its next launch - harmless, and it is the price of the registry
 growing, but a player should be told rather than surprised.
 
+## 6es. Stage two's countable half is green, and the checklist stops crying wolf - 2026-10-16
+
+The owner asked to continue stage two. Before touching anything, both countable acceptance tools were run
+against the tree as it stands, and the state and the defects came out of the same measurement.
+
+**What stage two's acceptance says** (`tools\accept-planet-veins.ps1`): 128 vein files, 128 parsed, 0
+failures; all 26 bodies carry 5..8 veins (Moon 7, Venus 7, Mars 7, Io 6, Europa 6, Titan 5); no duplicate
+`(dimension, name)` pair anywhere; no definition without a dimension filter; the Moon shows 7. The 20
+solar-system dimensions supply 64 distinct ores between them, which is the plan's "5..8 per body,
+diversity by combination rather than new ores" (5.4) and its 4.1 criteria, met.
+
+**The closure checklist said `[ FAIL ] 6 gaps` - and the six were not gaps.** `arsenopyrite`,
+`barytocalcite`, `caliche`, `fluoroapatite`, `iridium` and `osmium` are each named in the table's variants
+(lines 1872, 1923 and 1941), and each of those variants belongs to a body marked `Pending`: 55 Cancri e,
+HD 40307 g and HD 219134 b, all mid-layer, all stage five. Their dimensions are registered - the star map
+needs the ids - and 6dn measured that their worlds are the shared void provider, so no vein file is written
+for them on purpose, and the supply half of the check, which reads files, cannot see them. The checklist
+was reading "designed, not generated" as "missing".
+
+That is worth fixing rather than living with: a checklist that is always red is one nobody reads, and the
+next real gap would have hidden behind these six. `check-resource-closure.ps1` now reads the table's
+`Pending` flag and its variants, splits the missing materials into *real* gaps and *designed, not yet
+generated*, and names the body and the stage each planned one arrives at:
+
+    [ OK ] no ore-bearing material is left without a source          (0 gaps)
+        designed, not generated yet (6) - the only body that will carry them has no terrain:
+            arsenopyrite             55 Cancri e        stage 5  LuV~ZPM
+            barytocalcite            HD 40307 g         stage 5  LuV~ZPM
+            caliche                  HD 40307 g         stage 5  LuV~ZPM
+            fluoroapatite            HD 40307 g         stage 5  LuV~ZPM
+            iridium                  HD 219134 b        stage 5  LuV~ZPM
+            osmium                   HD 219134 b        stage 5  LuV~ZPM
+
+Only a real gap can fail that check now. Two smaller defects went with it: a `$homeOres` reference the
+script never defines (a no-op that read like a rule, now gone), and `build-planet-veins.ps1`'s summary
+line, which said "no dimension exists yet" about bodies whose ids have been registered since 6dm - it now
+says what 6dn measured ("id registered, world still void").
+
+**The body map in `accept-planet-veins.ps1` was a second source of truth.** Its dimension-to-name table
+predates `planet-veins.psd1` and printed `dimension -2103` for TRAPPIST-1 e. It is filled in from the table
+now - skipping `Pending` bodies, because their absence from the files is deliberate and counting them would
+have turned eleven designs into eleven `MISSING` failures - and that row reads `TRAPPIST-1 e` with its 7
+veins. The hardcoded entries stay for the dimensions the table does not own (Galaxy Space's mirror
+dimension -1006, for one).
+
+**Verified, not assumed**
+
+| check | result |
+| --- | --- |
+| `accept-planet-veins.ps1` | 6 of 6 criteria OK: 26 bodies, 0 duplicates, 0 parse failures, 0 empty |
+| `check-resource-closure.ps1` | `OK` on both criteria: 0 gaps, 0 supplied after their last use |
+| table vs generated files | in sync - the table was saved at 11:41:00 and the fifteen managed folders written at 11:41:10 |
+| `build-planet-veins.ps1 -DryRun` | 71 variants, 37 managed bodies, 66 files to write, 0 to remove, 0 to strip |
+| the plan's own five examples (4.2) | each card matches the theme the plan names: Mercury's least-oxidised rock and impact-delivered platinum-group metal, Venus's high-temperature sulphides, Io's volcanic sulphur, Titan's hydrocarbon-and-nitrogen chemistry, Europa's under-ice brine and hydrothermal sulphides |
+
+**What stage two still owes, and it is not countable from here**: the two in-game acceptance lines - the
+generation screenshots and the Earth to Moon to Mars to Ganymede sampling trip - and the one claim no round
+has tested (6dl), that ore actually appears in a planet's ground. A temporary server-side probe that
+generates a grid of chunks in the solar-system dimensions and counts the GregTech ore blocks in them is how
+to answer that without a player; that is the next round, and the instrument gets deleted after use like
+every other one.
+
+## 6et. The four modules get their own banners, and the mod list reads pack.png - 2026-10-16
+
+The owner asked for logos and descriptions for the modules the split created. The interesting part is what
+measurement turned up before any art was drawn.
+
+**Minecraft 1.12.2 does not read `logoFile`.** `GuiModList#updateCache`'s bytecode does this, and nothing
+else:
+
+    IResourcePack pack = FMLClientHandler.instance().getResourcePackFor(mod.getModId());
+    if (pack != null) img = pack.getPackImage();                      // <- the mod list image
+    else img = getClass().getResourceAsStream(logoFile);              // <- resolved against Forge's own class
+
+So the image in the mod list is the resource pack's `pack.png`, and `logoFile` is only consulted for a mod
+that has no resource pack at all - where it is then resolved relative to the FML class, which can only ever
+find a file inside Forge's own jar. A jar-based mod can therefore never show its `logoFile`.
+
+That is why this pack's mod list has never shown a logo: no jar in the instance has a root `pack.png` - all
+25 were checked, and Galacticraft does not either, although its `mcmod.info` declares
+`assets/galacticraftcore/core-logo.png`. The `make-logo.py` docstring's geometry (400x130 authored, scaled
+0.5x into the 200x65 box) is right; its assumption about *which file* Forge loads was not.
+
+**What shipped**
+
+* `tools/make-logo.py` now takes `--module <id>` and `--all`. One palette-and-mark class drives all five
+  images, so they stay one family: same backdrop, star field, frame and lighting, five accents, five
+  emblems (gear-and-planet for the umbrella and core, a cut planet with a moon for planets, an instrument
+  face with a plotted course for navigation, a star in a segmented shell for cosmic).
+* Four module banners at `assets/minespace_<module>/logo.png`, one per resource domain, plus 4x versions in
+  `docs/`. Each is wordmarked `MINESPACE * <role>` with the module's own headline and contents line.
+* `pack.png` at the jar root, so the mod list has an image at all. One jar is one resource pack, so all four
+  entries share it: the umbrella mark. Per-module mod-list logos are not something 1.12.2 can do.
+* `mcmod.info` declares each module's own banner in `logoFile` (inert in practice, but it is the declared
+  intent and costs nothing) and carries rewritten per-module descriptions.
+
+**Verified**
+
+* The umbrella mark is byte-identical after the refactor: `logo.png` SHA256 `d3019921...` and
+  `docs/logo.png` `d6434811...` both before and after, so the committed art still regenerates from the
+  script exactly (which is also how the refactor was checked at each step).
+* The four banners were looked at, not assumed. The first render **had the taglines cut off at the right
+  edge** - they were longer than the umbrella's line and the script had no fitting - so the script gained a
+  `fit_size` for the headline, the kicker and the tagline, and the taglines were shortened.
+* Server run after the change: 50 mods, `Done (2.000s)`, `crafttweaker.log` 0 errors, ERROR 40 / WARN 5352 -
+  identical to the run before it. The four modules' `Missing English translation` warnings stay gone.
+
+Recorded in MODULE-SPLIT-PLAN.md section five as well, because it is a rule about the module layout rather
+than about art.
+
+## 6eu. The solar system is researched one body at a time, not one system at a time - 2026-10-16
+
+The owner opened the star map and reported the shape of the bug in one line: *"没研究的行星都不会展示啊，我这里都还没
+研究怎么木星这些星球都展示了呢"* - follow Galacticraft and Galaxy Space, where a body you have not researched is not on
+the chart; Jupiter was on theirs before they had researched it.
+
+**Measured first.** The gate had two roads into a solar row and the second one was the whole system:
+`MinespaceStarMapScreen.computeUnlocked` asked `systemSurveyed(body)` - "has *any* body Galacticraft owns in this row's
+system been surveyed?" - for every row this pack registered in layer 1, and for every row whose dimension nobody
+registers (Galaxy Space's four gas giants, which it registers as planets with no dimension). The capture harness could
+not photograph the difference, because its stand-in for PlanetProgression was all-or-nothing:
+
+| stand-in | systems charted | bodies charted |
+| --- | --- | --- |
+| PlanetProgression surveyed everything (`-Tier 0`) | 77 of 77 | 110 of 110 |
+| PlanetProgression surveyed nothing (`-Tier 0 -PlanetProgression $false`) | 0 of 77 | 0 of 110 |
+
+So the *smallest non-empty* state - one body surveyed - was the same as the largest: the moment the telescope had
+surveyed the Moon, all twenty-four solar rows were charted, giants and all. 6eq chose the system as the unit because
+Galaxy Space's Jupiter looked like a planet with no object to research ({@code jupiter -> planet.jupiter dim -1}); the
+missing piece is that this pack resolves such a row to the body that already stands for it - by dimension where it has
+one, by unlocalized name otherwise - so the per-body question *is* askable for every row.
+
+**Changed**
+
+* `MinespaceStarMapScreen.surveySolarBody` - a row in the sun's own system is charted when *that body* has been
+  surveyed: by dimension where Galacticraft knows one, by the body object otherwise. No system question, and no
+  research-data shortcut either (layer 1's tier is I, and a data item is not a telescope).
+* `MinespacePlanetResearch.surveyedSolarOnServer` - the same two lines for the rocket gate in `MinespaceRocketTarget`, so
+  the map cannot offer a destination the server refuses. `systemSurveyedOnClient`, `systemSurveyedOnServer` and the now
+  unused `systemKeyOf` are gone.
+* The refusal for one of these rows now says the *body* has not been surveyed; it used to say its *system* had not.
+* `capture-starmap.ps1 -Surveyed <key>` - the harness's stand-in answers for one body, which is what makes this rule
+  photographable at all. `-Tier 0 -PlanetProgression $false -Surveyed moon`:
+
+| check | result |
+| --- | --- |
+| one body surveyed (the Moon) | the Sol view reads **已测绘 1 / 24 个天体**; Sol's marker and nothing else |
+| everything surveyed | 110 of 110 bodies, unchanged |
+| nothing surveyed | 0 of 110 bodies, unchanged |
+| dedicated-server run | 50 mods, `Done (1.982s)`, `crafttweaker.log` 0 errors, ERROR 40 / WARN 5352 - identical to before the change |
+
+**Two traps recorded.** (1) The four gas giants are reachable per body only because `MinespaceCelestialRegistry.bodyOf`
+falls back to the unlocalized name - if that ever stops resolving, those rows go dark rather than wrong, and the
+registry's own standing check is what would say so. (2) Reading a `.java` file with PowerShell's `Get-Content` on this
+machine decodes UTF-8 as GBK, so Chinese literals look like mojibake; an edit scripted that way must use
+`[IO.File]::ReadAllText($path, [Text.Encoding]::UTF8)` and verify by dumping code points, which is how a message was
+cut in half and the damage caught here.
+
+**Still open, and it is the owner's call**: Galacticraft's own map (the M key) is not ours and hides nothing - Galaxy
+Space's Jupiter is in its registry, so that screen lists it whatever the research says. Making *that* map behave the
+same way is a different job (a mixin into its celestial screen, or removing GS's bodies from it).
+
+## 6ev. M opens this pack's star map, because that is what the default map should be - 2026-10-16
+
+The owner's request, after 6eu put the gate in: *"建议改成默认星图打开就是我们新的"*. The pack's map was on J, and the
+comment on that binding said why - M already opens Galacticraft's map, and this screen was "a different document, not a
+replacement for it yet". It is the replacement now.
+
+**Measured first.** Galacticraft's map key is `micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient.galaxyMap`, a
+**public static** `KeyBinding`, registered through `ClientRegistry.registerKeyBinding` in `ClientProxyCore`. That is
+what makes a takeover possible without a mixin: the field can be written, and their binding stays in the controls list
+where a player can put a key back on it.
+
+**What changed**
+
+* `MinespaceStarMapKey.OPEN_MAP` is on **M** ("Open the star map"), with `OPEN_MAP_ALT` keeping **J** so nobody has to
+  relearn anything; the tick handler drains both.
+* `NavigationClientProxy.releaseGalacticraftMapKey` sets GC's key to `KEY_NONE` - **only while it is still on M**, so a
+  key the player has already moved is left alone - and logs one line. No mixin, no reflection: the field is public.
+* Why ours deserves the default: Galacticraft's map cannot hide anything, because Galaxy Space's bodies are in its
+  registry whatever the research says (6eu), while this pack's map is built on the gate.
+
+**Verified**
+
+| check | result |
+| --- | --- |
+| a real client run (the capture harness) | `minespace_navigation: star map: M opens this pack's map (J also works); Galacticraft's own map key released`, and all six capture poses still written |
+| the same client | 51 mods loaded, clean shutdown |
+| dedicated server | 50 mods, `Done (1.964s)`, ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors - identical to before, and the takeover line does **not** appear (the class it touches is client-only) |
+
+**Left for the owner, in game**: press M and confirm this pack's map opens; the controls screen should show
+Galacticraft's own "Galaxy Map" as unbound (rebindable, so that screen is not lost, only off the default key). The
+release is idempotent: once the game has saved GC's key as `NONE`, later launches find it off M and log nothing.
+
+## 6ew. The launch asks through one funnel, and Galaxy Space's rockets never used ours - 2026-10-16
+
+After 6ev put the map on M, the owner launched a rocket and reported the other half: *"不对，发射之后星图还是gs的"*. The
+injection from 6en was still in place, so this was a measurement problem, not an oversight.
+
+**What the four classes actually do.** `onReachAtmosphere` is declared in four places that matter:
+
+| class | declares it | opens the screen via |
+| --- | --- | --- |
+| `api.prefab.entity.EntitySpaceshipBase` | yes (the base) | - |
+| `api.prefab.entity.EntityTieredRocket` | yes (override) | `WorldUtil.toCelestialSelection(player, stats, tier)` |
+| `galaxyspace...EntityTier6Rocket` | yes (**override**) | the same call |
+| `galaxyspace...EntityMultiSeatRocket` | yes (**override**) | the same call |
+
+The 6en injection targeted `EntityTieredRocket.onReachAtmosphere`. Galaxy Space's two rockets **override** that method and
+never run the parent's body, so for the rockets the owner actually flies, the injection never fired and Galaxy Space's map
+opened. The old injection was wrong in the other direction as well: it cancelled Galacticraft's method
+unconditionally, so a normal pad-to-pad flight to a space station was intercepted and asked this pack's map instead.
+
+**The funnel.** Every one of those road ends - Galacticraft's own rockets and Galaxy Space's overrides both - goes
+through `micdoodle8.mods.galacticraft.core.util.WorldUtil.toCelestialSelection(EntityPlayerMP, GCPlayerStats, int)`, and
+that method is reached *only* when the rocket has no destination of its own (a resolved pad frequency takes the other
+branch). So the takeover belongs there, once, instead of per rocket class:
+
+* new `navigation/mixin/MixinWorldUtil` - at the head of that method: if the player asking is **riding an
+  `EntityAutoRocket`**, hand the choice to `MinespaceRocketDestinations.takeOver` and cancel Galacticraft's screen;
+* `MinespaceRocketDestinations.takeOver(player, rocket)` - aimed before launch: fly them there; not aimed: this pack's
+  map, once per flight. Its `nameOf` moved here verbatim from the deleted mixin;
+* `MixinEntityTieredRocket` is **deleted** - with the funnel in place it is dead weight, and its
+  unconditional cancel is the bug in this round;
+* the other callers of that method - the `/planetteleport` command and Galacticraft's player handler - are left alone:
+  neither has a rocket being ridden, so they still get Galacticraft's screen.
+
+**Verified**
+
+| check | result |
+| --- | --- |
+| mixin audit (dedicated server, `mixinbooter.log`) | `APPLY mixins.minespace.navigation.json:MixinWorldUtil ... -> micdoodle8.mods.galacticraft.core.util.WorldUtil` |
+| the same run | 50 mods, `Done (1.971s)`, ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors - the transformed class loads and every number is where it was |
+| `toCelestialSelection`'s signature | read out of the jar: exactly one overload, `(EntityPlayerMP, GCPlayerStats, int)V` - the descriptor the injection names |
+
+**Left for the owner, in game** (a launch cannot be scripted with this pack's instruments): launch a rocket, and this
+pack's map should come up instead of Galaxy Space's; pick a body and the flight should continue to it. Then check the
+one that is deliberately *not* ours: a pad-to-pad flight to a space station should still use Galacticraft's own screen.
+
+## 6ex. "Get into a rocket" was refused while sitting in one - 2026-10-16
+
+The owner sent one screenshot, no words: standing on a planet at -172 C, Galacticraft's launch keys and its parachute
+warning in chat, and a red line from this pack - *"无法前往:先坐进火箭(Earth 需要 GC 火箭)"*. That is
+`MinespaceRocketTarget`'s riding check, and it should not be reachable from inside a rocket.
+
+**What the evidence says.** Read out of the owner's own running instance (the log is locked by their client, so it was
+read through a shared handle):
+
+* the four chat lines `SPACE - 发射 / A / D - 左-右转 / W / S - 上-下移 / F - 物品栏 / 燃料` are Galacticraft's, and its
+  own lang file says they belong to the pre-launch checklist - they are sent to the player on **boarding**, so the
+  player was in the rocket when they arrived;
+* `Running GregTech ore generation on Galacticraft dimension -1014` at login says the session started on **Io**;
+* the star map opened at 21:02:41 with `research data 0 of 6, 77 of 77 systems charted, 110 of 110 bodies charted` - the
+  owner's PlanetProgression is fully surveyed, so the research gate is not involved and the only refusal left was the
+  riding one;
+* the refusal itself is at 21:03:01, twenty seconds after that map opened - the shape of the in-flight choice (the funnel
+  opens the map at the atmosphere, the player browses, then presses T).
+
+**What the classes say.** Every rocket in this pack is an `EntityAutoRocket`, and Galaxy Space's multi-seat and tier-6
+rockets extend Galacticraft's `EntityTieredRocket`, which does too - so `ridden instanceof EntityAutoRocket` should have
+held. There is no separate seat entity in Galaxy Space either (`EntityMultiSeatRocketTest` is a rocket subclass, not a
+seat), and no `startRiding` anywhere in its classes; extra passengers ride the rocket itself.
+
+**What changed (6ex)**
+
+* `MinespaceRocketTarget.rocketRiddenBy(Entity)` follows the riding chain instead of asking for one link, with a depth cap
+  against a cycle: a seat or a mount in between is still the rocket. The refusal now uses it.
+* The refusal **logs what the player was actually riding** - player, dimension, requested body, the in-flight flag, and
+  the vehicle's class name (or "(nothing)"). Those are the three cases that can produce this refusal, and this one line
+  tells them apart on the next attempt instead of leaving it to guesswork.
+* Verified: build green with `checkModuleBoundaries` (55 files, no violations), dedicated-server run 50 mods,
+  `Done (2.068s)`, ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors - the same numbers as before the change.
+
+**Not done, and why**: the star map's card still invites `T` for any landable body, whether or not the player is in a
+rocket, and the refusal's wording says only "get into a rocket". Both should follow the measurement above - the card
+lines are Chinese literals in a file this machine's tooling reads as mojibake, so they are being changed with a scripted
+edit against ASCII anchors rather than by hand, and what they should *say* depends on which of the three cases the log
+line names. The owner is asked to relaunch (the jar is deployed) and send that line if it refuses again.
+
+## 6ey. The in-orbit answer is authorised by the question, not by the rocket - 2026-10-16
+
+6ex's diagnostic line, taken from the owner's own running session, named the case exactly:
+
+    [21:30:53] star map: Minespace (dim -1014) asked for Moon in flight=true but is riding (nothing) - refusing
+
+`in flight=true` is the in-orbit choice - the funnel opened this pack's map at the atmosphere - and `(nothing)` is what
+was under the player when they pressed T. Their log has the same shape twice: the map opened at 21:02:41 and the
+refusal came at 21:03:01; second attempt, map at 21:30:41 and refusal at 21:30:53. The answer arrives **after** the
+flight is over, and the ground-aim rule - "the player must be riding a rocket" - was being applied to it.
+
+**Why that rule cannot apply here.** A ground aim has to name a rocket, so asking for one is the only way to know which
+ship the player means. An in-orbit answer does not: the arrival is a `changeDimension` for the player, and the choice is
+already constrained by the fact that this pack asked for it at all. Validating it by the riding link was checking the one
+thing that is guaranteed to be gone by the time a human has browsed a chart.
+
+**Changed**
+
+* `MinespaceRocketDestinations` remembers the question: `ASKED_PLAYERS`, keyed by player, holding the tier of the rocket
+  that asked and when it was asked, with a ten-minute game-time expiry. `takeOver` writes it just before it sends the
+  map message; `tierAwaitingAnswer` reads it; `answered` consumes it.
+* `MinespaceRocketTarget.apply` lets an in-flight answer through when the question is outstanding - no riding link, no
+  fuel check (the fuel was spent getting up) - and takes the tier from the rocket that asked rather than from a rocket
+  that may no longer exist. The ground path is unchanged: it still needs the rocket, because it has to aim one.
+* This is also the *safer* rule. A client cannot claim to be in orbit: without a question from this pack, an in-flight
+  message is refused, and the refusal logs "and not asked to choose" so that state is distinguishable from the old one.
+* Verified: `checkModuleBoundaries` 55 files, no violations; dedicated-server run 50 mods, `Done (1.979s)`,
+  ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors - the same numbers as before. The behaviour itself is the owner's
+  next launch: at the atmosphere the map should open, and pressing T on a body should take them there regardless of how
+  long they browsed.
+
+**Still open**: the star map's card invites `T` for any landable body whether or not the player is in a rocket, and the
+ground refusal says only "get into a rocket". Both are Chinese literals in files this machine's tooling reads as
+mojibake, so they are queued for a scripted edit against ASCII anchors rather than a by-hand patch.
+
+## 6ez. The crash: a packet handler on the wrong thread - 2026-10-16
+
+The owner reported "闪退" with no crash report, and the log explains why there was none: this was not a Minecraft crash
+but a **fatal packet-handler exception**, which Forge answers by terminating the connection. In single-player the
+integrated server disconnecting the player is a client back at the main menu.
+
+**The stack, from the session that died (21:35:24 to 21:39:28):**
+
+    java.lang.RuntimeException: Already decorating!!
+        at micdoodle8.mods.galacticraft.core.world.gen.BiomeDecoratorMoon.decorate(BiomeDecoratorMoon.java:49)
+        at net.minecraft.world.biome.Biome.decorate / BiomeAdaptive.decorate
+        at micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon.populate(ChunkProviderMoon.java:288)
+        at net.minecraft.world.chunk.Chunk.populate / Chunk.onLoad / ChunkProviderServer.provideChunk
+        at net.minecraft.world.World.getBlockState
+        at net.minecraft.world.Teleporter.adjustExitPoint / placeEntity
+        at net.minecraft.server.management.PlayerList.transferEntityToWorld
+        at net.minecraft.entity.player.EntityPlayerMP.changeDimension
+        at com.minespace.unofficial.navigation.MinespaceRocketDestinations.transfer(MinespaceRocketDestinations.java:152)
+        at com.minespace.unofficial.navigation.MinespaceRocketTarget.apply(MinespaceRocketTarget.java:181)
+        at com.minespace.unofficial.navigation.MinespaceNetwork$RocketTargetMessage$Handler.onMessage(MinespaceNetwork.java:109)
+
+**And the thread**, from the same log line: `[Netty Server IO #1/ERROR]`. A simple channel delivers its message on the
+network thread, and everything under `apply` touches the world - `changeDimension` loads the destination, generates its
+spawn chunks and populates the ore in them. That ran **beside** the server thread doing its own generation, the guard
+against re-entering a chunk population fired, and Forge turned the exception into a disconnection.
+
+That is why the earlier attempts only refused politely: they read state. The first attempt that actually *arrived*
+somewhere (6ey's fix working) is the first one that mutated the world from the wrong thread. 6eu-6ey were all read-only
+on the server, so the bug was latent from 6en onwards.
+
+**Changed**
+
+* `MinespaceNetwork.RocketTargetMessage.Handler` schedules its work onto the server thread
+  (`player.mcServer.addScheduledTask`) and wraps it in a `catch (Throwable)`: a bug in this handler is now a log line,
+  never a disconnection.
+* `OpenStarMapMessage.ClientHandler` schedules onto the client thread for the same reason - a GUI opened from the
+  network thread is a GUI opened behind the game's back.
+* Verified: `checkModuleBoundaries` 55 files, no violations; dedicated-server run 50 mods, `Done (1.972s)`,
+  ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors.
+
+**The owner's world**: the exception fired inside the destination's exit-point search, before the transfer completed,
+so the frame they were standing on should still be where they left it - worth one look when they next log in.
+
+**Lesson to keep**: in this pack, *any* server-side packet handler that touches the world must schedule onto the server
+thread first. `SimpleNetworkWrapper` does not do it for you. The two handlers in `MinespaceNetwork` are the pack's only
+ones, and both are fixed; a third would need the same line.
+
+## 6f. The hang: vanilla's teleporter, and the player data it left behind - 2026-10-16
+
+The owner's next attempt ended on "loading world" and never left it. A thread dump of the live client (PID 7276, second
+session, started 21:44) says exactly what that screen was waiting for:
+
+    "Client thread"  RUNNABLE  ... net.minecraft.client.gui.GuiDownloadTerrain.drawScreen
+    "Server thread"  TIMED_WAITING (sleeping) at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:530)
+
+The client is drawing "Downloading terrain" and the server is **idle** - nobody is generating anything. The client is
+waiting for a player position that never arrives.
+
+**Why.** `MinespaceRocketDestinations.transfer` used `player.changeDimension(dimensionId)`, the single-argument call,
+which hands the arrival to vanilla's `Teleporter`: it searches for an exit point and, doing that, loads and generates
+the destination's chunks **inside the dimension change**. In this pack that has now thrown twice - 6ez's
+`RuntimeException: Already decorating!!`, and this round's `NullPointerException` inside `Teleporter` (stack:
+`transfer -> changeDimension -> PlayerList.transferEntityToWorld -> Teleporter.placeEntity`). Both times the outcome was
+the same, because vanilla sends `SPacketRespawn` **before** it places anybody: the client is told to load the new
+dimension, the placement then fails, and the client sits on the loading screen forever while the server goes idle.
+
+Galacticraft does not use vanilla's teleporter for this: `WorldUtil.transferEntityToDimension` does the move per
+dimension through that dimension's own `ITeleportType` (`TeleportTypeMoon`, `TeleportTypeMars`, ...). This pack was
+calling the wrong thing from 6en onwards; every arrival that ever worked did so by luck.
+
+**Changed**
+
+* new `navigation/MinespaceArrivalTeleporter` - an `ITeleporter` that does the one thing an arrival here needs: put the
+  entity at the destination's spawn point, on top of the solid block found there (a fixed height in a world that has no
+  ground yet). No exit-portal search, so nothing loads chunks behind the dimension change's back.
+* `transfer` refuses a body whose world is still the shared void provider (`isStillVoid`, read through
+  `DimensionManager.getWorld(id, false)` so asking does not create it): the planned bodies have no terrain yet, and a
+  player dropped into one falls through nothing. It reuses the existing "world is not built yet" message.
+* `transfer` also recovers instead of stranding: if the move still fails, the player is moved **back** to the dimension
+  they came from through this pack's own placement, so the client is told to load a dimension it can actually stand in.
+* Verified: `checkModuleBoundaries` 56 files, no violations; dedicated-server run 50 mods, `Done (2.232s)`,
+  ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors.
+
+**The owner's save, and what is done about it.** The failed transfer left the player data in a state that only shows on
+the next login. Read out of `saves/新的世界/playerdata/00000000-0000-0000-0000-000000000000.dat` byte-wise (the NBT
+`Dimension` int tag and the `Pos` list, no parser needed):
+
+    Dimension = -1024   (Miranda - the destination of the attempt that failed)
+    Pos       = (233.25, 927.67, 46.0)   (Io's coordinates, from inside the rocket)
+
+Logging in would place the player at y 928 over Miranda, which is a fall, not an arrival. **This round does not touch
+that file.** The repair - `Dimension` back to Io (-1014) and `Pos.y` down to the pad's ground height, X/Z unchanged -
+waits until the owner has closed the game, because the hung client's own exit-save would simply write the bad state
+back, and it will be made with a copy of the file beside it.
+
+**Lesson**: in this pack an arrival is never `changeDimension(int)`. It is either Galacticraft's own transfer or this
+pack's teleporter, and no body without ground may be a destination at all.
+
+## 6g. An arrival that loads the way Galacticraft's does - 2026-10-17
+
+6f fixed the hang and the owner arrived on Venus (their player data reads `Dimension = -31`, pos (161, 89, 255)), and
+the next remark was the right one: *"没有弄成gs那样加载世界"* - it does not load the world the way Galaxy Space does.
+Ours showed vanilla's "Downloading terrain"; every Galacticraft and Galaxy Space trip shows their own progress screen.
+
+**How Galacticraft does it, measured.** `GuiTeleporting` is not just a screen: its **constructor** writes itself into
+`TickHandlerClient.teleportingGui`, and `TickHandlerClient.onClientTick` starts with
+
+    if (teleportingGui != null && mc.currentScreen != teleportingGui) mc.currentScreen = teleportingGui;
+
+so the screen is forced back every tick - which is why it survives the vanilla respawn that replaces `currentScreen`
+with `GuiDownloadTerrain` - and the screen clears the static field itself once the destination dimension is there. In
+Galacticraft's own flow the field is set by `GuiCelestialSelection` when the player picks a destination.
+
+**Changed**
+
+* new `MinespaceNetwork.TeleportingMessage` (server to client, id 2, registered only on the client side): carries the
+  destination dimension and constructs `GuiTeleporting` on the client thread - GC's screen, GC's mechanism, not a copy
+  of the look.
+* `MinespaceRocketDestinations.transfer` sends it immediately before the `changeDimension`, and again with the original
+  dimension before the back-out path of 6f, so the screen tracks whichever move actually happens.
+* Verified: `checkModuleBoundaries` 56 files, no violations; dedicated-server run 50 mods, `Done (1.969s)`,
+  ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors - the packet class is never loaded on a server, because its
+  registration sits inside the existing client-side branch.
+
+**Left for the owner, in game**: fly again; the progress screen should come up while the destination loads and clear
+itself when the new world is there, exactly as a Galacticraft flight does.
+
+## 6h. The arrival screen is this pack's now, and it is configurable - 2026-10-17
+
+6g put Galacticraft's teleporting screen on our arrivals. The owner's clarification: *"我们的这个取代gs的，就像可以配置星图
+那样"* - ours should replace Galacticraft's the way the star map did, and be configurable.
+
+**What makes that cheap.** `GuiTeleporting` is neither final nor does it seal `drawScreen`, and its **constructor**
+does the one thing that matters: it writes `this` into `TickHandlerClient.teleportingGui`, which the client tick
+handler forces back as `currentScreen` every tick and which the screen clears when the destination is there. So a
+subclass keeps the whole mechanism and replaces only what the player sees - which is exactly the split the pack has
+used everywhere else.
+
+**Changed**
+
+* `MinespaceTeleportingScreen extends GuiTeleporting`: a dark field, a framed panel in the pack's palette, the kicker
+  `MINESPACE · 航行`, `正在前往 <body>`, the body's system and distance (AU inside the solar system, light years outside
+  it), a sweeping bar and `世界加载中`. The bar is deliberately **indeterminate**: the server does not report how much
+  of the destination is ready, and a fill level that pretends to know would be a lie.
+* `MinespaceNavigationSettings` and `config/minespace_navigation.cfg`: `interface.ownTeleportScreen` (default `true` =
+  this pack's screen, `false` = Galacticraft's own). Loaded in the module's `preInit`.
+* `TeleportingMessage`'s client handler constructs whichever the setting names, still on the client thread.
+* Verified: `checkModuleBoundaries` 58 files, no violations; dedicated-server run 50 mods, `Done (1.977s)`,
+  ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors.
+
+**The look is an in-game check.** The capture harness photographs the star map, not this screen; the owner is the one
+who will see it while a rocket lands, and the next round of tuning depends on that picture.
+
+## 6i. The arrival screen crashed the client: constructed is not shown - 2026-10-17
+
+The owner's first flight with 6h's screen ended in a crash report (`crash-2026-10-17_12.45.23-client.txt`):
+
+    java.lang.NullPointerException: Ticking screen
+        at micdoodle8.mods.galacticraft.core.client.gui.screen.GuiTeleporting.func_73876_c(GuiTeleporting.java:48)
+        at com.minespace.unofficial.navigation.MinespaceTeleportingScreen.func_73876_c(MinespaceTeleportingScreen.java:52)
+        ...
+        Affected screen: com.minespace.unofficial.navigation.MinespaceTeleportingScreen
+
+**What the NPE was.** `GuiScreen.mc`, `width`, `height` and `fontRenderer` are assigned by
+`setWorldAndResolution`, which `Minecraft.displayGuiScreen` calls. Our handler only **constructed** the screen: the
+constructor registered it with Galacticraft's tick handler, the tick handler then forced it into `currentScreen` - an
+object that had never been initialised - and its first `updateScreen` dereferenced `this.mc` (null) at
+`GuiTeleporting.updateScreen`'s first field read. Galacticraft's own screen survives the same forcing for one simple
+reason: `GuiCelestialSelection` *shows* it once, so it is initialised before the tick handler starts re-forcing it after
+vanilla replaces `currentScreen` with `GuiDownloadTerrain`. Constructed is not shown.
+
+The arrival itself had worked: the crash report's level is dimension 0 and the player data says `Dimension = 0` - the
+player was on Earth when the screen killed the client.
+
+**Changed**
+
+* both branches of `TeleportingMessage.ClientHandler` now `displayGuiScreen(new ...)`, ours and Galacticraft's alike - the
+  Galacticraft branch would have crashed in exactly the same way.
+* the screen owns its closing rule instead of calling `GuiTeleporting.updateScreen`: close when the player is in the
+  destination, or after a minute. Galacticraft's version closes on a `posY`-against-`posZ` comparison and has no
+  timeout, so a body whose spawn sits at a low z would pin the player on the screen.
+* `drawScreen` and `updateScreen` are wrapped: a failure closes the screen and logs one line. A bug in a screen must not
+  be able to take the whole client down, which is what 6i cost.
+* Verified: `checkModuleBoundaries` 58 files, no violations; dedicated-server run 50 mods, `Done (1.952s)`,
+  ERROR 40 / WARN 5352, `crafttweaker.log` 0 errors.
+
+**Lesson**: a `GuiScreen` that a tick handler forces into `currentScreen` must have been shown through
+`displayGuiScreen` at least once, or nothing in it is initialised.
+
+## 6j. The "special loading background" was the world itself - 2026-10-17
+
+The owner's next note: *"还是没有像gc那样有降落，有特别加载背景"*. Reading Galacticraft's screen settled what those two
+things are:
+
+* `GuiTeleporting.drawScreen` calls `drawBackground(0)` - **tint zero, i.e. nothing** - and then draws one centred
+  line of white text. So its "special background" is not an image at all: it is the **destination world showing
+  through**, generating while you wait, with the panel's text on top.
+* `WorldUtil.transferEntityToDimension` for a player sends `SPacketRespawn`, then `ITeleportType.getPlayerSpawnLocation`
+  and `forceMoveEntityToPos` - a placement, not a fall. So "landing like GC" is the *moment* of arrival, not a
+  simulated descent.
+
+Our screen was doing the opposite of both: an opaque `0xF0` overlay hid the world, and the arrival cut straight to the
+ground.
+
+**Changed**
+
+* the overlay is now a 25 % veil: the destination forms behind the panel, which is the loading background the owner
+  remembered;
+* a landing phase: once the player is in the destination, the screen stays for 1.5 s with `降落中` instead of vanishing
+  the instant the dimension changes.
+* Verified: `checkModuleBoundaries` 58 files, no violations; build and deploy clean. No server run this round: the
+  change is inside a `@SideOnly(CLIENT)` screen that a dedicated server never loads, and the previous round's boot with
+  the same class set was green.
+
+**Still open, and it is a real limitation rather than a look**: the rocket itself stays behind. `transfer`'s javadoc
+records that as this version's deliberate limit - moving the ship too means a second dimension transfer (GC's
+`transferEntityToDimension` takes an `EntityAutoRocket` for exactly that) and re-seating the rider. That is the next
+candidate, and it needs a test flight because it moves a second entity.
+
 ## 7. Open questions / risks
 
 - ~~The machine GUI is the only part with no obvious 1:1 mapping; it needs a `ModularUI` layout

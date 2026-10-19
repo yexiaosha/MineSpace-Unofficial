@@ -342,7 +342,7 @@ $profileMap['Minespace Unofficial'] = [ordered]@{
     type          = 'custom'
     lastVersionId = $ForgeId
     gameDir       = '.'
-    javaArgs      = '-Xmx6144M'
+    javaArgs      = '-Xms1024M -Xmx6144M'
 }
 [ordered]@{
     profiles               = $profileMap
@@ -423,7 +423,7 @@ $launcher = @'
 #>
 [CmdletBinding()]
 param(
-    [int]$MinMemoryMB = 2048,
+    [int]$MinMemoryMB = 1024,
     [int]$MaxMemoryMB = 6144,
     [string]$Username = 'Minespace',
     [switch]$Server

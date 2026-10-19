@@ -32,6 +32,10 @@
 		{
           "weight": 10,
           "value": "ore:pentlandite"
+        },
+        {
+          "weight": 12,
+          "value": "block:byg:kasai_ore"
         }
       ]
     }

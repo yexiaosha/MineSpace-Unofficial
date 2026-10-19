@@ -29,6 +29,10 @@
                                                 {
                                                     "weight":  20,
                                                     "value":  "ore:thorium"
+                                                },
+                                                {
+                                                    "weight":  12,
+                                                    "value":  "block:byg:pendorite_ore"
                                                 }
                                             ]
                              }

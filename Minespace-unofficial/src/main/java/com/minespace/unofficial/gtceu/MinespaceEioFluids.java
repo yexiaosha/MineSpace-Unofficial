@@ -42,7 +42,7 @@ import java.util.Map;
 public final class MinespaceEioFluids {
 
     private static final org.apache.logging.log4j.Logger LOG =
-            org.apache.logging.log4j.LogManager.getLogger("minespace");
+            org.apache.logging.log4j.LogManager.getLogger("minespace_core");
 
     private MinespaceEioFluids() {
     }

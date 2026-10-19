@@ -40,7 +40,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class MinespacePlanetDimensionsRegistration {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     private static boolean registered;
 

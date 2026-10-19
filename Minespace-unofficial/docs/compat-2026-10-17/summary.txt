@@ -1,0 +1,8 @@
+items=32169
+blocks=4763
+ore_dictionary_rows=36736
+gt_recipes=67854
+nco_recipes=5439
+qmd_recipes=863
+crafting_recipes=22403
+material_targets=370

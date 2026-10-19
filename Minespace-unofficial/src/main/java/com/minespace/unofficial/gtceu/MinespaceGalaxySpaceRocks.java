@@ -1,6 +1,7 @@
 package com.minespace.unofficial.gtceu;
 
 import com.minespace.unofficial.Minespace;
+import com.minespace.unofficial.MinespaceContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -34,7 +35,7 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = Minespace.MOD_ID)
 public final class MinespaceGalaxySpaceRocks {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     private static final Map<String, Block> BLOCKS = new LinkedHashMap<>();
 
@@ -47,10 +48,10 @@ public final class MinespaceGalaxySpaceRocks {
             return;
         }
         for (MinespaceGalaxySpacePlanets.Planet planet : MinespaceGalaxySpacePlanets.PLANETS) {
-            ResourceLocation id = new ResourceLocation(Minespace.MOD_ID, planet.rockName());
+            ResourceLocation id = new ResourceLocation(MinespaceContent.NAMESPACE, planet.rockName());
             Block block = new Block(Material.ROCK);
             block.setRegistryName(id);
-            block.setUnlocalizedName(Minespace.MOD_ID + "." + planet.rockName());
+            block.setUnlocalizedName(MinespaceContent.NAMESPACE + "." + planet.rockName());
             block.setHardness(1.5F);
             block.setResistance(6.0F);
             event.getRegistry().register(block);
@@ -68,7 +69,7 @@ public final class MinespaceGalaxySpaceRocks {
         Block block = BLOCKS.get(planet.key);
         if (block == null) {
             block = ForgeRegistries.BLOCKS.getValue(
-                    new ResourceLocation(Minespace.MOD_ID, planet.rockName()));
+                    new ResourceLocation(MinespaceContent.NAMESPACE, planet.rockName()));
         }
         if (block == null) {
             LOG.error("Rock block '{}' is not registered - ores on {} will have no base to draw",

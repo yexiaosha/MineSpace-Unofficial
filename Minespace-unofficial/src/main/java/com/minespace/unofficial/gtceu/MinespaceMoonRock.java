@@ -42,10 +42,10 @@ import org.apache.logging.log4j.Logger;
 @Mod.EventBusSubscriber(modid = com.minespace.unofficial.Minespace.MOD_ID)
 public final class MinespaceMoonRock {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     public static final ResourceLocation ID =
-            new ResourceLocation(com.minespace.unofficial.Minespace.MOD_ID, "moon_rock");
+            new ResourceLocation(com.minespace.unofficial.MinespaceContent.NAMESPACE, "moon_rock");
 
     private static Block block;
 
@@ -56,7 +56,7 @@ public final class MinespaceMoonRock {
     public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
         Block moonRock = new Block(Material.ROCK);
         moonRock.setRegistryName(ID);
-        moonRock.setUnlocalizedName(com.minespace.unofficial.Minespace.MOD_ID + ".moon_rock");
+        moonRock.setUnlocalizedName(com.minespace.unofficial.MinespaceContent.NAMESPACE + ".moon_rock");
         moonRock.setHardness(1.5F);
         moonRock.setResistance(6.0F);
         event.getRegistry().register(moonRock);

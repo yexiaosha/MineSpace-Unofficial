@@ -18,6 +18,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Random;
@@ -63,7 +65,7 @@ import java.util.Set;
  */
 public final class MinespaceVanillaWorldgen {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     /** Never generates anything: the target of every replacement below. */
     private static final WorldGenerator NOTHING = new WorldGenerator() {
@@ -74,6 +76,10 @@ public final class MinespaceVanillaWorldgen {
     };
 
     private static final Set<String> DISABLED = new LinkedHashSet<>();
+
+    /** Decorator identities already rewritten; reflection-unwrapping them again is pointless. */
+    private static final Set<BiomeDecorator> PATCHED_DECORATORS =
+            Collections.newSetFromMap(new IdentityHashMap<BiomeDecorator, Boolean>());
 
     private static boolean registered;
 
@@ -154,11 +160,7 @@ public final class MinespaceVanillaWorldgen {
             if (decorator == null) {
                 continue;
             }
-            apply(decorator);
-            BiomeDecorator wrapped = unwrap(decorator);
-            if (wrapped != null) {
-                apply(wrapped);
-            }
+            applyOnce(decorator);
             patched++;
         }
         return patched;
@@ -199,11 +201,7 @@ public final class MinespaceVanillaWorldgen {
         if (biome == null || biome.decorator == null) {
             return;
         }
-        apply(biome.decorator);
-        BiomeDecorator wrapped = unwrap(biome.decorator);
-        if (wrapped != null) {
-            apply(wrapped);
-        }
+        applyOnce(biome.decorator);
     }
 
     @SubscribeEvent
@@ -212,7 +210,7 @@ public final class MinespaceVanillaWorldgen {
         if (decorator == null) {
             return;
         }
-        apply(decorator);
+        applyOnce(decorator);
     }
 
     /**
@@ -245,6 +243,17 @@ public final class MinespaceVanillaWorldgen {
         } catch (Throwable t) {
             LOG.warn("Could not unwrap Forge's deferred biome decorator: {}", t.toString());
             return null;
+        }
+    }
+
+    private static void applyOnce(BiomeDecorator decorator) {
+        if (decorator == null || !PATCHED_DECORATORS.add(decorator)) {
+            return;
+        }
+        apply(decorator);
+        BiomeDecorator wrapped = unwrap(decorator);
+        if (wrapped != null) {
+            applyOnce(wrapped);
         }
     }
 

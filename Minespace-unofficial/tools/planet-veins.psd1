@@ -1,4 +1,4 @@
-# The planet vein table - the single source of truth the vein files are generated from.
+﻿# The planet vein table - the single source of truth the vein files are generated from.
 #
 # Why a table, and why this shape:
 #
@@ -829,14 +829,14 @@
 
         @{
             Id      = 'barnarda_onyx'
-            Name    = 'Barnarda_Onyx_Vein'
+            Name    = '巴纳德缟玛瑙矿脉'
             Weight  = 120
             Density = 0.2
             Min     = 5
             Max     = 40
             Radius  = @(10, 14)
             Rock    = 'onyx'
-            Reason  = 'The pack''s own material, and Barnarda''s signature: onyx with the calcite and sulphur that surround it.'
+            Reason  = '本整合包的原创材料，也是巴纳德星系的标志：缟玛瑙，与周围的方解石和硫共生。'
             Ores    = @(
                 @{ Ore = 'onyx';    Share = 60 }
                 @{ Ore = 'calcite'; Share = 25 }
@@ -1025,7 +1025,7 @@
 
         @{
             Id      = 'martian_desh'
-            Name    = 'Martian_Desh_Vein'
+            Name    = '火星戴斯矿脉'
             Bodies  = @('mars')
             Weight  = 150
             Density = 0.25
@@ -1033,7 +1033,7 @@
             Max     = 50
             Radius  = @(12, 14)
             Rock    = 'desh'
-            Reason  = 'Desh: this pack''s own Martian metal, kept as a vein because Galacticraft''s Mars tier expects the ore and there is nowhere else to get it.'
+            Reason  = '戴斯：本整合包的火星金属，保留为矿脉，因为 GC 的火星层级需要这种矿石，且没有其他来源。'
             Ores    = @(
                 @{ Ore = 'desh';     Share = 55 }
                 @{ Ore = 'nickel';   Share = 25 }
@@ -1216,7 +1216,7 @@
 
         @{
             Id      = 'venusian_solar'
-            Name    = 'Venusian_Solar_Vein'
+            Name    = '金星太阳石矿脉'
             Bodies  = @('venus', 'gs_venus')
             Weight  = 40
             Density = 0.15
@@ -1224,7 +1224,7 @@
             Max     = 40
             Radius  = @(8, 12)
             Rock    = 'solar'
-            Reason  = 'Solar: this pack''s own material for the body closest to the sun, with the silver and tellurium that like a hot, reduced melt.'
+            Reason  = '太阳石：本整合包为最靠近太阳的天体设计的材料，与偏好高温还原熔体的银和碲共生。'
             Ores    = @(
                 @{ Ore = 'solar';     Share = 55 }
                 @{ Ore = 'silver';    Share = 25 }

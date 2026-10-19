@@ -34,7 +34,7 @@ import java.util.List;
  */
 public final class MinespaceGalacticraftMachineRecipes {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_core");
 
     /** Upper bound for the circuit fabricator walk; its list is a dozen entries at most. */
     private static final int MAX_FABRICATOR_RECIPES = 256;

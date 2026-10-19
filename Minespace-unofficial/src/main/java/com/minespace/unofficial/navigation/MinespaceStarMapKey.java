@@ -1,4 +1,4 @@
-package com.minespace.unofficial.gtceu;
+package com.minespace.unofficial.navigation;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -11,7 +11,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 /**
- * Opens the star map on J, client side only.
+ * Opens this pack's star map on M, client side only. J is kept as a second binding.
+ *
+ * <p>M is the key Galacticraft's own map used, and since 6ev this pack's map is the default one. The takeover is a
+ * released binding rather than a mixin (see {@code NavigationClientProxy.releaseGalacticraftMapKey}): their key stays
+ * in the controls list, so a player who wants that screen back can put a key on it there.</p>
  *
  * <p>Kept apart from the screen so that the screen can be opened from anywhere (a command, a research
  * machine's GUI, a keybind) without the screen knowing how it was reached.</p>
@@ -20,7 +24,11 @@ import org.lwjgl.input.Keyboard;
 public final class MinespaceStarMapKey {
 
     public static final KeyBinding OPEN_MAP =
-            new KeyBinding("Open the Minespace star map", Keyboard.KEY_J, "Minespace");
+            new KeyBinding("Open the star map", Keyboard.KEY_M, "Minespace");
+
+    /** The key this screen was on first, kept so nobody has to relearn it. */
+    public static final KeyBinding OPEN_MAP_ALT =
+            new KeyBinding("Open the star map (J)", Keyboard.KEY_J, "Minespace");
 
     private static boolean registered;
 
@@ -40,8 +48,10 @@ public final class MinespaceStarMapKey {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        while (OPEN_MAP.isPressed()) {
-            Minecraft.getMinecraft().displayGuiScreen(new MinespaceStarMapScreen());
+        Minecraft mc = Minecraft.getMinecraft();
+        // `|`, not `||`: isPressed() consumes the press, so both bindings have to be asked every pass.
+        while (OPEN_MAP.isPressed() | OPEN_MAP_ALT.isPressed()) {
+            mc.displayGuiScreen(new MinespaceStarMapScreen());
         }
         openForCapture();
     }
@@ -65,7 +75,7 @@ public final class MinespaceStarMapKey {
         boolean settled = captureTicks > 100;
         if (settled && mc.currentScreen != null
                 && !(mc.currentScreen instanceof MinespaceStarMapScreen)) {
-            org.apache.logging.log4j.LogManager.getLogger("minespace").info(
+            org.apache.logging.log4j.LogManager.getLogger("minespace_navigation").info(
                     "star map capture: opening over {} after {} ticks",
                     mc.currentScreen.getClass().getName(), captureTicks);
             captureOpened = true;
@@ -73,7 +83,7 @@ public final class MinespaceStarMapKey {
             return;
         }
         if (captureTicks % 40 == 0) {
-            org.apache.logging.log4j.LogManager.getLogger("minespace").info(
+            org.apache.logging.log4j.LogManager.getLogger("minespace_navigation").info(
                     "star map capture: waiting, screen is {} after {} ticks",
                     mc.currentScreen == null ? "(null)" : mc.currentScreen.getClass().getName(),
                     captureTicks);

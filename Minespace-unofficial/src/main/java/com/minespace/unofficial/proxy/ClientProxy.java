@@ -19,11 +19,9 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        // The star map keybind. J on purpose: M already opens Galacticraft's map and this pack's own
-        // screen is a different document, not a replacement for it yet.
-        net.minecraftforge.fml.client.registry.ClientRegistry.registerKeyBinding(
-                com.minespace.unofficial.gtceu.MinespaceStarMapKey.OPEN_MAP);
-        com.minespace.unofficial.gtceu.MinespaceStarMapKey.register();
+        // The star map keybind moved to the navigation module's own client proxy with the screen it opens.
+        // (J on purpose there: M already opens Galacticraft's map and this pack's screen is a different
+        // document, not a replacement for it yet.)
 
         // One model per research-data tier: a Forge item with subtypes needs its own model resource location per
         // metadata value, and these names are the ones tools\build-research-art.ps1 writes.

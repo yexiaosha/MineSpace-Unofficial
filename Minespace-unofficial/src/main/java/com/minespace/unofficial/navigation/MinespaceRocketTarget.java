@@ -1,6 +1,8 @@
-package com.minespace.unofficial.galacticraft;
+package com.minespace.unofficial.navigation;
 
 import com.minespace.unofficial.Minespace;
+import com.minespace.unofficial.galacticraft.MinespaceCelestialRegistry;
+import com.minespace.unofficial.galacticraft.MinespacePlanetResearch;
 import com.minespace.unofficial.gtceu.MinespacePlanetDimensions;
 import com.minespace.unofficial.gtceu.MinespaceResearchData;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
@@ -9,6 +11,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The adapter between Galacticraft's rocket and this pack's own star map: GC flies, we aim.
@@ -38,7 +42,30 @@ import net.minecraft.util.text.TextFormatting;
  */
 public final class MinespaceRocketTarget {
 
+    private static final Logger LOG = LogManager.getLogger("minespace_navigation");
+
     private MinespaceRocketTarget() {
+    }
+
+    /**
+     * The rocket this entity is in, following the riding chain - a seat or a mount in between is still the rocket.
+     *
+     * <p>The first version asked {@code getRidingEntity()} once and required an {@code EntityAutoRocket} there. Every
+     * rocket in this pack either is one or extends one (Galacticraft's tiered ones, Galaxy Space's tier-4/5/6 and
+     * multi-seat ones), so one link should be enough - and when the owner was refused while sitting in a rocket (6ex),
+     * the remaining explanations were a link this pack cannot see or a vehicle that never was a rocket. Following the
+     * chain removes the first of those, and the log line at the refusal names the second.</p>
+     */
+    public static EntityAutoRocket rocketRiddenBy(Entity entity) {
+        Entity vehicle = entity == null ? null : entity.getRidingEntity();
+        // A depth cap, because a cyclic riding chain would otherwise hang a tick.
+        for (int depth = 0; vehicle != null && depth < 4; depth++) {
+            if (vehicle instanceof EntityAutoRocket) {
+                return (EntityAutoRocket) vehicle;
+            }
+            vehicle = vehicle.getRidingEntity();
+        }
+        return null;
     }
 
     /** The rocket tier a layer asks for: I/II need T1, III/IV T2, V/VI T3. */
@@ -110,32 +137,55 @@ public final class MinespaceRocketTarget {
                     return deny(body.name + " 还没被行星研究（望远镜）观测过");
                 }
             } else if (body.layer <= 1) {
-                // A row in the sun's own system is the same research's business even when Galacticraft has no body for
-                // its dimension (Galaxy Space registers the gas giants without one) - the system is the unit, exactly
-                // as it is on the client (6eq), and both sides have to answer the same way.
-                if (!MinespacePlanetResearch.systemSurveyedOnServer(player, body)) {
-                    return deny(body.name + " 所在的太阳系还没被行星研究（望远镜）观测过");
+                // A row in the sun's own system is PlanetProgression's business, researched one body at a time (6eu) -
+                // including the rows whose dimension Galacticraft has no body for, because Galaxy Space registers the
+                // gas giants without one and this pack resolves them by name (see MinespacePlanetResearch).
+                if (!MinespacePlanetResearch.surveyedSolarOnServer(player, body)) {
+                    return deny(body.name + " 还没被行星研究（望远镜）观测过");
                 }
             } else if (MinespaceResearchData.highestHeld(player) < tier) {
                 return deny("需要 研究数据 " + roman(tier) + " 才能前往 " + body.name);
             }
         }
         Entity ridden = player.getRidingEntity();
-        if (!(ridden instanceof EntityAutoRocket)) {
-            return deny("先坐进火箭（" + body.name + " 需要 GC 火箭）");
+        EntityAutoRocket rocket = rocketRiddenBy(player);
+        // An in-orbit answer is authorised by the question this pack asked at the atmosphere, not by the riding link:
+        // 6ex measured the owner pressing T a minute after the map opened, with the flight already over and "(nothing)"
+        // under them. See MinespaceRocketDestinations.tierAwaitingAnswer.
+        int askedTier = inFlight
+                ? MinespaceRocketDestinations.tierAwaitingAnswer(player.getUniqueID(), player.world.getTotalWorldTime())
+                : 0;
+        if (rocket == null && askedTier == 0) {
+            // Refusing here is rare, and it was once wrong: the owner sat in a Galaxy Space rocket and still got this
+            // message (6ex). The line below is the measurement that tells the three cases apart - nothing ridden at
+            // all, a vehicle that is not a rocket, or a riding link this pack cannot see - and it is the only place
+            // that answer can come from.
+            LOG.info("star map: {} (dim {}) asked for {} in flight={} riding {} and not asked to choose - refusing",
+                    player.getName(), player.dimension, body.name, inFlight,
+                    ridden == null ? "(nothing)" : ridden.getClass().getName());
+            if (nearestRocket(player, 8.0D) != null) {
+                return deny("你靠近了火箭，但还没坐进去；先右键坐进火箭再按 T");
+            }
+            return deny("先坐进火箭（" + body.name + " 需要 GC/GS 火箭；当前没有检测到骑乘）");
         }
-        EntityAutoRocket rocket = (EntityAutoRocket) ridden;
         int needed = rocketTierForLayer(body.layer);
-        int have = rocket instanceof IRocketType ? ((IRocketType) rocket).getRocketTier() : 0;
+        int have = rocket instanceof IRocketType ? ((IRocketType) rocket).getRocketTier() : askedTier;
         if (have < needed) {
             return deny(body.name + " 需要 T" + needed + " 火箭，这艘是 T" + have);
         }
-        if (!rocket.hasValidFuel()) {
+        if (rocket != null && !rocket.hasValidFuel()) {
             return deny("燃料不足：先给火箭加满燃料再设定目的地");
         }
         if (inFlight) {
-            // The in-orbit choice: Galacticraft's ascent is already done, so the arrival is ours (6en/6eo).
-            MinespaceRocketDestinations.transfer(player, body.dimensionId, body.name + "（" + body.nameZh + "）");
+            // The in-orbit choice: Galacticraft's ascent is already done, so the arrival is ours (6en/6eo). No fuel
+            // check above and no rocket needed here - the fuel was spent getting up, and the flight may well be over by
+            // the time the player answers (6ex). The question is consumed either way.
+            EntityAutoRocket arrivalRocket = rocket != null
+                    ? rocket
+                    : MinespaceRocketDestinations.rocketAwaitingAnswer(player.getUniqueID());
+            MinespaceRocketDestinations.answered(player.getUniqueID());
+            MinespaceRocketDestinations.transfer(player, body.dimensionId,
+                    body.name + "（" + body.nameZh + "）", arrivalRocket);
             // The transfer writes its own line; nothing to add.
             return null;
         }
@@ -154,6 +204,20 @@ public final class MinespaceRocketTarget {
         Minespace.log().info("Rocket of {} pointed at {} (dimension {}) and ignited",
                 player.getName(), body.name, body.dimensionId);
         return TextFormatting.GREEN + "已点火：目的地 " + body.name + "（" + body.nameZh + "）";
+    }
+
+    private static EntityAutoRocket nearestRocket(EntityPlayerMP player, double radius) {
+        EntityAutoRocket best = null;
+        double bestDistance = Double.MAX_VALUE;
+        for (Entity entity : player.world.getEntitiesWithinAABB(EntityAutoRocket.class,
+                player.getEntityBoundingBox().grow(radius))) {
+            double distance = entity.getDistanceSq(player);
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = (EntityAutoRocket) entity;
+            }
+        }
+        return best;
     }
 
     private static String deny(String why) {

@@ -1,5 +1,7 @@
-package com.minespace.unofficial.gtceu;
+package com.minespace.unofficial.navigation;
 
+import com.minespace.unofficial.gtceu.MinespacePlanetDimensions;
+import com.minespace.unofficial.gtceu.MinespacePlanetDimensionsRegistration;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
@@ -34,7 +36,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class MinespacePlanetSkyRegistry {
 
-    private static final Logger LOG = LogManager.getLogger("minespace");
+    private static final Logger LOG = LogManager.getLogger("minespace_navigation");
 
     private static boolean registered;
 
