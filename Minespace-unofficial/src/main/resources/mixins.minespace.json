@@ -8,6 +8,7 @@
     "MixinBlockBasicMars",
     "MixinBlockBasicVenus",
     "MixinGTCachedGridEntry",
+    "MixinGTOreFilterEntry",
     "MixinMetaTileEntityOnRemoval",
     "MixinProspectingMapMeta",
     "MixinBiomeName"

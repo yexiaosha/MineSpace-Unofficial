@@ -148,6 +148,10 @@ $wrappedWorldgenErrors = Count-Lines $latestLog 'Error in another mod.s worldgen
 Add-Check 'no Galacticraft-wrapped worldgen errors' ($wrappedWorldgenErrors -eq 0) `
     "$wrappedWorldgenErrors error lines"
 
+$nullVeinBlocks = Count-Lines $latestLog 'GT vein .* returned no block'
+Add-Check 'no null vein filler blocks' ($nullVeinBlocks -eq 0) `
+    "$nullVeinBlocks warnings"
+
 $worldgenCount = 0
 if ($latest -match 'Loaded (\d+) worldgen definitions') {
     $worldgenCount = [int]$Matches[1]

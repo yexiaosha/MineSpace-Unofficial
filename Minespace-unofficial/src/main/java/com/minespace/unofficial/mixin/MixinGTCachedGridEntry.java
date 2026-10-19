@@ -1,8 +1,12 @@
 package com.minespace.unofficial.mixin;
 
+import com.minespace.unofficial.gtceu.MinespaceVeinSource;
+import gregtech.api.worldgen.filler.BlockFiller;
+import gregtech.api.worldgen.populator.VeinBufferPopulator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +24,51 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinGTCachedGridEntry {
 
     private static final Logger LOG = LogManager.getLogger("minespace_core");
-    private static boolean reported;
+
+    @Redirect(
+            method = "populateChunk",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lgregtech/api/worldgen/filler/BlockFiller;apply("
+                            + "Lnet/minecraft/block/state/IBlockState;"
+                            + "Lnet/minecraft/world/IBlockAccess;"
+                            + "Lnet/minecraft/util/math/BlockPos;III)"
+                            + "Lnet/minecraft/block/state/IBlockState;"
+            ),
+            remap = false
+    )
+    private static IBlockState minespaceCheckFiller(BlockFiller filler, IBlockState original,
+                                                    IBlockAccess world, BlockPos pos,
+                                                    int x, int y, int z) {
+        IBlockState result = filler.apply(original, world, pos, x, y, z);
+        if (result == null) {
+            LOG.warn("GT vein {} filler returned no block at {} ({}); skipping that block",
+                    MinespaceVeinSource.filler(filler), pos,
+                    original == null ? "null" : original.getBlock().getRegistryName());
+        }
+        return result;
+    }
+
+    @Redirect(
+            method = "populateChunk",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lgregtech/api/worldgen/populator/VeinBufferPopulator;getBlockByIndex("
+                            + "Lnet/minecraft/world/World;"
+                            + "Lnet/minecraft/util/math/BlockPos;I)"
+                            + "Lnet/minecraft/block/state/IBlockState;"
+            ),
+            remap = false
+    )
+    private static IBlockState minespaceCheckPopulator(VeinBufferPopulator populator,
+                                                       World world, BlockPos pos, int index) {
+        IBlockState result = populator.getBlockByIndex(world, pos, index);
+        if (result == null) {
+            LOG.warn("GT vein {} populator returned no block at {} index {}; skipping that block",
+                    MinespaceVeinSource.populator(populator), pos, index);
+        }
+        return result;
+    }
 
     @Redirect(
             method = "populateChunk",
@@ -34,11 +82,6 @@ public abstract class MixinGTCachedGridEntry {
     private static boolean minespaceSkipNullVeinState(World world, BlockPos pos,
                                                        IBlockState state, int flags) {
         if (state == null) {
-            if (!reported) {
-                reported = true;
-                LOG.warn("GT vein filler returned no block state at {}; skipping that block "
-                        + "(further occurrences are suppressed)", pos);
-            }
             return false;
         }
         return world.setBlockState(pos, state, flags);

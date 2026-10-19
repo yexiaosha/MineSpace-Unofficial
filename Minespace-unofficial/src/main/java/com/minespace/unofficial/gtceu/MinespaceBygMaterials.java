@@ -59,6 +59,13 @@ public final class MinespaceBygMaterials implements IMaterialHandler {
             return;
         }
 
+        // The overworld soapstone vein names these two materials. GTCE-TJ ships them as
+        // dust materials but, unlike GTNH, does not generate their ore blocks by default;
+        // the filler then resolves to null and aborts the chunk's vein pass. Registering
+        // the ore prefix here keeps the vein data valid without a worldgen special case.
+        ensureOreMaterial("soapstone");
+        ensureOreMaterial("talc");
+
         register("kasai", new IngotMaterial(
                 MinespaceMaterials.allocateMaterialId(), KASAI, 0xD07030,
                 MaterialIconSet.METALLIC, 4,
@@ -116,6 +123,15 @@ public final class MinespaceBygMaterials implements IMaterialHandler {
             return;
         }
         MATERIALS.put(name, material);
+    }
+
+    private static void ensureOreMaterial(String name) {
+        Material material = Material.MATERIAL_REGISTRY.getObject(name);
+        if (material instanceof DustMaterial
+                && !material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
+            material.addFlag(DustMaterial.MatFlags.GENERATE_ORE);
+            LOG.info("Enabled GT ore generation for {}", name);
+        }
     }
 
     public static Material material(String name) {

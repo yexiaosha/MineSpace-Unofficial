@@ -306,6 +306,7 @@ public class Minespace {
 
     @EventHandler
     public void loadComplete(FMLLoadCompleteEvent event) {
+        com.minespace.unofficial.gtceu.MinespaceVeinSource.index();
         // NCO/QMD add part of their recipe lists in postInit, after the registry-event pass. Rewrite
         // once more before this file's own material re-point passes inspect the finished lists.
         com.minespace.unofficial.gtceu.nuclear.MinespaceNuclearMaterialsEvents
