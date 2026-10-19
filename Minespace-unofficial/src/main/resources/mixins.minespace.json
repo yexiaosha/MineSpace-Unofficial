@@ -11,6 +11,7 @@
     "MixinGTOreFilterEntry",
     "MixinMetaTileEntityOnRemoval",
     "MixinProspectingMapMeta",
+    "MixinWidgetOreList",
     "MixinBiomeName"
   ],
   "client": [],

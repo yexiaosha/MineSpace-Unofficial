@@ -1,6 +1,7 @@
 package com.minespace.unofficial.mixin;
 
 import gregicadditions.network.ProspectingPacket;
+import com.minespace.unofficial.gtceu.MinespaceProspectingDisplay;
 import gregtech.api.unification.OreDictUnifier;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -84,7 +85,9 @@ public abstract class MixinProspectingMapMeta {
                 shortestOre = name;
             }
         }
-        return Collections.singleton(shortestOre != null ? shortestOre : names.iterator().next());
+        String chosen = shortestOre != null ? shortestOre : names.iterator().next();
+        MinespaceProspectingDisplay.remember(chosen, corrected);
+        return Collections.singleton(chosen);
     }
 
     @Redirect(
