@@ -302,6 +302,9 @@ public class Minespace {
     public void serverStarted(net.minecraftforge.fml.common.event.FMLServerStartedEvent event) {
         com.minespace.unofficial.galacticraft.MinespaceCelestialRegistry.verify("server started");
         com.minespace.unofficial.gtceu.nuclear.MinespaceDiagnosticsEvents.exportIfRequested();
+        com.minespace.unofficial.gtceu.MinespaceWorldgenProbe.runIfRequested(
+                net.minecraftforge.fml.common.FMLCommonHandler.instance()
+                        .getMinecraftServerInstance());
     }
 
     @EventHandler
