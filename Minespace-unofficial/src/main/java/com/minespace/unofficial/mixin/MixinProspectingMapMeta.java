@@ -5,8 +5,6 @@ import gregtech.api.unification.OreDictUnifier;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,24 +27,17 @@ import java.util.Set;
  * called {@code Optional.get()} unconditionally and crashed on exactly that; such blocks now get
  * an internal marker which is filtered out before it reaches the statistics.</p>
  *
- * <p>The scanner also paints every single ore block, so a mixed vein looks like a cloud of
- * unrelated coloured pixels and isolated meteorite/accessory ores such as certus quartz or
- * tamrelite show up as noise. A block is now kept only when at least five blocks of the same
- * state exist in its face-neighbourhood. Real GT veins pass easily; one-block scatter does not.</p>
+ * <p>The scanner deliberately shows every actual ore block. Scatter is controlled at the
+ * generation source (AE2's small certus clusters and BYG's standalone ores are off), not by
+ * hiding blocks here: an over-aggressive cluster filter made real but sparse veins look
+ * incomplete.</p>
  */
 @Mixin(targets = "gregicadditions.widgets.WidgetProspectingMap")
 public abstract class MixinProspectingMapMeta {
 
     private static final String UNKNOWN_ORE = "__minespace_unknown_ore__";
-    private static final int CLUSTER_THRESHOLD = 4;
-    /** Six face neighbours: seven state reads per ore block instead of the old twenty-seven. */
-    private static final int[][] FACE_OFFSETS = {
-            {1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
-    };
     private static final ThreadLocal<IBlockState> MINESPACE_SCANNED_STATE =
             new ThreadLocal<IBlockState>();
-    private static final ThreadLocal<Chunk> MINESPACE_SCANNED_CHUNK =
-            new ThreadLocal<Chunk>();
 
     @Redirect(
             method = "detectAndSendChanges",
@@ -59,7 +50,6 @@ public abstract class MixinProspectingMapMeta {
     private IBlockState minespaceCaptureOreState(Chunk chunk, int x, int y, int z) {
         IBlockState state = chunk.getBlockState(x, y, z);
         MINESPACE_SCANNED_STATE.set(state);
-        MINESPACE_SCANNED_CHUNK.set(chunk);
         return state;
     }
 
@@ -106,41 +96,10 @@ public abstract class MixinProspectingMapMeta {
             remap = false
     )
     private static void minespaceSkipUnknownOre(ProspectingPacket packet, int x, int y, int z, String name) {
-        IBlockState state = MINESPACE_SCANNED_STATE.get();
-        Chunk chunk = MINESPACE_SCANNED_CHUNK.get();
         MINESPACE_SCANNED_STATE.remove();
-        MINESPACE_SCANNED_CHUNK.remove();
         if (UNKNOWN_ORE.equals(name)) {
             return;
         }
-        if (packet.mode == 0 && state != null && chunk != null
-                && !minespaceFormsCluster(chunk, state, x, y, z)) {
-            return;
-        }
         packet.addBlock(x, y, z, name);
-    }
-
-    /** True when the scanned block is part of a real cluster instead of an isolated speck. */
-    private static boolean minespaceFormsCluster(Chunk chunk, IBlockState state,
-                                                 int localX, int y, int localZ) {
-        World world = chunk.getWorld();
-        int originX = chunk.x * 16 + localX;
-        int originZ = chunk.z * 16 + localZ;
-        Block block = state.getBlock();
-        int metadata = block.getMetaFromState(state);
-        int matches = 1;
-        for (int[] offset : FACE_OFFSETS) {
-            BlockPos pos = new BlockPos(originX + offset[0], y + offset[1], originZ + offset[2]);
-            if (!world.isBlockLoaded(pos)) {
-                continue;
-            }
-            IBlockState other = world.getBlockState(pos);
-            if (other.getBlock() == block
-                    && block.getMetaFromState(other) == metadata
-                    && ++matches >= CLUSTER_THRESHOLD) {
-                return true;
-            }
-        }
-        return false;
     }
 }
