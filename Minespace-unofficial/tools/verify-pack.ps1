@@ -120,6 +120,10 @@ $server = Get-CimInstance Win32_Process -Filter "Name='java.exe'" |
     Select-Object -First 1
 
 $latest = Read-Text $latestLog
+if ($latest -notmatch 'Loaded \d+ worldgen definitions') {
+    Start-Sleep -Milliseconds 800
+    $latest = Read-Text $latestLog
+}
 $crafting = Read-Text $craftingCsv
 $craftTweaker = Read-Text $craftTweakerLog
 $newCrashes = @()
@@ -151,6 +155,10 @@ Add-Check 'no Galacticraft-wrapped worldgen errors' ($wrappedWorldgenErrors -eq 
 $nullVeinBlocks = Count-Lines $latestLog 'GT vein .* returned no block'
 Add-Check 'no null vein filler blocks' ($nullVeinBlocks -eq 0) `
     "$nullVeinBlocks warnings"
+
+$passiveMobs = $latest -match 'Passive hostile mobs: enabled'
+Add-Check 'passive hostile mobs enabled' $passiveMobs `
+    $(if ($passiveMobs) { 'enabled' } else { 'not enabled' })
 
 $worldgenCount = 0
 if ($latest -match 'Loaded (\d+) worldgen definitions') {

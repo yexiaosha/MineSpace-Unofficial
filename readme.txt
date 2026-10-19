@@ -36,6 +36,8 @@ MineSpace Unofficial 是一个以 GregTech CE: TJ Edition（GTCE-TJ）为核心�
    - EU 与 Galacticraft gJ 的能量桥接。
    - NuclearCraft / QMD 材料与配方向 GT 统一，包含残留配方审计与修复。
    - RF 与 EU 按阶段等效转换，不是到某个阶段就失效。
+   - 敌对生物保留，但默认不主动攻击玩家；开关在
+     `config/minespace_core.cfg` 的 `mobs.passiveHostileMobs`。
 
 2. 行星与矿脉
 

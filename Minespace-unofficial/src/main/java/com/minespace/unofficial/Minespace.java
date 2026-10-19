@@ -85,6 +85,9 @@ public class Minespace {
         // flag does not cover those, so they are switched off here instead.
         com.minespace.unofficial.gtceu.MinespaceVanillaWorldgen
                 .configure(event.getSuggestedConfigurationFile());
+        com.minespace.unofficial.gtceu.MinespacePassiveMobs
+                .configure(event.getSuggestedConfigurationFile());
+        com.minespace.unofficial.gtceu.MinespacePassiveMobs.register();
 
         // NOTE: no GTCEu material setup here. GTCEu freezes its material manager
         // inside its own preInit, which (because of required-after:gregtech) has
