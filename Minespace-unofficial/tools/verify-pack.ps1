@@ -144,6 +144,10 @@ $linkageErrors = ($latest -match 'NoSuchMethodError|NoClassDefFoundError|Invalid
 Add-Check 'no Minespace mixin/linkage failure' (-not $linkageErrors) `
     $(if ($linkageErrors) { 'found mixin/linkage error in latest.log' } else { 'none' })
 
+$wrappedWorldgenErrors = Count-Lines $latestLog 'Error in another mod.s worldgen'
+Add-Check 'no Galacticraft-wrapped worldgen errors' ($wrappedWorldgenErrors -eq 0) `
+    "$wrappedWorldgenErrors error lines"
+
 $worldgenCount = 0
 if ($latest -match 'Loaded (\d+) worldgen definitions') {
     $worldgenCount = [int]$Matches[1]
