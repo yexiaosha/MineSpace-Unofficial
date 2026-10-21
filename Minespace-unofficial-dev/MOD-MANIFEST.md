@@ -20,6 +20,7 @@ See the "Migrated to the GTCE-TJ stack" note below the table for the 2026-10-11 
 | `Galacticraft-1.12.2-4.0.7.jar` | `galacticraftcore`, `galacticraftplanets`, `micdoodlecore` | 4.0.7 | Galacticraft 鈥?second addon target | yes for GC work |
 | `KubeJS-forge-1.12.2-1.1.0.65.jar` | `kubejs` | 1.1.0.65 | recipe tweaks without recompiling | optional |
 | `minespace-0.2.0.jar` | `minespace` | 0.2.0 | **this project's addon** | 鈥?|
+| `RTG-1.12.2-6.1.0.0-snapshot.1.jar` | `rtg` | 6.1.0.0-snapshot.1 | Realistic Terrain Generation - realistic overworld terrain; select the RTG world type for new worlds | optional |
 | `jei_1.12.2-4.16.1.302.jar` | `jei` | 4.16.1.302 | recipe/uses viewer; also enables GT's `jei_integration` | optional |
 | `theoneprobe-1.12-1.4.28.jar` | `theoneprobe` | 1.12-1.4.28 | block/entity tooltip overlay; enables GT's `top_integration` | optional |
 | `xaerolib-forge-1.12.2-1.7.3.jar` | `xaerolib` | 1.7.3 | **required by both Xaero map mods** 鈥?shared library | yes (for the maps) |

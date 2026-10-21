@@ -75,6 +75,13 @@ MineSpace Unofficial 是一个以 GregTech CE: TJ Edition（GTCE-TJ）为核心�
    - 星图星尘改为批量绘制，复用每帧临时列表。
    - 生物群系 decorator patch 增加身份缓存，避免重复反射。
 
+6. 真实地形（可选）
+
+   - 已加入 Realistic Terrain Generation（RTG）1.12.2。
+   - 只影响新建世界的 Overworld 地形，不改变现有存档。
+   - 新建世界时请选择 RTG 世界类型；BYG 群系和 GT 矿脉仍会生成。
+   - 行星维度继续使用本包的 Galacticraft/Galaxy Space 地形。
+
 
 三、启动方式
 ------------
@@ -115,6 +122,8 @@ MineSpace Unofficial 是一个以 GregTech CE: TJ Edition（GTCE-TJ）为核心�
 
 注意：从旧 GTCEu 存档迁移到 GTCE-TJ 会改变材料 id、元数据物品 id、
 矿石方块和石种。旧存档无法安全迁移，请使用新世界。
+
+RTG：CurseForge 项目 237989，文件 2782568（1.12.2 6.1.0.0-snapshot.1）。
 
 
 四、操作提示
